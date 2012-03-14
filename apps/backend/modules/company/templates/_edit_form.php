@@ -323,7 +323,7 @@
 </div>
 
 <?php if($company->isNew()){ ?>
-<input type="hidden" value="" id="error" name="error">
+<input type="hidden" value="" id="error" name="error" style="display: none;"/>
 <?php }?>
 
 </fieldset>
