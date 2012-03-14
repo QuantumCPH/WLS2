@@ -37,7 +37,7 @@ class CompanyEmployeActivation {
                             'i_parent' => self::$iParent,
                             'i_customer_type' => 1,
                             'opening_balance' => -(5000),
-                            'credit_limit' => 0,
+                            'credit_limit' => null,
                             'dialing_rules' => array('ip' => '00'),
                             'email' => 'okh@zapna.com'
                             )));
@@ -121,12 +121,12 @@ class CompanyEmployeActivation {
         $session = $pb->_login(self::$telintaSOAPUser, self::$telintaSOAPPassword);
 
         try {
-            $aInfo = $pb->get_customer_info(array(
+            $aInfo = $pb->get_account_info(array(
                         'i_account' => $iAccount,
                     ));
             $pb->_logout();
-        } catch (SoapFault $e) {
-            emailLib::sendErrorInTelinta("Employee Account ifo Fetching: " . $company->getId() . " Error!", "We have faced an issue in Employee Account Info Fetch on telinta. this is the error for cusotmer with  account: " . $telintaAccount . " error is " . $e->faultstring . "  <br/> Please Investigate.");
+        } catch (SoapFault $e) {//" . $company->getId() . "
+            emailLib::sendErrorInTelinta("Employee Account ifo Fetching:  Error!", "We have faced an issue in Employee Account Info Fetch on telinta. this is the error for cusotmer with  account: " . $telintaAccount . " error is " . $e->faultstring . "  <br/> Please Investigate.");
             $pb->_logout();
             return false;
         }
@@ -164,12 +164,12 @@ class CompanyEmployeActivation {
                             'opening_balance' => 0,
                             'credit_limit' => null,
                             'i_product' => $iProduct,
-                            'i_routing_plan' => 2034,
+                            'i_routing_plan' => 2039,
                             'billing_model' => 1,
                             'password' => 'asdf1asd',
                             'h323_password' => 'asdf1asd',
                             'activation_date' => date('Y-m-d'),
-                            'batch_name' => $company->getUniqueid(),
+                            'batch_name' => $company->getVatNo(),
                             'follow_me_enabled' => $followMeEnabled
                             )));
         } catch (SoapFault $e) {

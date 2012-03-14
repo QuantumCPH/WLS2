@@ -59,7 +59,7 @@ class employeeActions extends sfActions {
         $this->employee = EmployeePeer::retrieveByPK($request->getParameter('id'));
         $ct = new Criteria();
         $ct->add(TelintaAccountsPeer::ACCOUNT_TITLE, 'a'. $this->employee->getCountryMobileNumber());
-        $ct->andAdd(TelintaAccountsPeer::STATUS, 3);
+        $ct->addAnd(TelintaAccountsPeer::STATUS, 3);
         $telintaAccount = TelintaAccountsPeer::doSelectOne($ct);
         $account_info = CompanyEmployeActivation::getAccountInfo($telintaAccount->getIAccount());
         $this->balance = $account_info->account_info->balance;
@@ -141,7 +141,7 @@ class employeeActions extends sfActions {
 
         if (!CompanyEmployeActivation::telintaRegisterEmployee($employeMobileNumber, $this->companys)) {
             //$this->message = "employee added successfully";
-            $this->getUser()->setFlash('messageError', 'Employee is not added and  registered on Telinta please check email');
+            $this->getUser()->setFlash('messageError', 'Employee is not registered due to duplicate account please check email.');
             //$this->redirect('employee/add?message=error');
             $this->redirect('employee/add');
             die;
@@ -213,9 +213,9 @@ class employeeActions extends sfActions {
 
         $ct = new Criteria();
         $ct->add(TelintaAccountsPeer::ACCOUNT_TITLE, 'a' . $contrymobilenumber);
-        $ct->andAdd(TelintaAccountsPeer::STATUS, 3);
+        $ct->addAnd(TelintaAccountsPeer::STATUS, 3);
         $telintaAccount = TelintaAccountsPeer::doSelectOne($ct);
-        if (CompanyEmployeActivation::terminateAccount($telintaAccount)) {
+        if (!CompanyEmployeActivation::terminateAccount($telintaAccount)) {
             $this->getUser()->setFlash('messageEdit', 'Employee has not been deleted Sucessfully Error in Callthrough Account');
             if (isset($companyid) && $companyid != "") {
                 $this->redirect('employee/index?company_id=' . $companyid . '&filter=filter');
