@@ -246,18 +246,18 @@
                          //echo link_to('<b>Zerocall Setting</b>', '') ?>
                         <a href="javascript:;" class="label"><b><?php echo __('WLS2 Setting') ?></b></a>
                         <?php 
-                        if($actionName=='list' && $modulName=="device"){
-                          echo link_to(__('Mobile Models'), 'device/index',array('class'=>'subSelect'));
-                        }else{
-                          echo link_to(__('Mobile Models'), 'device/index');  
-                        }
+//                        if($actionName=='list' && $modulName=="device"){
+//                          echo link_to(__('Mobile Models'), 'device/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Mobile Models'), 'device/index');
+//                        }
                         ?>
                         <?php 
-                        if($actionName=='list' && $modulName=="manufacturer"){
-                          echo link_to(__('Mobile Brands'), 'manufacturer/index',array('class'=>'subSelect'));
-                        }else{
-                          echo link_to(__('Mobile Brands'), 'manufacturer/index'); 
-                        }
+//                        if($actionName=='list' && $modulName=="manufacturer"){
+//                          echo link_to(__('Mobile Brands'), 'manufacturer/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Mobile Brands'), 'manufacturer/index');
+//                        }
                         ?>
                        
                         <?php 
@@ -277,9 +277,9 @@
                         ?>
                         <?php 
                         if($actionName=='list' && $modulName=="enable_country"){
-                          echo link_to(__('Language Type'), 'enable_country/index',array('class'=>'subSelect'));
+                          echo link_to(__('Country List'), 'enable_country/index',array('class'=>'subSelect'));
                         }else{
-                          echo link_to(__('Language Type'), 'enable_country/index'); 
+                          echo link_to(__('Country List'), 'enable_country/index');
                         }
                         ?>
                         <?php 
@@ -297,18 +297,18 @@
                         }
                         ?>
                         <?php 
-                        if($actionName=='list' && $modulName=="usage_alert"){
-                          echo link_to(__('Usage Alert'), 'usage_alert/index',array('class'=>'subSelect'));
-                        }else{
-                          echo link_to(__('Usage Alert'), 'usage_alert/index'); 
-                        }
+//                        if($actionName=='list' && $modulName=="usage_alert"){
+//                          echo link_to(__('Usage Alert'), 'usage_alert/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Usage Alert'), 'usage_alert/index');
+//                        }
                         ?>
                         <?php 
-                        if($actionName=='list' && $modulName=="usage_alert_sender"){
-                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index',array('class'=>'subSelect'));
-                        }else{
-                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index'); 
-                        }
+//                        if($actionName=='list' && $modulName=="usage_alert_sender"){
+//                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index');
+//                        }
                         ?>
                         <?php 
                         if($actionName=='list' && $modulName=="telecom_operator"){
@@ -347,39 +347,44 @@ jQuery(function(){
 jQuery('#sf_admin_edit_form').validate({
 
      rules: {
-    "company[name]": "required",
-     "company[vat_no]": "required",
-      "company[post_code]": "required",
-       "company[address]": "required",
+        "company[name]": "required",
+        "company[vat_no]": "required",
+        "company[post_code]": "required digits",
+        "company[address]": "required",
         "company[contact_name]": "required",
-         "company[head_phone_number]": "required",
-       "company[email]": "required email"
+        "company[head_phone_number]": "required",
+        "company[email]": "required email",
+        "company[invoice_method_id]": "required"
   }
 	});
 });
 </script>
 
     <script type="text/javascript">
-     jQuery('#company_post_code').blur(function(){
+    /* jQuery('#company_post_code').blur(function(){
         var poid=jQuery("#company_post_code").val();
-        poid = poid.replace(/\s+/g, '');
+       // poid = poid.replace(/\s+/g, '');
         var poidlenght=poid.length;
         //alert(poidlenght);
-        var poida= poid.charAt(0);
-        var poidb= poid.charAt(1);
-        var poidc= poid.charAt(2);
-        var poidd= poid.charAt(3);
-        var poide= poid.charAt(4);
-        if(poidlenght>4){
-            var fulvalue=poida+poidb+poidc+" "+poidd+poide;
-        }else{
+       // var poida= poid.charAt(0);
+       // var poidb= poid.charAt(1);
+       // var poidc= poid.charAt(2);
+       // var poidd= poid.charAt(3);
+        //var poide= poid.charAt(4);
+        if(poidlenght>5){
+            jQuery("#companyPost").html('"'+poid+'" is too long 5 characters max.');
+           
+            jQuery('#error').val("error");
+           // var fulvalue=poida+poidb+poidc+" "+poidd+poide;
+        }else if(poidlenght<4){
+            jQuery("#companyPost").html('"'+poid+'" is too short 4 characters min');//
+          jQuery('#error').val("error");
            //var fulvalue=poida+poidb+poidc;
-        }
-       jQuery("#company_post_code").val(fulvalue);
+        }else{jQuery("#companyPost").html('');jQuery('#error').val("");}
+      // jQuery("#company_post_code").val(fulvalue);
        //  alert(fulvalue);
 
-        });
-
+        });*/
 
 
 

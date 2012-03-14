@@ -549,7 +549,7 @@ class emailLib{
     }
 
 
-    public static function sendCustomerConfirmRegistrationEmail($inviteuserid,$customer,$subject){
+    public static function sendCustomerConfirmRegistrationEmail($inviteuserid,$customerr,$subject){
 
           $c = new Criteria();
   	$c->add(CustomerPeer::ID, $inviteuserid);
@@ -568,7 +568,7 @@ class emailLib{
 
           sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
         $message_body = get_partial('pScripts/bonus_web_reg', array(
-                'customer'=>$customer,
+                'customer'=>$customerr,
                 'recepient_name'=>$recepient_name,
 
                 'wrap'=>true,

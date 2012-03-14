@@ -32,6 +32,7 @@
   'size' => 7,
   'control_name' => 'company[vat_no]',
 )); echo $value ? $value : '&nbsp;' ?>
+      <span id="msgbox" style="display:none"></span>
       <?php }else{
 
           $value = object_input_tag($company, 'getVatNo', array (
@@ -40,8 +41,8 @@
   'control_name' => 'company[vat_no]',
 )); echo $value ? $value : '&nbsp;' ;
 
-      }?>
- <span id="msgbox" style="display:none"></span>
+      }?><br>Prefix will be 'test' for any Vat No.
+ 
     </div>
 </div>
 
@@ -68,8 +69,10 @@
 
   <?php $value = object_input_tag($company, 'getPostCode', array (
   'size' => 80,
+   'minlength'=>4,
+   'maxlength'=>5,
   'control_name' => 'company[post_code]',
-)); echo $value ? $value : '&nbsp;' ?>
+)); echo $value ? $value : '&nbsp;' ?><br><label id="companyPost"></label>
     </div>
 </div>
 
@@ -244,7 +247,7 @@
 </div>
 
 <div class="form-row">
-  <?php echo label_for('company[invoice_method_id]', __($labels['company{invoice_method_id}'])) ?>
+  <?php echo label_for('company[invoice_method_id]', __($labels['company{invoice_method_id}']), 'class="required" ') ?>
   <div class="content<?php if ($sf_request->hasError('company{invoice_method_id}')): ?> form-error<?php endif; ?>">
   <?php if ($sf_request->hasError('company{invoice_method_id}')): ?>
     <?php echo form_error('company{invoice_method_id}', array('class' => 'form-error-msg')) ?>
@@ -323,7 +326,8 @@
 </div>
 
 <?php if($company->isNew()){ ?>
-<input type="hidden" value="" id="error" name="error" style="display: none;"/>
+
+<input type="hidden" value="" id="error" name="error" style="display: none;" />
 <?php }?>
 
 </fieldset>
