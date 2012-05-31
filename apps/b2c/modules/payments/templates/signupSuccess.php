@@ -142,19 +142,18 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
             
             <!-- payment details -->
             <li>
-              <label><?php echo $order->getProduct()->getName() ?> <?php echo __('Payment details') ?>:</label>
+              <label><?php echo __('Payment details') ?>:</label>
             </li>
             <li>
-              <label>
-                                <?php echo __('Registration Fee') ?>
+              <label><?php echo $order->getProduct()->getName() ?>
               	<br />
-				<?php echo __('Product Price') ?>
+				<?php echo __('Extra refill amount') ?>
 			  </label>
 
               <input type="hidden" id="product_price" value="<?php 
-              	$product_price_vat = ($order->getProduct()->getRegistrationFee())*.25;
-
-              	$product_price = ($order->getProduct()->getPrice()+$order->getProduct()->getRegistrationFee());
+              	$product_price_vat = ($order->getProduct()->getPrice()-$order->getProduct()->getInitialBalance())*.20;
+              	//$product_price = ($order->getProduct()->getPrice()) - ($order->getProduct()->getPrice()*.20); echo $product_price; 
+              	$product_price = ($order->getProduct()->getPrice()-$order->getProduct()->getInitialBalance()) - $product_price_vat;
               	
               	echo $product_price;
               	?>" />
@@ -162,11 +161,11 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
               
               
               <label class="fr ac">
-              	<span class="product_price_span"><?php echo $order->getProduct()->getRegistrationFee() ?> </span>&euro;
+              	<span class="product_price_span"> <?php echo format_number($product_price) ?> </span> &euro;
               	<br />
               	<span id="extra_refill_span">
-					<?php echo $order->getProduct()->getPrice() ?>
-				</span>&euro;
+					<?php echo format_number($extra_refill) ?>
+                </span> &euro;
 			  </label>
 
             </li>
@@ -192,30 +191,18 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
 			  </span>
             </li>
             <li>
-              <label>
-
-              
-              <?php echo __('Delivery and Returns') ?> <br />
-              <?php echo __('VAT') ?> (25%)<br />
-              <?php echo __('Total amount') ?>
-
-
-
-              </label>
-              <input type="hidden" id="vat" value="<?php echo $product_price_vat+$postalcharge*.25; ?>" />
-                <input type="hidden" id="postal" value="<?php  echo $postalcharge; ?>" />
+              <label><?php echo __('VAT') ?> (25%)<br />
+              <?php echo __('Total amount') ?></label>
+              <input type="hidden" id="vat" value="<?php $vat = .25 * ($product_price); echo $vat; ?>" />
               <label class="fr ac" >
-                  <?php echo $postalcharge;  ?>&nbsp; &euro;
-                <br />
               	<span id="vat_span">
-                    <?php echo format_number($product_price_vat+$postalcharge*.25) ?>
-              	</span>&euro;
-                <br />
-              	<?php //$total = $product_price + $extra_refill + $vat ?>
-                <?php $total = $product_price + $postalcharge + ($product_price_vat+$postalcharge*.25) ?>
+              	<?php echo format_number($vat) ?>
+              	</span> &euro;
+              <br />
+              	<?php $total = $product_price + $extra_refill + $vat ?>
               	<span id="total_span">
               	<?php echo format_number($total) ?>
-              	</span>&euro;
+              	</span> &euro;
               </label>
             </li>
 	
@@ -228,7 +215,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
 		<input type="hidden" name="currency" value="978" />
 		<input type="hidden" name="orderid" value="<?php echo $order_id;?>" />
 		<input type="hidden" name="account" value="YTIP" />
-		  <input type="hidden" name="addfee" value="0" />
+		<input type="hidden" name="addfee" value="0" />
            
                 <input type="hidden" name="test" value="yes" />
        
