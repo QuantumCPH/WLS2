@@ -9,8 +9,7 @@ use_helper('Number');
 	
 	table.receipt {
 		width: 600px;
-		//font-family: arial;
-		//font-size: .7em;
+		
 		
 		border: 2px solid #ccc;
 	}
@@ -53,7 +52,8 @@ $wrap_content  = isset($wrap)?$wrap:false;
 	<p><?php echo __('Dear Customer') ?></p>
 	
 	<p>
-	<?php echo __('Thank you for ordering <b>%1%</b> and becoming LandNCall AB Customer. We welcome you to a new and huge mobile world.', array('%1%'=>$order->getProduct()->getName())) ?> Ditt kundnummer &auml;r  <?php echo $customer->getUniqueid();?>. Det kan du anv&auml;nda i din kontakt med kundservice
+	<?php echo __('Thank you for ordering <b>%1%</b> and becoming wls2 Customer. We welcome you to a new and huge mobile world. ', array('%1%'=>$order->getProduct()->getName())); echo __('Your customer number is '); ?>  <?php echo $customer->getUniqueid();?>. <?php echo __(' There, you can use in your dealings with customer service')?>
+
 	</p>
 	
 	<p>
@@ -66,7 +66,9 @@ $wrap_content  = isset($wrap)?$wrap:false;
 <?php endif; ?>
 <table width="600px">
 <tr style="border:0px solid #fff">
-		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://landncall.zerocall.com/images/logo.gif');?></td>
+
+		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://wls2.zerocall.com/images/logo.gif');?></td>
+
 	</tr>
 </table>
 <table class="receipt" cellspacing="0" width="600px">
@@ -90,22 +92,14 @@ $wrap_content  = isset($wrap)?$wrap:false;
       <br /><br />
       
       
-      <?php    $unid=$customer->getUniqueid();
+      <?php    $unid=$customer->getUniqueid(); ?>
       
-      if((int)$unid>200000){?>
-         <?php echo __('US Mobile Number') ?>: <br />
-      <?php    $eCu = new Criteria();
-	  $eCu->add(UsNumberPeer::CUSTOMER_ID, $customer->getId());
-	  $eCum = UsNumberPeer::doSelectOne($eCu);
-	  echo $eCum->getUsMobileNumber();  ?>
-     
-<?php     }else{   ?>
+
      <?php     $customer->getMobileNumber()    ?>
       <?php echo __('Mobile Number') ?>: <br />
       <?php echo $customer->getMobileNumber() ?>
  
-<?php }
-?>      
+
 
 
 
@@ -123,19 +117,14 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <?php if ($order->getIsFirstOrder())
     {
         echo $order->getProduct()->getName();
-        if($transaction->getDescription()=="Registrering inkl. taletid"){
-          echo "<br />[Smartsim inklusive pott]";
-        }else{
-            echo  '<br />['. $transaction->getDescription() .']';
-        }		
+        echo  '<br />['; echo __($transaction->getDescription()); echo ']';
+		
     }
     else
     {
-        if($transaction->getDescription()=="LandNCall AB Refill"){
-          echo "Refill ".$transaction->getAmount();
-        }else{
-          echo $transaction->getDescription(); 
-        }		   	
+       
+           echo __("Refill");
+        		   	
     }
     ?>
 	</td>
@@ -168,7 +157,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
   </tr>
   <tr class="footer">
     <td class="payer_summary" colspan="4" style="font-weight:normal; white-space: nowrap;"> 
-    Landncall AB&nbsp;&nbsp;&nbsp;Box 42017, SE-126 12 Stockholm&nbsp;&nbsp;&nbsp; Org.nr.556810-8921 </td>    
+    <?php echo __('WLS2&nbsp;&nbsp;&nbsp;Box XXXXX, XX-XXX XX XXXXXXX&nbsp;&nbsp;&nbsp; Org.nr.XXXXXX-XXXX')?> </td>
   </tr>
 </table>
 <?php if($wrap_content): ?>
@@ -192,11 +181,14 @@ $wrap_content  = isset($wrap)?$wrap:false;
 
 <p style="font-weight: bold;">
 	<?php echo __('If you have any questions please feel free to contact our customer support center at'); ?>
-	<a href="mailto:support@landncall.com">support@landncall.com</a>
+	<a href="mailto:support@wls2.com">support@wls2.com</a>
 </p>
 
 <p style="font-weight: bold;"><?php echo __('Cheers') ?></p>
 
 <p style="font-weight: bold;">
-<?php echo __('Support') ?>&nbsp;LandNCall AB
+
+<?php echo __('Support') ?>&nbsp;WLS2
+
 </p>
+

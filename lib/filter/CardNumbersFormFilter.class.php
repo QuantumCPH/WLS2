@@ -13,5 +13,3 @@ class CardNumbersFormFilter extends BaseCardNumbersFormFilter
   {
   }
 }
-
-?>

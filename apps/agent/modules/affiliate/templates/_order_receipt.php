@@ -9,9 +9,7 @@ use_helper('Number');
 
 	table.receipt {
 		width: 600px;
-		//font-family: arial;
-		//font-size: .7em;
-
+		
 		border: 2px solid #ccc;
 	}
 
@@ -50,56 +48,37 @@ $wrap_content  = isset($wrap)?$wrap:false;
  ?>
 
 <?php if($wrap_content): ?>
-	<p><?php echo __('Hej') ?>&nbsp;<?php echo $customer->getFirstName();?></p>
+	<p><?php echo __('Hi') ?>&nbsp;<?php echo $customer->getFirstName();?></p>
 
 	<p>
-	<?php echo __('Tack för din beställning av <b>%1%</b>.', array('%1%'=>$order->getProduct()->getName())) ?>
+	<?php echo __('Thank you for your order of <b>%1%</b>.', array('%1%'=>$order->getProduct()->getName())) ?>
 	</p>
 
 	<p>
-	<?php echo __('Dina varor kommer att skickas i dag. Du bör ha leverans senast inom två arbertsdagar.'); ?> Ditt kundnummer &auml;r  <?php echo $customer->getUniqueid();?>. Det kan du anv&auml;nda i din kontakt med kundservice</p>
+	<?php echo __('Your goods will be shipped today. You should have delivery within two days. Your customer number is ');  echo $customer->getUniqueid();?>. <?php echo __(' There, you can use in your dealings with customer service'); ?></p>
 
 	<p>
-	<?php echo __('Tveka inte att ta kontakt med oss om det är något du undrar över.') ?>
+	<?php echo __('Do not hesitate to contact us if you have any questions.') ?>
 	</p>
         <p>
-            <a href="mailto:Support@landncall.com">Support@landncall.com</a>
+            <a href="mailto:support@wls2.com">support@wls2.com</a>
 	</p>
         <p>
-	<?php echo __('Med vänlig hälsning') ?>
+	<?php echo __('Yours sincerely,') ?>
 	</p>
         <p>
-	<?php echo __('Johanna') ?>
+	<?php echo __('XXXXXXX') ?>
 	</p>
 	<br />
 <?php endif; ?>
 <table width="600px">
 	<tr style="border:0px solid #fff">
-		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://landncall.zerocall.com/images/logo.gif');?></td>
+		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://wls2.zerocall.com/images/logo.gif');?></td>
 	</tr>
 </table>
 <table class="receipt" cellspacing="0" width="600px">
-<!--<tr bgcolor="#CCCCCC" class="receipt_header">
-    <td colspan="4"> LandNCall AB
-    </td>
-  </tr>
-  <tr>
-  <td colspan="4" class="payer_summary">
-	Telefonv&atilde;gen 30
-	<br />
-	126 37 H&atilde;gersten
-	<br />
-
-	<br />
-	Tel:      +46 85 17 81 100
-	<br />
-	<br />
-	Cvr:     32068219
-	<br />
-  </td>
-  </tr>-->
   <tr bgcolor="#CCCCCC" class="receipt_header">
-    <th colspan="3"><?php echo __('Order Receipt') ?></th>
+    <th colspan="3"><?php echo __('Order Receipt')." (".$order->getProduct()->getName().")" ?></th>
     <th><?php echo __('Order No.') ?> <?php echo $order->getId() ?></th>
   </tr>
 
@@ -133,27 +112,24 @@ $wrap_content  = isset($wrap)?$wrap:false;
   <tr>
     <td><?php echo $order->getCreatedAt('m-d-Y') ?></td>
     <td>
-    <?php if ($order->getIsFirstOrder())
-    {
-        echo $order->getProduct()->getName();
-        if($transaction->getDescription()=="Registrering inkl. taletid"){
-          echo "<br />[Smartsim inklusive pott]";
-        }else{
-            echo  '<br />['. $transaction->getDescription() .']';
-        }
-    }
-    else
-    {
-	if($transaction->getDescription()=="LandNCall AB Refill"){
-          echo "Refill ".$transaction->getAmount();
-        }else{
-          echo $transaction->getDescription();
-        }
-    }
+    <?php
+         echo __("Registration Fee");
+
     ?>
 	</td>
     <td><?php echo $order->getQuantity() ?></td>
-    <td><?php echo format_number($subtotal = $transaction->getAmount()-$vat) //($order->getProduct()->getPrice() - $order->getProduct()->getPrice()*.2) * $order->getQuantity()) ?></td>
+    <td><?php echo format_number($order->getProduct()->getRegistrationFee()); ?></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+    <?php
+         echo __("Product Price");
+
+    ?>
+	</td>
+    <td><?php echo $order->getQuantity() ?></td>
+    <td><?php echo format_number($order->getProduct()->getPrice()); ?></td>
   </tr>
   <tr>
   	<td colspan="4" style="border-bottom: 2px solid #c0c0c0;">&nbsp;</td>
@@ -162,8 +138,9 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td>&nbsp;</td>
     <td><?php echo __('Subtotal') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($subtotal) ?></td>
+    <td><?php echo format_number($subTotal = $order->getProduct()->getPrice()+$order->getProduct()->getRegistrationFee()) ?></td>
   </tr>
+
   <tr class="footer">
     <td>&nbsp;</td>
     <td><?php echo __('VAT') ?> (<?php echo $vat==0?'0%':'25%' ?>)</td>
@@ -174,14 +151,14 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td>&nbsp;</td>
     <td><?php echo __('Total') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($transaction->getAmount()) ?></td>
+    <td><?php echo format_number($subTotal+$vat) ?></td>
   </tr>
   <tr>
   	<td colspan="4" style="border-bottom: 2px solid #c0c0c0;">&nbsp;</td>
   </tr>
   <tr class="footer">
     <td class="payer_summary" colspan="4" style="font-weight:normal; white-space: nowrap;">
-    Landncall AB&nbsp;&nbsp;&nbsp;&nbsp;Box 42017, SE-126 12 Stockholm&nbsp;&nbsp;&nbsp; Org.nr.556810-8921 </td>
+    <?php echo __('WLS2&nbsp;&nbsp;&nbsp;&nbsp;Box XXXXX, XX-XXX XX XXXXXXX&nbsp;&nbsp;&nbsp; XXX.XX.XXXXXX-XXXX');?> </td>
   </tr>
 </table>
         

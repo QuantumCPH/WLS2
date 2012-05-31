@@ -8,7 +8,7 @@ function countChar(str)
 var chars = document.getElementById('chars');
 var message = document.getElementById('message');
 
-chars.value = "Characters: "+str.length+"/434";
+chars.innerHTML = str.length+"/434";
 
 if(str.length > 433){
         //alert(message.value);
@@ -36,7 +36,7 @@ return true;}
 </script>
 
 
-<?php include_partial('dashboard_header', array('customer'=> $customer, 'section'=>__('Refill') ) ) ?>
+<?php include_partial('dashboard_header', array('customer'=> $customer, 'section'=>__('Websms') ) ) ?>
 
 
 <div class="left-col">
@@ -47,11 +47,11 @@ return true;}
           
 <?php if (!($balance <= 0.00 )){ ?>
           <form action=<?php echo url_for('customer/websms', true) ?>  method="post" id="websms" onsubmit="isHex(this.value)">
-		<h3><?php echo __("Your Current Balance is:") ?><?php echo $balance ?> SEK </h3>
+              <h3 style="width: 400px;"><?php echo __("Your Current Balance is:") ?><?php echo $balance ?> &euro;</h3>
    <?php }else{ ?>
                 
-                <h3><?php echo __("Your Current Balance is:") ?> <?php echo $balance ?> SEK</h3>
-                Du har desværre ikke penge nok på kontoen, du bedes venligst tank op <b><a href="<?php echo url_for('customer/refill/customer_id/', true) ?><?php echo $customer->getId()?>">her</a></b>
+                <h3 style="width: 400px;"><?php echo __("Your Current Balance is:") ?> <?php echo $balance ?> &euro;</h3>
+                Du har desværre ikke penge nok på kontoen, du bedes venligst tank op <b><a href="<?php echo url_for('customer/refill', true) ?><?php echo "/customer_id/".$customer->getId()?>">her</a></b>
 <?php }?>
        <ul>
         <li>  </li>
@@ -76,10 +76,10 @@ return true;}
           <?php echo "<label style='color:#F00; white-space:nowrap'><b>".__("Your message unfortunately not sent, try again").'</b></label>'; ?>
           <?php }
 		  } ?><br /><br />
-    <table cellspacing="0" class="summary">
+                  <table cellspacing="0" class="summary" width="480">
         <tr bgcolor="#f0f0f0">
             <td>
-               <label for="country">Vælg land</label>
+               <label for="country"><?php echo __('Country')?></label>
             </td>
             <td>
                 <select name="country" id="country" >
@@ -97,16 +97,16 @@ return true;}
             <td></td>
         </tr>
         <tr bgcolor="#ffffff">
-            <td>
-                <label for="destination"><?php echo __("Destination Number<br />(without trailing 0)") ?></label>
+            <td valign="top">
+                <label for="destination"><?php echo __("Destination Number<br />(without leading 0)") ?></label>
             </td>
-            <td>
+            <td align="left" style="width:115px;">
                 <input type="text" name="number" id="number" size="15" maxlength="13" onkeydown="isHex(this.value)">
  
             </td>
-            <td>
+            <td align="left" style="margin-left:15px;">
+               <?php echo __("Characters") ?> <span id="chars">0/432</span>
                 
-                 <input type="text" name="chars" id="chars" value="<?php echo __("Characters: 0/432") ?>" disabled size="8">
             </td>
 
         </tr>
@@ -115,7 +115,7 @@ return true;}
             <td></td>
         </tr>
         <tr bgcolor="#f0f0f0">
-            <td>
+            <td valign="top">
                 <label for="message"><?php echo __("Message:") ?></label>
             </td>
             <td colspan="2">
@@ -128,8 +128,13 @@ return true;}
         </tr> </li>
     </ul>
         <tr>
-            <td>
-                     <input type="submit" class="buton" name="submit"  value="<?php echo __("Send SMS") ?>" onclick="
+            <td colspan="2">
+                     
+            </td>
+        </tr>
+    </table>
+            <br />
+            <input type="submit" class="buton" name="submit"  value="<?php echo __("Send SMS") ?>" onclick="
                             if(document.getElementById('number').value==''){
                                 alert('Please Enter The Destination Number');
                                 document.getElementById('number').focus();
@@ -140,11 +145,7 @@ return true;}
                                 return false;
                             }else{
                                 return true;
-                            }" >
-            </td>
-        </tr>
-    </table>
-            <br />
+                            }" />
             <br />
    
        

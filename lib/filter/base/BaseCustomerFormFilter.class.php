@@ -26,9 +26,9 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'is_newsletter_subscriber' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'created_at'               => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
       'updated_at'               => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
-      'customer_status_id'       => new sfWidgetFormFilterInput(),
+      'customer_status_id'       => new sfWidgetFormPropelChoice(array('model' => 'EntityStatus', 'add_empty' => true)),
       'address'                  => new sfWidgetFormFilterInput(),
-      'fonet_customer_id'        => new sfWidgetFormFilterInput(),
+      'fonet_customer_id'        => new sfWidgetFormPropelChoice(array('model' => 'FonetCustomer', 'add_empty' => true)),
       'referrer_id'              => new sfWidgetFormPropelChoice(array('model' => 'AgentCompany', 'add_empty' => true)),
       'telecom_operator_id'      => new sfWidgetFormPropelChoice(array('model' => 'TelecomOperator', 'add_empty' => true)),
       'date_of_birth'            => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
@@ -46,6 +46,9 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'ticketval'                => new sfWidgetFormFilterInput(),
       'to_date'                  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
       'from_date'                => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
+      'i_customer'               => new sfWidgetFormFilterInput(),
+      'usage_alert_sms'          => new sfWidgetFormFilterInput(),
+      'usage_alert_email'        => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
@@ -61,9 +64,9 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'is_newsletter_subscriber' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'created_at'               => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
       'updated_at'               => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
-      'customer_status_id'       => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'customer_status_id'       => new sfValidatorPropelChoice(array('required' => false, 'model' => 'EntityStatus', 'column' => 'id')),
       'address'                  => new sfValidatorPass(array('required' => false)),
-      'fonet_customer_id'        => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'fonet_customer_id'        => new sfValidatorPropelChoice(array('required' => false, 'model' => 'FonetCustomer', 'column' => 'fonet_customer_id')),
       'referrer_id'              => new sfValidatorPropelChoice(array('required' => false, 'model' => 'AgentCompany', 'column' => 'id')),
       'telecom_operator_id'      => new sfValidatorPropelChoice(array('required' => false, 'model' => 'TelecomOperator', 'column' => 'id')),
       'date_of_birth'            => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
@@ -76,11 +79,14 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'c9_customer_number'       => new sfValidatorPass(array('required' => false)),
       'registration_type_id'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'imsi'                     => new sfValidatorPass(array('required' => false)),
-      'uniqueid'                 => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'uniqueid'                 => new sfValidatorPass(array('required' => false)),
       'plain_text'               => new sfValidatorPass(array('required' => false)),
       'ticketval'                => new sfValidatorPass(array('required' => false)),
       'to_date'                  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
       'from_date'                => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
+      'i_customer'               => new sfValidatorPass(array('required' => false)),
+      'usage_alert_sms'          => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'usage_alert_email'        => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('customer_filters[%s]');
@@ -111,9 +117,9 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'is_newsletter_subscriber' => 'Boolean',
       'created_at'               => 'Date',
       'updated_at'               => 'Date',
-      'customer_status_id'       => 'Number',
+      'customer_status_id'       => 'ForeignKey',
       'address'                  => 'Text',
-      'fonet_customer_id'        => 'Number',
+      'fonet_customer_id'        => 'ForeignKey',
       'referrer_id'              => 'ForeignKey',
       'telecom_operator_id'      => 'ForeignKey',
       'date_of_birth'            => 'Date',
@@ -126,11 +132,14 @@ class BaseCustomerFormFilter extends BaseFormFilterPropel
       'c9_customer_number'       => 'Text',
       'registration_type_id'     => 'Number',
       'imsi'                     => 'Text',
-      'uniqueid'                 => 'Number',
+      'uniqueid'                 => 'Text',
       'plain_text'               => 'Text',
       'ticketval'                => 'Text',
       'to_date'                  => 'Date',
       'from_date'                => 'Date',
+      'i_customer'               => 'Text',
+      'usage_alert_sms'          => 'Number',
+      'usage_alert_email'        => 'Number',
     );
   }
 }

@@ -2,19 +2,16 @@
 <?php include_javascripts_for_form($form) ?>
 
 <form method="post" action="registerCustomer<?php // url_for('@customer_registration_step1') ?>" name="newCustomerForm"  <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
-  <div class="left-col">
+ <div id="sf_admin_container"><h1><?php echo __('Register a Customer') ?> <span class="active">- <?php echo __('Step 1') ?>: <?php echo __('Register') ?> </span></h1></div>
+        
+  <div class="borderDiv"> 
+       <div class="left-col">
     <div class="split-form-sign-up">
-      <div class="step-details"> <h2><?php echo __('Register a Customer') ?> <span class="active">- <?php echo __('Step 1') ?>: <?php echo __('Register') ?> </span></h2> </div>
+      <div class="step-details"> </div>
       <div class="fl col">
         <?php echo $form->renderHiddenFields() ?>
           <ul>
-              <tr>
-        <div class='inline-error'>
-          <li> <?php // echo $form->renderGlobalErrors() ?></li>
-        </div>
-        
-
-               <?php
+           <?php
             $error_mobile_number = false;
             if($form['mobile_number']->hasError())
             	$error_mobile_number = true;
@@ -24,8 +21,8 @@
              <?php echo $form['mobile_number'] ?>
              <?php if ($error_mobile_number): ?>
              <span id="cardno_decl" class="alertstep1">
-			  	<?php echo image_tag('../zerocall/images/decl.png', array('absolute'=>true)) ?>
-			 </span>
+	         <?php echo image_tag('../zerocall/images/decl.png', array('absolute'=>true)) ?>
+	     </span>
 			 <?php endif; ?>
              <div class='inline-error'><?php echo $error_mobile_number?$form['mobile_number']->renderError():'&nbsp;'?></div>
             </li>
@@ -258,7 +255,7 @@
           if( $browser->getBrowser() == Browser::BROWSER_IE  )
           {  ?>
           <li class="fr buttonplacement" style="margin-left:20px ">
-               <input type="submit" value="Next" style="margin-left:115px;">
+               <input type="submit" value="Next" style="margin-left:0px !important;">
           </li>
          
           <?php } else{ ?>
@@ -271,7 +268,8 @@
       </div>
     </div>
   </div>
-
+      <div class="clr"></div>
+</div>
   
 </form>
 
@@ -282,25 +280,7 @@
 	jq('form li em').remove();
 </script>
 <script type="text/javascript">
-    jq('#customer_po_box_number').blur(function(){
-        var poid=jq("#customer_po_box_number").val();
-        poid = poid.replace(/\s+/g, '');
-        var poidlenght=poid.length;
-        //alert(poidlenght);
-        var poida= poid.charAt(0);
-        var poidb= poid.charAt(1);
-        var poidc= poid.charAt(2);
-        var poidd= poid.charAt(3);
-        var poide= poid.charAt(4);
-        if(poidlenght>4){
-            var fulvalue=poida+poidb+poidc+" "+poidd+poide;
-        }
-       jQuery("#customer_po_box_number").val(fulvalue);
-      
-
-        });
-
-        jq("#customer_manufacturer").change(function() {
+    jq("#customer_manufacturer").change(function() {
 		var url = "<?php echo url_for('affiliate/getmobilemodel') ?>";
 		var value = jq(this).val();
 			jq.get(url, {device_id: value}, function(output) {

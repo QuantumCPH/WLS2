@@ -6,8 +6,7 @@
 
 <?php echo object_input_hidden_tag($company, 'getId') ?>
 
-<fieldset id="sf_fieldset_none" class="">
-
+<fieldset>
 <div class="form-row">
   <?php echo label_for('company[name]', __($labels['company{name}']), 'class="required" ') ?>
   <div class="content<?php if ($sf_request->hasError('company{name}')): ?> form-error<?php endif; ?>">
@@ -33,6 +32,7 @@
   'size' => 7,
   'control_name' => 'company[vat_no]',
 )); echo $value ? $value : '&nbsp;' ?>
+      <span id="msgbox" style="display:none"></span>
       <?php }else{
 
           $value = object_input_tag($company, 'getVatNo', array (
@@ -41,8 +41,8 @@
   'control_name' => 'company[vat_no]',
 )); echo $value ? $value : '&nbsp;' ;
 
-      }?>
-     
+      }?><br>Prefix will be 'test' for any Vat No.
+ 
     </div>
 </div>
 
@@ -69,8 +69,10 @@
 
   <?php $value = object_input_tag($company, 'getPostCode', array (
   'size' => 80,
+   'minlength'=>4,
+   'maxlength'=>5,
   'control_name' => 'company[post_code]',
-)); echo $value ? $value : '&nbsp;' ?>
+)); echo $value ? $value : '&nbsp;' ?><br><label id="companyPost"></label>
     </div>
 </div>
 
@@ -85,7 +87,7 @@
                       'related_class' => 'Country',
                       'control_name' => 'company[country_id]',
                       'peer_method'=>'getSortedCountries',
-                      'include_blank' => true,
+                      //'include_blank' => true,
                       'onchange'=> remote_function(array(
                                 'update'  => 'citySelectList',
                                 'url'     => 'company/countrycity',
@@ -107,7 +109,7 @@
       'related_class' => 'City',
       'control_name' => 'company[city_id]',
          'peer_method'=>'getSortedSweedishCities',
-      'include_blank' => true,
+  
     )); echo $value ? $value : '&nbsp;' ?>
      </div>
         </div>
@@ -194,11 +196,11 @@
   <?php $value = object_select_tag($company, 'getStatusId', array (
   'related_class' => 'Status',
   'control_name' => 'company[status_id]',
-  'include_blank' => true,
+     'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
-
+<?php   // 'include_custom' => 'Select Status',   ?>
 <div class="form-row">
   <?php echo label_for('company[company_size_id]', __($labels['company{company_size_id}']), '') ?>
   <div class="content<?php if ($sf_request->hasError('company{company_size_id}')): ?> form-error<?php endif; ?>">
@@ -209,7 +211,7 @@
   <?php $value = object_select_tag($company, 'getCompanySizeId', array (
   'related_class' => 'CompanySize',
   'control_name' => 'company[company_size_id]',
-  'include_blank' => true,
+  'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
@@ -224,7 +226,7 @@
   <?php $value = object_select_tag($company, 'getCompanyTypeId', array (
   'related_class' => 'CompanyType',
   'control_name' => 'company[company_type_id]',
-  'include_blank' => true,
+  'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
@@ -239,7 +241,7 @@
   <?php $value = object_select_tag($company, 'getCustomerTypeId', array (
   'related_class' => 'CustomerType',
   'control_name' => 'company[customer_type_id]',
-  'include_blank' => true,
+    'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
@@ -254,6 +256,7 @@
   <?php $value = object_select_tag($company, 'getInvoiceMethodId', array (
   'related_class' => 'InvoiceMethod',
   'control_name' => 'company[invoice_method_id]',
+       'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
@@ -268,11 +271,10 @@
   <?php $value = object_select_tag($company, 'getAgentCompanyId', array (
   'related_class' => 'AgentCompany',
   'control_name' => 'company[agent_company_id]',
-  'include_blank' => true,
+   'include_custom' => ' ',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
-
 <div class="form-row">
   <?php echo label_for('company[registration_date]', __($labels['company{registration_date}']), '') ?>
   <div class="content<?php if ($sf_request->hasError('company{registration_date}')): ?> form-error<?php endif; ?>">
@@ -280,12 +282,12 @@
     <?php echo form_error('company{registration_date}', array('class' => 'form-error-msg')) ?>
   <?php endif; ?>
 
-  <?php $value = object_input_date_tag($company, 'getRegistrationDate', array (
-  'rich' => true,
-  'withtime' => true,
-  'calendar_button_img' => '/sf/sf_admin/images/date.png',
+ <?php $value = object_input_date_tag($company, 'getRegistrationDate', array (
+  //'rich' => true,
+  //'withtime' => true,
+  //'calendar_button_img' => '/sf/sf_admin/images/date.png',
   'control_name' => 'company[registration_date]',
-  'disabled' => true,
+  'readonly' => 'true',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
@@ -297,15 +299,16 @@
     <?php echo form_error('company{created_at}', array('class' => 'form-error-msg')) ?>
   <?php endif; ?>
 
-  <?php $value = object_input_date_tag($company, 'getCreatedAt', array (
-  'rich' => true,
-  'withtime' => true,
-  'calendar_button_img' => '/sf/sf_admin/images/date.png',
+   <?php $value = object_input_date_tag($company, 'getCreatedAt', array (
+  //'rich' => true,
+ // 'withtime' => true,
+ // 'calendar_button_img' => '/sf/sf_admin/images/date.png',
   'control_name' => 'company[created_at]',
-  'disabled' => true,
+  'readonly' => 'true',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
 </div>
+
 
 <div class="form-row">
   <?php echo label_for('company[file_path]', __($labels['company{file_path}']), '') ?>
@@ -322,15 +325,14 @@
     </div>
 </div>
 
+<?php if($company->isNew()){ ?>
+
+<input type="hidden" value="" id="error" name="error" style="display: none;" />
+<?php }?>
+
 </fieldset>
+
 
 <?php include_partial('edit_actions', array('company' => $company)) ?>
 
 </form>
-
-<!--<ul class="sf_admin_actions">
-      <li class="float-left"> <?php //if ($company->getId()): ?>
-        <?php //echo button_to(__('delete'), 'company/delete?id='.$company->getId(), array (  'post' => true,  'confirm' => __('Are you sure?'),  'class' => 'sf_admin_action_delete',)) ?><?php //endif; ?>
-</li>
-  </ul>
--->

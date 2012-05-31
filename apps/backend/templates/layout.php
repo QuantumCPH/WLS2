@@ -5,6 +5,7 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
+    
     <script type="text/javascript">
     <!--
         // Copyright 2006-2007 javascript-array.com
@@ -52,273 +53,355 @@
         // close layer when click-out
         document.onclick = mclose;
     -->
+
     </script>
   </head>
   <body>
+    <?php 
+    
+      $modulName = $sf_context->getModuleName();
+   
+     $actionName = $sf_context->getActionName();
+//     echo $modulName;
+//     echo '<br />';
+//     echo $actionName;
+?>
   	<div id="wrapper">
-  	<div id="header">
-  		<p style="float: right">
-  		<?php echo image_tag('/images/zapna_logo_small.png') ?>
-  		</p>
+  	<div id="header">  
+         <div class="logo">
+  		<?php echo image_tag('/images/wls2-logo.png') ?>
+            </div>       
+            <div class="clr"></div>
   	</div>
-    <?php if($sf_user->isAuthenticated()): ?>
-      <ul class="admin-navigation">
-  		
-      </ul>
+        <div class="clr"></div>
+            <div style="width:75%;margin:0 auto;text-align: right;">
+               <?php echo link_to(image_tag('/images/german.png'), 'user/changeCulture?new=de'); ?>
+               <?php echo link_to(image_tag('/images/english.png'), 'user/changeCulture?new=en'); ?>
+            </div>
+      <?php if($sf_user->isAuthenticated()): ?>
+     <div class="topNav" align="center">  
       <ul id="sddm">
              <li><a href="#"
                 onmouseover="mopen('m2')"
-                onmouseout="mclosetime()">B2B</a>
+                onmouseout="mclosetime()" <?php echo $modulName=='company'||$modulName=='employee'? 'class = "current"':''?>><?php echo __('B2B') ?></a>
                 <div id="m2"
                     onmouseover="mcancelclosetime()"
-                    onmouseout="mclosetime()">
-
-                    <?php echo link_to('Companies list', 'company/index') ?>
-                    <?php echo link_to('Employee lists', 'employee/index') ?>
-                    <?php // echo link_to('Generte App Code', 'employee/appCode') ?>
-                    <?php //echo link_to('sale activity', 'sale_activity/index'); ?>
-                    <?php //echo link_to('support activity', 'support_activity/index'); ?>
-                    <?php //echo link_to('usage', 'cdr/index'); ?>
-                    <?php //echo link_to('invoices', 'invoice/index'); ?>
-                    <?php //echo link_to('Product orders', 'product_order/index') ?>
+                    onmouseout="mclosetime()">                    
+                    <?php 
+                    if($actionName=='list' && $modulName=="company"){
+                       echo link_to(__('Companies list'), 'company/index', array('class'=>'subSelect'));
+                    }else{
+                       echo link_to(__('Companies list'), 'company/index'); 
+                    }          
+                    ?>                    
+                    <?php 
+                      if($actionName=='index' && $modulName=="employee"){
+                          echo link_to(__('Employee lists'), 'employee/index', array('class'=>'subSelect'));
+                      }else{
+                          echo link_to(__('Employee lists'), 'employee/index');
+                      }
+                    ?>                    
+                    <?php 
+                      if($actionName=='paymenthistory' && $modulName=="company"){
+                         echo link_to(__('Payment History'), 'company/paymenthistory', array('class'=>'subSelect'));
+                      }else{
+                         echo link_to(__('Payment History'), 'company/paymenthistory'); 
+                      }?>
+                    <?php 
+                      if($actionName=='refill'){
+                         echo link_to(__('Refill'), 'company/refill', array('class'=>'subSelect'));    
+                      }else{
+                          echo link_to(__('Refill'), 'company/refill');                          
+                      } ?>
                 </div>
             </li>
             <li>
                 <a href="#"
                 onmouseover="mopen('m5')"
-                onmouseout="mclosetime()">Landncall</a>
+                onmouseout="mclosetime()" <?php echo $modulName=='customer'? 'class = "current"':''?>><?php echo __('Wls2') ?></a>
                 <div id="m5"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
-                    <?php echo link_to('All Registered Customer', 'customer/allRegisteredCustomer'); ?>
-                    <?php echo link_to('Registered Customer(Web)', 'customer/registeredByWeb'); ?>
-                    <?php echo link_to('Registered Customer(Agent)', 'customer/registeredByAgent'); ?>
-                    <?php echo link_to('Registered Customer(Agent Link)', 'customer/registeredByAgentLink'); ?>
-                    <?php echo link_to('Registered Customer(Agent SMS)', 'customer/registeredBySms'); ?>
-                    <?php echo link_to('Registered Customer(Mobile App)', 'customer/registeredByApp'); ?>
-                    <?php echo link_to('Partial Registeration(Web)', 'customer/partialRegisteredByWeb'); ?>
-                    <?php echo link_to('Partial Registeration(Agent)', 'customer/partialRegisteredByAgent'); ?>
-                    <?php echo link_to('Partial Registeration(Agent Link)', 'customer/partialRegisteredByAgentLink'); ?>
+                    <?php 
+                     if($actionName=="allRegisteredCustomer"){
+                         echo link_to(__('All Registered Customer'), 'customer/allRegisteredCustomer', array('class'=>'subSelect')); 
+                     }else{
+                         echo link_to(__('All Registered Customer'), 'customer/allRegisteredCustomer');
+                     }?>
                 </div>
             </li>
 
           <li>
                 <a href="#"
                 onmouseover="mopen('m3')"
-                onmouseout="mclosetime()">Agents</a>
-                <div id="m3"
-                    onmouseover="mcancelclosetime()"
-                    onmouseout="mclosetime()">
+                onmouseout="mclosetime()" <?php echo $modulName=="agent_user" || $modulName=="agent_company" || $modulName=="agent_commission" || $modulName=="agent_commission_package" ?'class="current"':''?>><?php echo __('Agents') ?></a>
+                <div id="m3" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+                    <?php 
+                     if($actionName=="list" && $modulName=="agent_company"){
+                       echo link_to(__('Company List'), 'agent_company/index', array('class'=>'subSelect'));
+                     }else{
+                       echo link_to(__('Company List'), 'agent_company/index');
+                     }  
+                     ?>
+                    <?php 
+                      if($actionName=="list" && $modulName=="agent_user"){
+                       echo link_to(__('User List'), 'agent_user/index', array('class'=>'subSelect'));
+                      }else{
+                       echo link_to(__('User List'), 'agent_user/index');
+                      } 
+                    ?>
 
-                    <?php echo link_to('company list', 'agent_company/index') ?>
-                    <?php echo link_to('user lists', 'agent_user/index') ?>
-                    <?php //echo link_to('commission', 'agent_commission/index') ?>
-                    <?php echo link_to('Agent Per Product', 'agent_commission/selectCompany') ?>
-                    <?php //echo link_to('bank info', 'agent_bank/index') ?>
-                    <?php echo link_to('agent commission package', 'agent_commission_package/index') ?>
+                    <?php 
+                     if($actionName=="selectCompany"){  
+                       echo link_to(__('Agent Per Product'), 'agent_commission/selectCompany', array('class'=>'subSelect'));
+                     }else{
+                       echo link_to(__('Agent Per Product'), 'agent_commission/selectCompany'); 
+                     }
+                     ?>
+
+                    <?php 
+                      if($actionName=="list" && $modulName=="agent_commission_package"){
+                        echo link_to(__('Agent Commission Package'), 'agent_commission_package/index', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Agent Commission Package'), 'agent_commission_package/index');
+                      }?>
+
+                     <?php
+                      if($actionName=="selectCompany" && $modulName=="agent_company"){
+                        echo link_to(__('Refil Agent Company'), 'agent_company/selectCompany', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Refil Agent Company'), 'agent_company/selectCompany');
+                      }?>
+
+  <?php
+  if($actionName=="chargeCompany" && $modulName=="agent_company"){
+                        echo link_to(__('Charge Agent Company'), 'agent_company/chargeCompany', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Charge Agent Company'), 'agent_company/chargeCompany');
+                      }?>
+
+                     <?php
+  if($actionName=="agentCompanyPayment" && $modulName=="agent_company"){
+                        echo link_to(__('Payment History'), 'agent_company/agentCompanyPayment', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Payment History'), 'agent_company/agentCompanyPayment');
+                      }?>
+
+
+
+
+                  
                 </div>
             </li>
-<li>
+            <li>
                 <a href="#"
                 onmouseover="mopen('m7')"
-                onmouseout="mclosetime()">Updates</a>
+                onmouseout="mclosetime()" <?php echo $modulName=='newupdate' || $modulName=='faqs' || $modulName=='userguide'? 'class = "current"':''?>><?php echo __('Updates') ?></a>
                 <div id="m7"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
-		    <?php echo link_to('List All Updates', 'agent_company/newsList') ?>
-                    <?php echo link_to('New Update', 'agent_company/newsUpdate') ?>
-                      <?php echo link_to('FAQ', 'faqs/index') ?>
-                    <?php echo link_to('User Guide', 'userguide/index') ?>
+
+                    <?php 
+                    if($actionName=='list' && $modulName=="newupdate"){  
+                      echo link_to(__('News Updates'), 'newupdate/index', array('class'=>'subSelect'));
+                    }else{
+                      echo link_to(__('News Updates'), 'newupdate/index');
+                    }
+                    ?>
+                    <?php 
+                    if($actionName=='list' && $modulName=="faqs"){
+                        echo link_to(__('FAQ'), 'faqs/index', array('class'=>'subSelect'));
+                    }else{
+                        echo link_to(__('FAQ'), 'faqs/index');
+                    }
+                    ?>
+                    <?php 
+                    if($actionName=='index' && $modulName=="userguide"){
+                        echo link_to(__('User Guide'), 'userguide/index', array('class'=>'subSelect'));
+                    }else{
+                        echo link_to(__('User Guide'), 'userguide/index');
+                    }?>
 
                 </div>
             </li>
-
-       <!--   <li>
-                <a href="#"
-                onmouseover="mopen('m8')"
-                onmouseout="mclosetime()">SMS</a>
-                <div id="m8"
-                    onmouseover="mcancelclosetime()"
-                    onmouseout="mclosetime()">
-		    <?php echo link_to('Send Bulk SMS', 'sms/sendSms') ?>
-
-
-
-                </div>
-            </li> -->
-            <li>
-                <a href="#"
-                onmouseover="mopen('m9')"
-                onmouseout="mclosetime()">Revenue</a>
-                <div id="m9"
-                    onmouseover="mcancelclosetime()"
-                    onmouseout="mclosetime()">
-		    <?php echo link_to('Revenue Report', 'invoice/selectIntervalCompanyList') ?>
-
-
-                </div>
-            </li>
-
- <!--         <li>
-				<a href="#"
-                onmouseover="mopen('m6')"
-                onmouseout="mclosetime()">Fonet</a>
-                <div id="m6"
-                    onmouseover="mcancelclosetime()"
-                    onmouseout="mclosetime()">
-                    <?php echo link_to('Get Info', 'fonetAmin/info'); ?>
-                    <?php echo link_to('Recharge', 'fonetAmin/recharge'); ?>
-                    <?php echo link_to('Activate', 'fonetAmin/activate'); ?>
-                    <?php echo link_to('DeActivate', 'fonetAmin/delete'); ?>
-                </div>
-
-
-            </li>-->
-          
             <li style="display:none"><a href="#"
                 onmouseover="mopen('m2')"
-                onmouseout="mclosetime()">Company</a>
+                onmouseout="mclosetime()"><?php echo __('Company') ?></a>
                 <div id="m2"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
-
-                    <?php echo link_to('companies list', 'company/index') ?>
-                    <?php echo link_to('employee lists', 'employee/index') ?>
-                    <?php echo link_to('sale activity', 'sale_activity/index'); ?>
-                    <?php echo link_to('support activity', 'support_activity/index'); ?>
-                    <?php echo link_to('usage', 'cdr/index'); ?>
-                    <?php echo link_to('invoices', 'invoice/index'); ?>
-                    <?php echo link_to('product orders', 'product_order/index') ?>
+                    <?php echo link_to(__('companies list'), 'company/index') ?>
+                    <?php echo link_to(__('employee lists'), 'employee/index') ?>
+                    <?php echo link_to(__('sale activity'), 'sale_activity/index'); ?>
+                    <?php echo link_to(__('support activity'), 'support_activity/index'); ?>
+                    <?php echo link_to(__('usage'), 'cdr/index'); ?>
+                    <?php echo link_to(__('invoices'), 'invoice/index'); ?>
+                    <?php echo link_to(__('product orders'), 'product_order/index') ?>
                 </div>
             </li>
-            
             <li>
                 <a href="#"
                 onmouseover="mopen('m4')"
-                onmouseout="mclosetime()">Security</a>
+                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Admin Users') ?></a>
                 <div id="m4"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
-                    <?php echo link_to('user', 'user/index'); ?>
-                    <?php //echo link_to('role', 'role/index'); ?>
-                    <?php //echo link_to('permission', 'permission/index'); ?>
-                    <?php //echo link_to('role permission', 'role_permission/index'); ?>
+                    <?php 
+                     if($actionName=='list' && $modulName=="user"){
+                        echo link_to(__('User'), 'user/index', array('class'=>'subSelect'));
+                     }else{
+                        echo link_to(__('User'), 'user/index');
+                     }
+                     ?>
+
                 </div>
             </li>
-            
-            
-			
-			
+
+           <li>
+                <a href="#"
+                onmouseover="mopen('m9')"
+                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Download') ?></a>
+                <div id="m9"
+                    onmouseover="mcancelclosetime()"
+                    onmouseout="mclosetime()">
+                    <?php
+                     if($actionName=='index' && $modulName=="client_documents"){
+                        echo link_to(__('Downlaod User Guide'), 'client_documents/index', array('class'=>'subSelect'));
+                     }else{
+                        echo link_to(__('Downlaod User Guide'), 'client_documents/index');
+                     }
+                     ?>
+
+                </div>
+            </li>
           
+
+
+
 <li><a href="#"
                 onmouseover="mopen('m1')"
-                onmouseout="mclosetime()">Settings</a>
+                onmouseout="mclosetime()"
+                <?php echo $modulName=="device" || $modulName=="manufacturer" || $modulName=="telecom_operator" || $modulName=="postal_charges" ||$modulName=="product" || $modulName=="enable_country" || $modulName=="city" || $modulName=="sms_text" || $modulName=="usage_alert" || $modulName=="usage_alert_sender" || $modulName=="telecom_operator" ?'class="current"':''?>
+                ><?php echo __('Settings') ?></a>
                 <div id="m1"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
-
                       <?php
-                        // As per Omair Instruction - He need these changes - AHTSHAM - 08/17/2011
+                        // As per Omair Instruction - He need these changes - kmmalik - 08/17/2011
                         ?>
-                    <!--
-                        <a href="javascript:;"><b>Zapna Setting</b></a>
-                        <?php echo link_to('Customer types', 'customer_type/index') ?>
-                        <?php echo link_to('Invoice methods', 'invoice_method/index') ?>
-                        <?php echo link_to('Company size', 'company_size/index') ?>
-                        <?php echo link_to('Company type', 'company_type/index') ?>
-                        <?php echo link_to('Packages', 'package/index') ?>
-                        -->
-                        <?php // As per Omair Instruction - 08/17/2011
-                        //echo link_to('sale activity status', 'sale_activity_status/index') ?>
-                        <?php // As per Omair Instruction - 08/17/2011
-                        //echo link_to('support activity status', 'support_activity_status/index') ?>
-                        <?php //echo link_to('sale actions', 'sale_action/index') ?>
-                        <?php //echo link_to('support issues', 'support_issue/index') ?>
-
                         <?php
-                        // As per Omair Instruction - He need these changes - AHTSHAM - 08/17/2011
+                        // As per Omair Instruction - He need these changes - kmmalik - 08/17/2011
                          //echo link_to('<b>Zerocall Setting</b>', '') ?>
-                        <a href="javascript:;"><b>LandnCall Setting</b></a>
-                        <?php echo link_to('Mobile Models', 'device/index'); ?>
-                        <?php echo link_to('Mobile Brands', 'manufacturer/index'); ?>
-                        <?php echo link_to('Mobile Operator', 'telecom_operator/index') ?>
-                        <?php echo link_to('Postal charges', 'postal_charges/index') ?>
-                        <?php
-                        // As per Omair Instruction - He need these changes - AHTSHAM - 08/17/2011
-                        // echo link_to('<b></b>', '') ?>
-                        <a href="javascript:;"><b>Agent Setting</b></a>
-                         <?php echo link_to('Agent commission Invoices Note', 'invoice_note/index') ?>
-                        <?php //echo link_to('apartment form', 'apartment_form/index') ?>
-                        <?php //echo link_to('commission period', 'commission_period/index') ?>
-                        <?php //echo link_to('revenue interval', 'revenue_interval/index') ?>
-                        <?php //echo link_to('destination rates', 'destination_rate/index') ?>
-
-
-                        <?php
-                        // As per Omair Instruction - He need these changes - AHTSHAM - 08/17/2011
-                         //echo link_to('<b>General Setting</b>', '') ?>
-                        <a href="javascript:;"><b>General Setting</b></a>
-                        <?php echo link_to('products', 'product/index') ?>
-                        <?php echo link_to('Language Type', 'enable_country/index') ?>
-                        <?php echo link_to('Cities', 'city/index') ?>
-                        <?php //echo link_to('SMS TEXT', 'sms_text/index') ?>
-                        <?php echo link_to('Usage Alert', 'usage_alert/index') ?>
-                        <?php echo link_to('Usage Alert Sender', 'usage_alert_sender/index') ?>
-                        <?php echo link_to('Telecom Operator', 'telecom_operator/index') ?>
-                        <?php echo link_to('DeActivat eCustomer', 'customer/deActivateCustomer') ?>
-                        <a href="http://landncall.zerocall.com/backend_dev.php/client_documents">Upload Client Document</a>
-                        <?php //echo link_to('global setting', 'global_setting/index') ?>
-                        <?php //echo link_to('employee products', 'employee_product/index') ?>
-
-                        <?php //echo link_to('Customer Commission', 'customer_commision/index') ?>
-
-
-                    <!--
-                    <?php echo link_to('status', 'status/index'); ?>
-                    <?php echo link_to('customer types', 'customer_type/index') ?>
-                    <?php echo link_to('invoice methods', 'invoice_method/index') ?>
-                    <?php echo link_to('sale activity status', 'sale_activity_status/index') ?>
-                    <?php echo link_to('support activity status', 'support_activity_status/index') ?>
-                    <?php echo link_to('sale actions', 'sale_action/index') ?>
-                    <?php echo link_to('support issues', 'support_issue/index') ?>
-                    <?php echo link_to('company size', 'company_size/index') ?>
-                    <?php echo link_to('company type', 'company_type/index') ?>
-                    <?php echo link_to('device', 'device/index'); ?>
-                    <?php echo link_to('manufacturer', 'manufacturer/index'); ?>
-                    <?php echo link_to('apartment form', 'apartment_form/index') ?>
-                    <?php echo link_to('commission period', 'commission_period/index') ?>
-                    <?php echo link_to('revenue interval', 'revenue_interval/index') ?>
-                    <?php echo link_to('destination rates', 'destination_rate/index') ?>
-                    <?php echo link_to('packages', 'package/index') ?>
-                    <?php echo link_to('products', 'product/index') ?>
-                    <?php echo link_to('Usage Alert', 'usage_alert/index') ?>
-                    <?php echo link_to('Usage Alert Sender', 'usage_alert_sender/index') ?>
-
-                    <?php echo link_to('global setting', 'global_setting/index') ?>
-                    <?php echo link_to('employee products', 'employee_product/index') ?>
-                    <?php echo link_to('Language Type', 'enable_country/index') ?>
-                    <?php echo link_to('Telecom Operator', 'telecom_operator/index') ?>
-                    <?php echo link_to('Customer Commission', 'customer_commision/index') ?>
-                    <?php echo link_to('Cities', 'city/index') ?>
-                    <?php echo link_to('DeActivat eCustomer', 'customer/deActivateCustomer') ?>
-		    <a href="http://landncall.zerocall.com/backend_dev.php/client_documents">Upload Client Document</a>
-                    -->
+                        <a href="javascript:;" class="label"><b><?php echo __('WLS2 Setting') ?></b></a>
+                        <?php 
+//                        if($actionName=='list' && $modulName=="device"){
+//                          echo link_to(__('Mobile Models'), 'device/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Mobile Models'), 'device/index');
+//                        }
+                        ?>
+                        <?php 
+//                        if($actionName=='list' && $modulName=="manufacturer"){
+//                          echo link_to(__('Mobile Brands'), 'manufacturer/index',array('class'=>'subSelect'));
+//                        }else{
+//                          echo link_to(__('Mobile Brands'), 'manufacturer/index');
+//                        }
+                        ?>
+                       
+                        <?php 
+                        if($actionName=='list' && $modulName=="postal_charges"){
+                          echo link_to(__('Postal charges'), 'postal_charges/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Postal charges'), 'postal_charges/index'); 
+                        }
+                        ?>
+                        <a href="javascript:;" class="label"><b><?php echo __('General Setting') ?> </b></a>
+                        <?php 
+                        if($actionName=='list' && $modulName=="product"){
+                          echo link_to(__('Products'), 'product/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Products'), 'product/index'); 
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="enable_country"){
+                          echo link_to(__('Country List'), 'enable_country/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Country List'), 'enable_country/index');
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="city"){
+                          echo link_to(__('Cities'), 'city/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Cities'), 'city/index'); 
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="sms_text"){
+                          echo link_to(__('SMS Text'), 'sms_text/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('SMS Text'), 'sms_text/index');
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="usage_alert"){
+                          echo link_to(__('Low Credit Alert'), 'usage_alert/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Low Credit Alert'), 'usage_alert/index');
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="usage_alert_sender"){
+                          echo link_to(__('Low Credit Alert Sender'), 'usage_alert_sender/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Low Credit Alert Sender'), 'usage_alert_sender/index');
+                        }
+                        ?>
+                        <?php 
+                        if($actionName=='list' && $modulName=="telecom_operator"){
+                          echo link_to(__('Telecom Operator'), 'telecom_operator/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Telecom Operator'), 'telecom_operator/index');
+                        }
+                        ?>
+                           <?php
+                        if($actionName=='deActivateCustomer' && $modulName=="customer"){
+                          echo link_to(__('DeActivat eCustomer'), 'customer/deActivateCustomer',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('DeActivat eCustomer'), 'customer/deActivateCustomer');
+                        }
+                        ?>
+                           <?php
+                        if($actionName=='index' && $modulName=="transactionDescription"){
+                          echo link_to(__('Transaction Description'), 'transactionDescription/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Transaction Description'), 'transactionDescription/index');
+                        }
+                        ?>
                 </div>
             </li>
 
-
-			<li>
-                <?php echo link_to('Logout', 'user/logout'); ?>
+    
+			<li class="last">
+                <?php echo link_to(__('Logout'), 'user/logout'); ?>
             </li>
+          	
         </ul>
-      <?php endif; ?>
-
-      <div style="clear:both"></div>
+             </div>
+      <?php endif; ?> 
+    <br />
+         
+      <div class="clr"></div>
     <?php echo $sf_content ?>
     </div> <!--  end wrapper -->
 
 
     <script type="text/javascript">
+  jQuery('#sddm li a').click(function() {
+    $('li:last').addClass('current') ;
+   });
+ 
 jQuery(function(){
 
 	jQuery('#sf_admin_form').validate({
@@ -326,42 +409,198 @@ jQuery(function(){
 jQuery('#sf_admin_edit_form').validate({
 
      rules: {
-    "company[name]": "required",
-     "company[vat_no]": "required",
-      "company[post_code]": "required",
-       "company[address]": "required",
+        "company[name]": "required",
+        "company[vat_no]": "required",
+        "company[post_code]": "required digits",
+        "company[address]": "required",
         "company[contact_name]": "required",
-         "company[head_phone_number]": "required",
-       "company[email]": "required email"
+        "company[head_phone_number]": "required",
+        "company[email]": "required email",
+        "company[invoice_method_id]": "required"
   }
 	});
 });
 </script>
 
     <script type="text/javascript">
-     jQuery('#company_post_code').blur(function(){
+    /* jQuery('#company_post_code').blur(function(){
         var poid=jQuery("#company_post_code").val();
-        poid = poid.replace(/\s+/g, '');
+       // poid = poid.replace(/\s+/g, '');
         var poidlenght=poid.length;
         //alert(poidlenght);
-        var poida= poid.charAt(0);
-        var poidb= poid.charAt(1);
-        var poidc= poid.charAt(2);
-        var poidd= poid.charAt(3);
-        var poide= poid.charAt(4);
-        if(poidlenght>4){
-            var fulvalue=poida+poidb+poidc+" "+poidd+poide;
-        }else{
+       // var poida= poid.charAt(0);
+       // var poidb= poid.charAt(1);
+       // var poidc= poid.charAt(2);
+       // var poidd= poid.charAt(3);
+        //var poide= poid.charAt(4);
+        if(poidlenght>5){
+            jQuery("#companyPost").html('"'+poid+'" is too long 5 characters max.');
+           
+            jQuery('#error').val("error");
+           // var fulvalue=poida+poidb+poidc+" "+poidd+poide;
+        }else if(poidlenght<4){
+            jQuery("#companyPost").html('"'+poid+'" is too short 4 characters min');//
+          jQuery('#error').val("error");
            //var fulvalue=poida+poidb+poidc;
-        }
-       jQuery("#company_post_code").val(fulvalue);
+        }else{jQuery("#companyPost").html('');jQuery('#error').val("");}
+      // jQuery("#company_post_code").val(fulvalue);
        //  alert(fulvalue);
 
-        });
-
+        });*/
 
 
 
 </script>
+
+   <?php if ($sf_user->getCulture() == 'en') {
+ ?>
+        <?php use_javascript('jquery.validate1.js', '', array('absolute' => true)) ?>
+        <?php } else {
+ ?>
+        <?php use_javascript('jquery.validatede.js', '', array('absolute' => true)) ?>
+<?php } ?>
+    <script language="javascript" type="text/javascript">
+
+	jQuery('#company_vat_no').blur(function(){
+		//remove all the class add the messagebox classes and start fading
+		jQuery("#msgbox").removeClass().addClass('messagebox').text('<?php echo __('Checking...') ?>').fadeIn("slow");
+
+                 var val=jQuery(this).val();
+
+                if(val==''){
+                    jQuery("#msgbox").fadeTo(200,0.1,function() //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('Enter Vat Number') ?>').addClass('messageboxerror').fadeTo(900,1);
+			});
+                        jQuery('#error').val("error");
+                }else{
+		//check the username exists or not from ajax
+		jQuery.post("https://wls2.zerocall.com/backend.php/company/vat",{ vat_no:val } ,function(data)
+        {//alert(data);
+		  if(data=='no') //if username not avaiable
+		  {
+		  	jQuery("#msgbox").fadeTo(200,0.1,function() //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('This Vat No Already exists') ?>').addClass('messageboxerror').fadeTo(900,1);
+			});jQuery('#error').val("error");
+          }
+		  else
+		  {
+		  	jQuery("#msgbox").fadeTo(200,0.1,function()  //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('Vat No is available') ?>').addClass('messageboxok').fadeTo(900,1);
+			});jQuery('#error').val("");
+		  }
+
+        });
+                }
+	});
+
+        	jQuery('#employee_mobile_number').blur(function(){
+		//remove all the class add the messagebox classes and start fading
+		jQuery("#msgbox").removeClass().addClass('messagebox').text('<?php echo __('Checking...') ?>').fadeIn("slow");
+		//check the username exists or not from ajax
+                var val=jQuery(this).val();
+
+                if(val==''){
+                    jQuery("#msgbox").fadeTo(200,0.1,function() //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('Enter Mobile Number') ?>').addClass('messageboxerror').fadeTo(900,1);
+			});
+                        jQuery('#error').val("error");
+                }else{
+                    if(val.length >7){
+
+                    if(val.substr(0, 1)==0){
+                jQuery("#msgbox").fadeTo(200,0.1,function() //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('Please enter a valid mobile number not starting with 0') ?>').addClass('messageboxerror').fadeTo(900,1);
+			});
+                        jQuery('#error').val("error");
+                }else{
+
+		jQuery.post("https://wls2.zerocall.com/backend.php/employee/mobile",{ mobile_no: val} ,function(data)
+        {
+		  if(data=='no') //if username not avaiable
+		  {
+		  	jQuery("#msgbox").fadeTo(200,0.1,function() //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('This Mobile No Already exists') ?>').addClass('messageboxerror').fadeTo(900,1);
+			});jQuery('#error').val("error");
+          }
+		  else
+		  {
+		  	jQuery("#msgbox").fadeTo(200,0.1,function()  //start fading the messagebox
+			{
+			  //add message and change the class of the box and start fading
+			  jQuery(this).html('<?php echo __('Mobile No is available') ?>').addClass('messageboxok').fadeTo(900,1);
+			});jQuery('#error').val("");
+		  }
+
+        });
+                }}}
+	});
+
+    jQuery("#sf_admin_form").submit(function() {
+      if (jQuery("#error").val() == "error") {
+
+        return false;
+      }else{
+          return true;
+      }
+
+
+    });
+       jQuery("#sf_admin_edit_form").submit(function() {
+      if (jQuery("#error").val() == "error") {
+
+        return false;
+      }else{
+          return true;
+      }
+
+
+    });
+
+
+</script>
+<style type="text/css">
+.messagebox{
+	position:absolute;
+	width:100px;
+	margin-left:30px;
+	border:1px solid #c93;
+	background:#ffc;
+	padding:3px;
+}
+.messageboxok{
+	position:absolute;
+	width:auto;
+	margin-left:30px;
+	border:1px solid #349534;
+	background:#C9FFCA;
+	padding:3px;
+	font-weight:bold;
+	color:#008000;
+
+}
+.messageboxerror{
+	position:absolute;
+	width:auto;
+	margin-left:30px;
+	border:1px solid #CC0000;
+	background:#F7CBCA;
+	padding:3px;
+	font-weight:bold;
+	color:#CC0000;
+}
+
+</style>
   </body>
 </html>

@@ -50,37 +50,36 @@ if($is_auto_refill_activated){  ?>  <div class="left-col">
     
     
      <div  style="width:500px;clear:both;"> <br/> <br/>
-   <b>  Automatisk påfyllning är:<span style="text-decoration:underline"> aktiv</span>
+   <b>  <?php echo __("Automatic replenishment is")?>:<span style="text-decoration:underline"> <?php echo __('Active')?></span>
    </b>
      
      <br/> <br/>
 
 
-Om ditt kreditkort som är registrerat för tjänsten av
-någon anledning inte längre är aktivt kan du avaktivera
-tjänsten och sedan aktivera den på nytt med ett annat
-kreditkort.
+<?php echo __('If your credit card that is registered for the service of any reason is no longer active, you can disable service and then activate it again with another credit card.');?>
  
      
       </div> <br/> 
                <br/>
      
     <div  style="width:500px;">
-    <div style="float:left;width:250px;font-weight:bold;"> Du har valt automatisk påfyllning när potten underskrider: </div>
-    <div  style="margin-left: 20px;float:left;width:100px;font-weight:bold;"> <?php echo   $customer_form->getObject()->getAutoRefillMinBalance() ?> SEK</div>
+    <div style="float:left;width:250px;font-weight:bold;"> <?php echo __('You have selected automatic replenishment when the pot is below:');?> </div>
+    <div  style="margin-left: 20px;float:left;width:100px;font-weight:bold;"> <?php echo   $customer_form->getObject()->getAutoRefillMinBalance() ?> &euro;</div>
     <div  style="float:left;width:150px;"></div> 
     </div>
   
     <div  style="width:500px;clear:both;">
-               <br/>
-    <div  style="float:left;width:250px;font-weight:bold; ">Potten fylls då på med:</div>
-    <div  style="margin-left: 20px;float:left;width:100px;font-weight:bold;">  <?php echo   $customer_form->getObject()->getAutoRefillAmount() ?> SEK</div>
-    <div style="float: left; margin-top: 61px; text-align: left; width: 134px;">
-    <form method="post" action="http://landncall.zerocall.com/b2c.php/customer/deActivateAutoRefill">
+               <br />
+    <div  style="float:left;width:250px;font-weight:bold; "><?php echo __('The pot is filled in with:');?></div>
+    <div  style="margin-left: 20px;float:left;width:100px;font-weight:bold;">  <?php echo   $customer_form->getObject()->getAutoRefillAmount() ?> &euro;</div>
+    <div class="clr"></div><br />
+    <div style="margin-top: 61px; text-align: left; width: 134px;">
+    <form method="post" action="<?php echo $target; ?>customer/deActivateAutoRefill">
     <input type="hidden" name="customer_id" value="<?php echo   $customer_form->getObject()->getId() ?>" />
-                <input type="submit" class="butonsigninsmall" name="button" style="cursor: pointer;float: right; margin-left: 134px; margin-top: -10px;"  value="<?php echo __('Avaktivera') ?>" >
+    <div class="clr"></div><br />
+                <input type="submit" class="butonsigninsmall" name="button" style="cursor: pointer; margin-left: 0px !important; margin-top: -10px;"  value="<?php echo __('Disable') ?>" />
                 </form>			
-          </div>
+    </div>
     </div>
      
 </div>
@@ -94,13 +93,10 @@ kreditkort.
     <?php include_partial('navigation', array('selected'=>'refill', 'customer_id'=>$customer->getId())) ?>
 	<div class="split-form">
     <div style="width:500px;">
-              <div> Smidigaste sättet att fylla på samtalspotten är 
-                att aktivera automatisk <br />påfyllning (nedan). Då behöver
-                du inte oroa dig för att potten tar slut.<br /> 
-                Särskilt viktigt vid t.ex. utlandsresa då det kan vara svårt att fylla på på annat sätt.<br /><br /></div> 
-            <div>     <b style="text-decoration:underline;">Automatisk påfyllning</b> </div>
+              <div> <?php echo __('The most convenient way to fill the pot is to enable automatic refilling (below), then you do not need to worry about the pot running out. Especially important is such trip abroad where it can be difficult to fill in in any other way.');?><br /><br /></div>
+            <div>     <b style="text-decoration:underline;"><?php echo __('Automatic replenishment');?></b> </div>
                  <br />
-              <div>   <b>Automatisk påfyllning är: ej aktiv</b></div>
+              <div>   <b><?php echo __('Automatic Replenishment is: Inactive');?></b></div>
                 
       <div class="fl col">
       <div class="split-form">  
@@ -108,31 +104,31 @@ kreditkort.
   <input type="hidden" name="merchant" value="90049676" />
   <input type="hidden" name="amount" value="1" />
       <input type="hidden" name="customerid" value="<?php echo   $customer_form->getObject()->getId() ?>" />
-  <input type="hidden" name="currency" value="752" />
+  <input type="hidden" name="currency" value="978" />
   <input type="hidden" name="orderid" value="<?php echo $randomOrderId; ?>" />
 
+    <input type="hidden" name="test" value="yes" />
 
-  <input type="hidden" name="calcfee" value="yes" />
    <input type="hidden" name="account" value="YTIP" />
-  <input type="hidden" name="lang" value="sv" />
+  <input type="hidden" name="lang" value="de" />
   <input type="hidden" name="preauth" value="true">
-  <input type="hidden" name="cancelurl" value="http://landncall.zerocall.com/b2c.php/customer/dashboard" />
-  <input type="hidden" name="callbackurl" id="idcallbackURLauto" value="http://landncall.zerocall.com/b2c.php/customer/activateAutoRefill?customerid=<?php echo   $customer_form->getObject()->getId() ?>" />
-  <input type="hidden" name="accepturl" value="http://landncall.zerocall.com/b2c.php/customer/dashboard" />
+  <input type="hidden" name="cancelurl" value="<?php echo $target; ?>customer/dashboard?lng=<?php echo  $sf_user->getCulture() ?>" />
+  <input type="hidden" name="callbackurl" id="idcallbackURLauto" value="<?php echo $target; ?>customer/activateAutoRefill?customerid=<?php echo   $customer_form->getObject()->getId() ?>&lng=<?php echo  $sf_user->getCulture() ?>v" />
+  <input type="hidden" name="accepturl" value="<?php echo $target; ?>customer/dashboard?lng=<?php echo  $sf_user->getCulture() ?>" />
  <div style="width:348px;float:left;">
-        <ul>
+        <ul style="width: 285px;float:none;clear:both;">
             <!-- auto fill -->
                        
            
            
             <li id="user_attr_3_field">
-                <label for="user_attr_3" style="margin-right: 50px;"><?php echo __('Fyll på automatiskt <br /> när potten understiger:') ?></label>
+                <label for="user_attr_3" style="margin-right: 50px;"><?php echo __('Load automatically <br /> when the pot is below:') ?></label>
                 &nbsp;
 			  <?php echo $customer_form['auto_refill_min_balance']->render(array(
 			  										'name'=>'user_attr_3',
 			  										'style'=>'width: 80px;'
 			  									)) 
-			  ?> SEK        
+			  ?>  &euro;
             </li>
             
             
@@ -142,10 +138,12 @@ kreditkort.
 			  													'name'=>'user_attr_2',
                                                                                                                                 'style'=>'width: 80px;'
 			  												)); 
-			  ?> SEK&nbsp;           
-            </li> </ul>
+			  ?>  &euro;&nbsp;
+            </li> 
+        </ul>
             </div>
-          <div style="width:135px;float:left;padding-top:15px;">  <input type="submit" class="butonsigninsmall" name="button" style="cursor: pointer;float: right;width:132px"  value="<?php echo __('Aktivera') ?>" >	</div>
+ 
+          <div style="float:left;"><input type="submit" class="butonsigninsmall" style="width:101px;margin-left:-13px !important;" name="button" value="<?php echo __('Enable') ?>" /></div>
   </form>
   </div>
     
@@ -156,7 +154,7 @@ kreditkort.
      <div  style="width:340px;float:left;">    <ul>
          	<!-- customer product -->
  			  <li>
-              <label for="customer_product" style="text-decoration:underline;"><?php echo __('Manuell påfyllning:') ?></label>
+              <label for="customer_product" style="text-decoration:underline;"><?php echo __('Manual filling:') ?></label>
              
             </li>
           	<!-- extra_refill -->
@@ -170,13 +168,13 @@ kreditkort.
             	<?php echo $form['extra_refill']->renderError() ?>
             </li>
             <?php } ?>
-            <li>
-              <label for="extra_refill"><?php echo __('Välj belopp att fylla på med:') ?></label>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<?php echo $form['extra_refill']?> SEK
+            <li id="selectAmt">
+              <label for="extra_refill" class="extra_refill"><?php echo __('Select amount to be loaded:') ?></label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<?php echo $form['extra_refill']?>  &euro;
             </li>
 
             <?php if($sf_user->hasFlash('error_message')): ?>
-            <li class="error">
+            <li class="error" style="white-space: normal;">
             	<?php echo $sf_user->getFlash('error_message'); ?>
             </li>
             <?php endif; ?>
@@ -188,21 +186,22 @@ kreditkort.
       
         <input type="hidden" name="merchant" value="90049676" />
         <input type="hidden" name="amount" id="total" value="" />
-        <input type="hidden" name="currency" value="752" />
+        <input type="hidden" name="currency" value="978" />
         <input type="hidden" name="orderid" value="<?php echo $randomOrderId; ?>" />
-       
-        <input type="hidden" name="lang" value="sv" />
+
+    <input type="hidden" name="test" value="yes" />
+        <input type="hidden" name="lang" value="de" />
         <input type="hidden" name="account" value="YTIP" />
         <input type="hidden" name="addfee" value="0" />
         <input type="hidden" name="status" value="" />
-       <input type="hidden" name="cancelurl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@epay_refill_reject', true)  ?>?accept=cancel&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=<?php echo $order->getExtraRefill(); ?>" />
-        <input type="hidden" name="callbackurl" id="idcallbackurl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@dibs_refill_accept', true)  ?>?accept=yes&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=" />
-        <input type="hidden" name="accepturl" id="idaccepturl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@epay_refill_accept', true)  ?>?accept=yes&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=<?php echo $order->getExtraRefill(); ?>" />
-        <input type="hidden" id="callbackurlfixed" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@dibs_refill_accept', true)  ?>?accept=yes&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=" />
+       <input type="hidden" name="cancelurl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@epay_refill_reject', true)  ?>?accept=cancel&lng=<?php echo  $sf_user->getCulture() ?>&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=<?php echo $order->getExtraRefill(); ?>" />
+        <input type="hidden" name="callbackurl" id="idcallbackurl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@dibs_refill_accept', true)  ?>?accept=yes&lng=<?php echo  $sf_user->getCulture() ?>&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=" />
+        <input type="hidden" name="accepturl" id="idaccepturl" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@epay_refill_accept', true)  ?>?accept=yes&lng=<?php echo  $sf_user->getCulture() ?>&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=<?php echo $order->getExtraRefill(); ?>" />
+        <input type="hidden" id="callbackurlfixed" value="<?php echo sfConfig::get('app_epay_relay_script_url').url_for('@dibs_refill_accept', true)  ?>?accept=yes&lng=<?php echo  $sf_user->getCulture() ?>&subscriptionid=&orderid=<?php echo $order->getId(); ?>&amount=" />
             </div>
-          <div style="width:140px;float:left;padding-top:30px;">   
+          <div style="float:left;margin-top:30px;">   
        
-                <input type="submit" class="butonsigninsmall" name="button" style="cursor: pointer;float: right; margin-left: 134px; margin-top: -10px;"  value="<?php echo __('Fyll på') ?>" >			
+                <input type="submit" class="butonsigninsmall" name="button" style="width:101px;cursor: pointer;float: left; margin-left: -5px !important; margin-top: -5px;"  value="<?php echo __('Load') ?>" />
         </div>
         </div></form> 
        </div>

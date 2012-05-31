@@ -19,7 +19,7 @@ class CustomerForm extends BaseCustomerForm
         if(sfConfig::get('sf_app')=='agent'){
             //-----------------------------------
             $Ac = new Criteria();
-            $Ac->add(AgentCompanyPeer::ID, sfContext::getInstance()->getUser()->getAttribute('agent_company_id', '', 'usersession'));
+            $Ac->add(AgentCompanyPeer::ID, sfContext::getInstance()->getUser()->getAttribute('agent_company_id', '', 'agentsession'));
             $country_id = AgentCompanyPeer::doSelectOne($Ac);//->getId();
             $country_id = $country_id->getCountryId();
             //------------Get The Country List For Customer Registration - From Agent
@@ -40,26 +40,8 @@ class CustomerForm extends BaseCustomerForm
                //Product / Country Change As Per Sub-Domain - dk/pl/intl - Against New Feature
                 $mystring = @$_SERVER["HTTP_REFERER"];
                // Add As Per requirements - - - -
-                if(strpos($mystring, 'dk.zerocall.com')==true){
-                   sfContext::getInstance()->getUser()->setAttribute('productslng', 'SE');
-                   $lngSymbol = sfContext::getInstance()->getUser()->getAttribute('productslng', '');
-                }else if(strpos($mystring, 'pl.zerocall.com')==true){
-                    sfContext::getInstance()->getUser()->setAttribute('productslng', 'SE');
-                   $lngSymbol = sfContext::getInstance()->getUser()->getAttribute('productslng', '');
-                }else if(strpos($mystring, 'intl.zerocall.com')==true){
-                   sfContext::getInstance()->getUser()->setAttribute('productslng', 'SE');
-                   $lngSymbol = sfContext::getInstance()->getUser()->getAttribute('productslng', '');
-                }else{
-                    if(sfContext::getInstance()->getUser()->getAttribute('productslng', '')!=''){
-                         sfContext::getInstance()->getUser()->setAttribute('productslng', 'SE');
-                        $lngSymbol = sfContext::getInstance()->getUser()->getAttribute('productslng', '');
-                    }else{
-                        
-                        sfContext::getInstance()->getUser()->setAttribute('productslng', 'SE');
-                        $lngSymbol = sfContext::getInstance()->getUser()->getAttribute('productslng', '');
-                    }
-                }
 
+                    $lngSymbol='de';
                 $countrylng = new Criteria();
                 $countrylng->add(EnableCountryPeer::LANGUAGE_SYMBOL, $lngSymbol);
                 $countrylng = EnableCountryPeer::doSelectOne($countrylng);
@@ -103,12 +85,21 @@ class CustomerForm extends BaseCustomerForm
 
 //        //This Code Add For Duplication Entery Again Task # 4.3 Date:01-18-11
          $mobileno=000000000;
-            if(isset($_REQUEST['customer']) && $_REQUEST['customer']!=""){
+
+           if(sfContext::getInstance()->getRouting()->getCurrentInternalUri()=='customer/passwordchange'){
+
+
+          
+             }else{
+
+                if(isset($_REQUEST['customer']) && $_REQUEST['customer']!=""){
             $mobileno=$_REQUEST['customer']['mobile_number'];
 
             }
+             }
           //$this->form->getValues('mobile_number');
    if(sfContext::getInstance()->getRouting()->getCurrentInternalUri()=='customer/settings'){
+
    }else{ 
 		$count=0;
 		$countc=0;
@@ -165,23 +156,26 @@ class CustomerForm extends BaseCustomerForm
 	//pobox
 	//This Condtion for - Phone number is currently 8 digits but in Poland this is 10 digits - against New Feature - 02/28/11
         if($languageSymbol=='pl'){
-           $po_boxPattern = sfContext::getInstance()->getI18N()->__("Please enter a valid postal code. E.g. 334444");
+           $po_boxPattern = sfContext::getInstance()->getI18N()->__("Please enter a valid postal code. E.g. 33444");
            
         }else{
-            $po_boxPattern = sfContext::getInstance()->getI18N()->__("Please enter a valid postal code. E.g. 3344");
+            $po_boxPattern = sfContext::getInstance()->getI18N()->__("Please enter a valid postal code. E.g. 33444");
                    }
-		$poboxPattern = "/^[a-z-0-9\s]{6,6}$/";
+		$poboxPattern = "/^[0-9\s]{4,5}$/";
 	$this->validatorSchema['po_box_number'] = new sfValidatorAnd(
 		array(
 			 $this->validatorSchema['po_box_number'],
 			new sfValidatorRegex(
 				array(
 					'pattern'=>$poboxPattern,
-                                        'max_length'=>6,
-                                        'max_length' => null ,
+                                        'max_length'=>5,
+                                        'min_length' =>4 ,
 
 				),
-				array('invalid'=>sfContext::getInstance()->getI18N()->__('Please enter a valid postal code with 5 digits.'))
+                                array(
+                                        'max_length' => '"%value%" is too long 5 characters max.',
+                                        'min_length' => '"%value%" is too short 4 characters min.',
+                                        'invalid'=>sfContext::getInstance()->getI18N()->__('Please enter a valid postal code with 4 or 5 digits.'))
 			)
 		)
 	);
@@ -459,7 +453,7 @@ class CustomerForm extends BaseCustomerForm
   					'min_length'=>6,
 
                                     ),
-                                array('min_length' => 'lösenord "%value%" minst 6 tecken.')
+                                array('min_length' => 'password "%value%" at least six characters.')
 
   			),
   			

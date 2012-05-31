@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* CSS Document */
 * {margin:0px;padding:0px;}
-body {font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000}
+body {font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000;background-color:FFFFFF;}
 #wrap {width:780px;margin:0px auto;}
 #header {width:780px;height:119px;}
 #logo {width:168px; height:79px; float:left;}
@@ -91,8 +91,8 @@ width:232px;
 .right-col .box h3 span{ color:#000;}*/
 .right-col .box small{ font-size:11px;}
 .right-col .box p{ margin-top:5px; margin-bottom:20px; font-size:12px;}
-.right-col .box a{ background-image:url(../images/bg-greenbutton-.png); background-position:0px 0px; color:#fff; font-size:11px; background-repeat:no-repeat; display:block; text-decoration:none; padding-left:5px;width:75px;}
-.right-col .box a span{ background-image:url(../images/bg-greenbutton-.png); background-position:right top; background-repeat:no-repeat; display:block; padding:3px 5px 3px; width:75px;}
+.right-col .box a{ background-image:url(../images/bg-greenbutton-.png); background-position:0px 0px; color:#fff; font-size:11px; background-repeat:no-repeat; display:block; text-decoration:none; padding-left:5px;}
+.right-col .box a span{ background-image:url(../images/bg-greenbutton-.png); background-position:right top; background-repeat:no-repeat; display:block; padding:3px 5px 3px; }
 .right-col .box-last{ margin:0px;}
 .dash-nav{ width:520px; float:left;}
 .dash-nav a{ width:78px; height:58px; float:left; overflow:hidden; display:block; text-indent:9000em; white-space:nowrap; background-image:url(../images/dash-nav-sprite.gif); background-repeat:no-repeat; margin-right:7px;}
@@ -134,7 +134,7 @@ width:232px;
 .split-form ul li input.chkbx{width:20px; padding:0px; border:0px}
 .split-form ul li.fr {float:right;width:250px; text-align:right;}
 .buton{ background-image:url(../images/btn-dashboard.jpg);border:0px;color:#333333;font-size:22px;width:133px; height:36px; margin-top:20px;float:left;font-weight:bold;}
-.butonsigninsmall{ background-image:url("../images/btn-dashboard.jpg");border:0 none;color:#333333;font-size:14px;height:36px;width:132px;font-weight:bold; outline:none;}
+.butonsigninsmall{ background-image:url("../images/btn-dashboard.jpg");border:0 none;color:#333333;font-size:14px;height:36px;font-weight:bold; outline:none;}
 .butonsignin{  background-image:url("../images/button-orange-big.png");border:0 none;color:#333333;font-size:22px;height:48px;width:132px;float:right;margin-right:40px;}
 .settingbutton{ background-image:url(../images/btn-dashboard.jpg);border:0 none;color:#000;font-size:22px;width:133px; height:36px; margin-top:20px;}
 .dashboard-info{min-height:400px; float:left; width:100%;}
@@ -144,12 +144,12 @@ width:232px;
 .callhistory{ width:515px;}
 .callhistory tr{ border-bottom:1px solid #999999;}
 .callhistory td.title{ font-size:15px;}
-.callhistory td{ padding:10px;border-bottom:1px solid #999999; font-size:12px;}
+.callhistory td{ padding:8px;border-bottom:1px solid #999999; font-size:12px;}
 .callhistory td small{ font-size:11px;}
 
 a.receipt{ background-image:url(../images/green-bullet.jpg); background-repeat:no-repeat; padding-left:15px; float:left; display:block; text-decoration:none; color:#000;}
 
-.split-form-sign-up{padding-top:20px; float:left; clear:both; width:750px; padding-bottom:30px; min-height:412px; background-image:url(../images/bg-map-sign-up.jpg); background-repeat:no-repeat; background-color:#F7F7F7; padding-top:20px; padding-left:30px; margin-bottom:10px;}
+.split-form-sign-up{padding-top:20px; float:left; clear:both; width:750px; padding-bottom:30px; min-height:412px; background-color:FFFFFF; padding-top:20px; padding-left:30px; margin-bottom:10px;}
 .split-form-sign-up .col{width:314px; float: left; position: relative;height: 250px;}
 .split-form-sign-up ul{list-style:none;}
 .split-form-sign-up ul li{list-style:none; margin-bottom:10px; float:left; clear:both;width:350px; white-space:nowrap; z-index:100; position:relative; color:#000;}
@@ -299,7 +299,7 @@ float:left;
 font-size:11px;
 padding-left:5px;
 text-decoration:none;
-width:75px;
+ 
 }
 
 #sidebar {
@@ -531,3 +531,31 @@ margin-top:12px;
     padding-right: 0;
     width: 132px;
 }
+
+.dash-navg{ width:520px; float:left;}
+.dash-navg a{ width:78px; height:58px; float:left; overflow:hidden; display:block; text-indent:9000em; white-space:nowrap; background-image:url(../images/dash-nav-spriteg.gif); background-repeat:no-repeat; margin-right:7px;}
+.dash-navg a.dashboard{ background-position:0px 0px}
+.dash-navg a.dashboard:hover{ background-position:-85px 0px}
+.dash-navg a.dashboard-s{ background-position:-85px 0px}
+
+.dash-navg a.refil{ background-position:0px -57px}
+.dash-navg a.refil:hover{ background-position:-85px -57px}
+.dash-navg a.refil-s{ background-position:-85px -57px}
+
+.dash-navg a.callhistory{ background-position:0px -115px}
+.dash-navg a.callhistory:hover{ background-position:-85px -115px}
+.dash-navg a.callhistory-s{ background-position:-85px -115px}
+
+.dash-navg a.paymenthistory{ background-position:0px -172px}
+.dash-navg a.paymenthistory:hover{ background-position:-85px -172px}
+.dash-navg a.paymenthistory-s{ background-position:-85px -172px}
+
+.dash-navg a.settings{ background-position:0px -229px}
+.dash-navg a.settings:hover{ background-position:-85px -229px}
+.dash-navg a.settings-s{ background-position:-85px -229px}
+
+.dash-navg a.logout{ background-position:0px -287px}
+.dash-navg a.logout:hover{ background-position:-85px -287px}
+.dash-navg a.logout-s{ background-position:-85px -287px}
+
+

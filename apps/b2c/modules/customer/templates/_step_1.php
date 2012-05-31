@@ -4,16 +4,15 @@
 <form method="post" action="<?php url_for('@signup_step1') ?>" id="newCustomerForm" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
   <div class="left-col">
     <div class="split-form-sign-up">
-        <div class="step-details"> <strong><?php echo __('Become a Customer') ?> <span class="active">- <?php echo __('Step 1') ?>: <?php echo __('Registrera') ?> </span><span class="inactive">- <?php echo __('Step 2') ?>: <?php echo __('Payment') ?></span></strong>
-            <br></br><br></br> * obligatoriska fält att att fylla i</div>
-      
-      <div class="fl col">
+        <div class="step-details"> <strong><?php echo __('Become a Customer') ?> <span class="active">- <?php echo __('Step 1') ?>: <?php echo __('Register') ?> </span><span class="inactive">- <?php echo __('Step 2') ?>: <?php echo __('Payment') ?></span></strong>
+            <br><br><br><br>* <?php echo __('Required to fill')?>  </div>
+            <div class="fl col">
         <?php echo $form->renderHiddenFields() ?>
-          <ul>
+          <ul>   
             <?php 
             $error_mobile_number = false;
             if($form['mobile_number']->hasError())
-            	$error_mobile_number = true;
+            $error_mobile_number = true;
             ?>
             <li>
              <?php echo $form['mobile_number']->renderLabel() ?>
@@ -27,7 +26,7 @@
                 
              <div class='inline-error'><?php echo $error_mobile_number?$form['mobile_number']->renderError():'&nbsp;'?>
                  </div>
-                <label style="float:right;width:85px;<?php if ($error_mobile_number): ?> margin-right:85px; <?php endif; ?>">ex. 0701234567</label>
+                <label style="float:right;width:85px;font-weight:normal;<?php if ($error_mobile_number): ?> margin-right:85px; <?php endif; ?>">ex. 0701234567</label>
             </li>
             <!-- end mobile_number -->           
             <?php
@@ -178,7 +177,7 @@
 			 </span>
 			 <?php endif; ?>
              <div class='inline-error'><?php echo $error_password?$form['password']->renderError():'&nbsp;'?></div>
-             <label style="float:right;width:95px;<?php if ($error_mobile_number): ?> margin-right:85px; <?php endif; ?>"><?php echo __('Minimum 6 digits') ?></label>
+             <label style="float:right;width:95px;font-weight:normal;<?php if ($error_mobile_number): ?> margin-right:85px; <?php endif; ?>"><?php echo __('Minimum 6 digits') ?></label>
             </li>
             <!-- end password -->
             <?php
@@ -229,80 +228,54 @@
              <div class='inline-error'><?php echo $error_telecom_operator_id?$form['telecom_operator_id']->renderError():'&nbsp;'?></div>
             </li>
             <!-- end telecom operator -->
-            
-            <!-- 
+                        <!-- 
           <li class="fr"><img src="<?php echo image_path('../zerocall/images/moto-flipout.png') ?>" alt=" " /></li>
            -->
           <!-- end device -->
-		  <div id="container" style="width:400px;">
-		  <div id="navbar" style="float: left;  width: 40%;">
-            <?php
+          <li>
+              <?php
             $error_terms_conditions = false;;
             if($form['terms_conditions']->hasError())
             	$error_terms_conditions = true;
             ?>
             <?php if($error_terms_conditions) { ?>
-            <li class="error">
+            <span class="error">
             	<?php echo $form['terms_conditions']->renderError() ?>
-            </li>
+            </span>
             <?php } ?>
-            <li style=" width: 200px;">
              <?php echo $form['terms_conditions'] ?>
-             <span><a href="http://www.landncall.com/index.php?option=com_content&view=article&id=70" target="_blank" style="outline:none"><?php echo $form['terms_conditions']->renderHelp() ?></a></span>
-             </li>
-			 <?php
+             <span><a href="../customer/termsAndCondition" target="_blank" style="outline:none"><?php echo $form['terms_conditions']->renderHelp() ?></a></span>             
+          </li>
+          <li>
+             <?php
             $error_is_newsletter_subscriber = false;;
             if($form['is_newsletter_subscriber']->hasError())
             	$error_is_newsletter_subscriber = true;
             ?>
             <?php if($error_is_newsletter_subscriber) { ?>
-            <li class="error">
+            <span class="error">
             	<?php echo $form['is_newsletter_subscriber']->renderError() ?>
-            </li>
+            </span>
             <?php } ?>
-            <li style="display:none">
-             <?php echo $form['is_newsletter_subscriber'] ?>
-             <span><?php echo $form['is_newsletter_subscriber']->renderHelp() ?></span>
-            </li>
-			</div>
-          <!-- end newsletter -->
-		  
-			 <div id="content" >
-			 	<input type="submit" class="butonsigninsmall" name="submit" style="cursor: pointer; margin-left: 70px;"  value="<?php echo __('Next') ?>" ></div>
-			
-            </li>
-			</div>
+            <span style="display:none">
+              <?php echo $form['is_newsletter_subscriber'] ?>
+              <span><?php echo $form['is_newsletter_subscriber']->renderHelp() ?></span>
+            </span>   
+          </li>
+          <li>
+              <input type="submit" class="butonsigninsmall" name="submit" style="cursor: pointer; margin-left: 0px !important;"  value="<?php echo __('Next') ?>" />
+          </li>
+          </ul>
           <!-- end terms and conditions -->
-            
-          <li class="fr buttonplacement">     </li>
-        </ul>   
                  
      
       </div>
     </div>
-	<?php //include_partial('signup/steps_indicator', array('active_step'=>1)) ?>
+	 
   </div>
 </form>
 <script type="text/javascript">
-     jQuery('#customer_po_box_number').blur(function(){
-        var poid=jQuery("#customer_po_box_number").val();
-        poid = poid.replace(/\s+/g, '');
-        var poidlenght=poid.length;
-        //alert(poidlenght);
-        var poida= poid.charAt(0);
-        var poidb= poid.charAt(1);
-        var poidc= poid.charAt(2);
-        var poidd= poid.charAt(3);
-        var poide= poid.charAt(4);
-        if(poidlenght>4){
-            var fulvalue=poida+poidb+poidc+" "+poidd+poide;
-        }else{
-           //var fulvalue=poida+poidb+poidc;
-        }
-       jQuery("#customer_po_box_number").val(fulvalue);
-       //  alert(fulvalue);
-
-        });
+     
 	$('form li em').prev('label').append(' *');
 	$('form li em').remove();
 
