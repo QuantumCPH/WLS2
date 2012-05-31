@@ -20,7 +20,7 @@ class telinta_configActions extends sfActions {
         if ($tilentaConfigCount == 0) {
             $pb = new PortaBillingSoapClient(CompanyEmployeActivation::$telintaSOAPUrl, 'Admin', 'Customer');
             $session = $pb->_login(CompanyEmployeActivation::$telintaSOAPUser, CompanyEmployeActivation::$telintaSOAPPassword);
-             die ("barankhan");
+            
             if ($session) {
                 $telintaConfig = new TelintaConfig();
                 $telintaConfig->setSession($session);
