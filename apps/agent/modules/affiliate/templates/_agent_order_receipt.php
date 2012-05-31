@@ -9,8 +9,7 @@ use_helper('Number');
 	
 	table.receipt {
 		width: 600px;
-		//font-family: arial;
-		//font-size: .7em;
+		
 		
 		border: 2px solid #ccc;
 	}
@@ -53,8 +52,8 @@ $wrap_content  = isset($wrap)?$wrap:false;
 	<p><?php echo __('Dear Agent') ?></p>
 	
 	<p>
-	<?php echo 'Thank you for Payment'; ?>
-	</p>
+	<?php echo __('Thank you for Payment'); ?>
+	
 	
 	
 	<?php echo __('Below is the receipt of the order indicated.') ?>
@@ -63,30 +62,26 @@ $wrap_content  = isset($wrap)?$wrap:false;
 <?php endif; ?>
 <table class="receipt" cellspacing="0" width="600px">
 <tr bgcolor="#CCCCCC" class="receipt_header"> 
-    <td colspan="4"> LandNCall AB
+    <td colspan="4"> WLS2
     </td>
   </tr>
   <tr>
   <td colspan="4" class="payer_summary">
-	Telefonv&atilde;gen 30
-	<br />
-	126 37 H&atilde;gersten
-	<br />
+	<?php echo sprintf("%s", $agent->getName())?><br/>
+      <?php echo $agent->getAddress() ?><br/>
+      <?php echo sprintf('%s', $agent->getPostCode()) ?><br/>
 	
 	<br />
-	Tel:      +46 85 17 81 100
-	<br />	
+	<?php echo __("CVR Number") ?>: <?php echo sprintf('%s', $agent->getCvrNumber()) ?>
 	<br />
-	Cvr:     32068219
-	<br />  </td>
+        <?php echo __("Contact Person") ?>: <?php echo sprintf('%s', $agent->getContactName()) ?><br/>
+  </td>
   </tr>
   <tr bgcolor="#CCCCCC" class="receipt_header"> 
     <th colspan="3"><?php echo __('Order Receipt') ?></th>
     <th><?php echo __('Order No.') ?> <?php echo $order; ?></th>
   </tr>
-    <?php if($agent_name!=''){ echo __('Agent Name') ?>:  <?php echo $agent_name; } ?>
-    </td>
-  </tr>
+
   <tr class="order_summary_header" bgcolor="#CCCCCC"> 
     <td><?php echo __('Date') ?></td>
     <td><?php echo __('Description') ?></td>
@@ -96,7 +91,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
   <tr> 
     <td><?php echo $createddate ?></td>
     <td>
-   Agent Refil
+   <?php echo __('Agent Refill');?>
 	</td>
     <td>1</td>
     <td><?php echo format_number($subtotal=$transaction) //($order->getProduct()->getPrice() - $order->getProduct()->getPrice()*.2) * $order->getQuantity()) ?></td>
@@ -144,12 +139,12 @@ $wrap_content  = isset($wrap)?$wrap:false;
 
 <p>
 	<?php echo __('If you have any questions please feel free to contact our customer support center at '); ?>
-	<a href="mailto:support@landncall.com">support@landncall.com</a>
+	<a href="mailto:support@wls.com">support@wls.com</a>
 </p>
 
 <p><?php echo __('Cheers') ?></p>
 
 <p>
 <?php echo __('Support') ?><br />
-LandNCall AB
+WLS
 </p>

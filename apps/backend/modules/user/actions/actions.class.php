@@ -10,9 +10,20 @@
  */
 class userActions extends autouserActions
 {
+        public function handleErrorSave() {
+     $this->forward('user','edit');
+  }
+
+
     public function executeLogin($request){
 
         $this->loginForm = new LoginForm();
+
+        if($request->getParameter('new'))
+                $this->getUser()->setCulture($request->getParameter('new'));
+        else 
+            $this->getUser()->setCulture($this->getUser()->getCulture());
+
         
         if($request->getMethod() != 'post'){
             $this->loginForm->bind($request->getParameter('login'), $request->getFiles('login'));
@@ -38,7 +49,23 @@ class userActions extends autouserActions
                     //	$this->redirect($redirect_path);
                     //else
                     	//$this->redirect('@homepage');
+
+                     $pathArray = $request->getPathInfoArray();
+
+if(isset($pathArray['HTTP_REFERER']) && $pathArray['HTTP_REFERER']!=''){
+      if($pathArray['PATH_INFO']=='/user/changeCulture/new/de'){
+
+	$this->redirect('customer/allRegisteredCustomer');
+
+        }elseif($pathArray['PATH_INFO']=='/user/login'){
+       $this->redirect('customer/allRegisteredCustomer');
+        }else{
+           $this->redirect($pathArray['HTTP_REFERER']);
+        }
+}else{
                     	$this->redirect('customer/allRegisteredCustomer');
+
+}
                 } else {
                     $this->getUser()->setFlash('message', 'You are not Authorized / or you have submitted incorrect e-mail and password');
                 }
@@ -51,5 +78,24 @@ class userActions extends autouserActions
         $this->getUser()->getAttributeHolder()->removeNamespace('backendsession');
         $this->getUser()->setAuthenticated(false);
         $this->redirect('@homepage');
+    }
+      public function executeChangeCulture(sfWebRequest $request){
+            $this->getUser()->setCulture($request->getParameter('new'));
+
+        $pathArray = $request->getPathInfoArray();
+     //   var_dump($pathArray);
+       //  die;
+
+     if($pathArray['PATH_INFO']=='/user/login'){
+       $this->redirect('customer/allRegisteredCustomer');
+        }else{
+            if(isset($pathArray['HTTP_REFERER'])){
+                
+                $this->redirect($pathArray['HTTP_REFERER']);  
+            }
+     
+          
+        }
+          $this->redirect('customer/allRegisteredCustomer');
     }
 }

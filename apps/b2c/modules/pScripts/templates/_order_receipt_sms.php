@@ -9,8 +9,7 @@ use_helper('Number');
 	
 	table.receipt {
 		width: 600px;
-		//font-family: arial;
-		//font-size: .7em;
+		
 		
 		border: 2px solid #ccc;
 	}
@@ -53,7 +52,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
 	<p><?php echo __('Dear Customer') ?></p>
 	
 	<p>
-	<?php echo __('Thank you for ordering <b>%1%</b> and becoming LandNCall AB Customer. We welcome you to a new and huge mobile world.', array('%1%'=>$order->getProduct()->getName())) ?>
+	<?php echo __('Thank you for ordering <b>%1%</b> and becoming wls2 Customer. We welcome you to a new and huge mobile world.', array('%1%'=>$order->getProduct()->getName())) ?>
 	</p>
 	
 	<p>
@@ -66,21 +65,21 @@ $wrap_content  = isset($wrap)?$wrap:false;
 <?php endif; ?>
 <table class="receipt" cellspacing="0" width="600px">
 <tr bgcolor="#CCCCCC" class="receipt_header"> 
-    <td colspan="4"> LandNCall AB
+    <td colspan="4"> wls2
     </td>
   </tr>
   <tr>
   <td colspan="4" class="payer_summary">
-	Telefonv&atilde;gen 30
+	Telefonv&atilde;XXX XX
 	<br />
-	126 37 H&atilde;gersten
+	XXX XX X&atilde;XXXXXX
 	<br />
 	
 	<br />
-	Tel:      +46 85 17 81 100
+	Tel:      +XX XX XX XX XXX
 	<br />	
 	<br />
-	Cvr:     32068219
+	Cvr:     XXXXXXX
 	<br />
   </td>
   </tr>
@@ -107,33 +106,39 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td><?php echo __('Quantity') ?></td>
     <td><?php echo __('Amount') ?></td>
   </tr>
-  <tr> 
+  <tr>
     <td><?php echo $order->getCreatedAt('m-d-Y') ?></td>
     <td>
-    <?php if ($order->getIsFirstOrder())
-    {
-		echo $order->getProduct()->getName() . 
-		'<br />['. $transaction->getDescription() .']';
-    }
-    else
-    {
-		echo $transaction->getDescription();    	
-    }
+    <?php
+         echo __("Registration Fee");
+
     ?>
 	</td>
     <td><?php echo $order->getQuantity() ?></td>
-    <td><?php echo format_number($subtotal = $transaction->getAmount()-$vat) //($order->getProduct()->getPrice() - $order->getProduct()->getPrice()*.2) * $order->getQuantity()) ?></td>
+    <td><?php echo format_number($order->getProduct()->getRegistrationFee()); ?></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+    <?php
+         echo __("Product Price");
+
+    ?>
+	</td>
+    <td><?php echo $order->getQuantity() ?></td>
+    <td><?php echo format_number($order->getProduct()->getPrice()); ?></td>
   </tr>
   <tr>
   	<td colspan="4" style="border-bottom: 2px solid #c0c0c0;">&nbsp;</td>
   </tr>
-  <tr class="footer"> 
+  <tr class="footer">
     <td>&nbsp;</td>
     <td><?php echo __('Subtotal') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($subtotal) ?></td>
+    <td><?php echo format_number($subTotal = $order->getProduct()->getPrice()+$order->getProduct()->getRegistrationFee()) ?></td>
   </tr>
-  <tr class="footer"> 
+
+  <tr class="footer">
     <td>&nbsp;</td>
     <td><?php echo __('VAT') ?> (<?php echo $vat==0?'0%':'25%' ?>)</td>
     <td>&nbsp;</td>
@@ -143,7 +148,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td>&nbsp;</td>
     <td><?php echo __('Total') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($transaction->getAmount()) ?></td>
+    <td><?php echo format_number($subTotal+$vat) ?></td>
   </tr>
 </table>
 <?php if($wrap_content): ?>
@@ -166,13 +171,13 @@ $wrap_content  = isset($wrap)?$wrap:false;
 <?php endif; ?>
 
 <p>
-	<?php echo __('If you have any questions please feel free to contact our customer support center at '); ?>
-	<a href="mailto:support@landncall.com">support@landncall.com</a>
+	<?php echo __('If you have any questions please feel free to contact our customer support center at'); ?> 
+	<a href="mailto:support@wls.com">support@wls.com</a>
 </p>
 
 <p><?php echo __('Cheers') ?></p>
 
 <p>
 <?php echo __('Support') ?><br />
-LandNCall AB
+WLS
 </p>

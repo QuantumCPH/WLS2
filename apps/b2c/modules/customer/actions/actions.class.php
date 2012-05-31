@@ -3,9 +3,9 @@
 require_once(sfConfig::get('sf_lib_dir') . '/emailLib.php');
 require_once(sfConfig::get('sf_lib_dir') . '/smsCharacterReplacement.php');
 require_once(sfConfig::get('sf_lib_dir') . '/changeLanguageCulture.php');
-
 require_once(sfConfig::get('sf_lib_dir') . '/parsecsv.lib.php');
-require_once(sfConfig::get('sf_lib_dir').'/ForumTel.php');
+require_once(sfConfig::get('sf_lib_dir') . '/telinta.class.php');
+
 /**
  * customer actions.
  *
@@ -15,12 +15,12 @@ require_once(sfConfig::get('sf_lib_dir').'/ForumTel.php');
  * @version    SVN: $Id: actions.class.php,v 1.8 2010-09-19 22:20:12 orehman Exp $
  */
 class customerActions extends sfActions {
+  private function getTargetUrl() {
+        return sfConfig::get('app_main_url');
+    }
 
 
-
-    //private $targetURL = "http://localhost/landncall/web/b2c_dev.php/";
-    private $targetURL = "http://landncall.zerocall.com/b2c.php/";
-    private $targetPScriptURL = "http://landncall.zerocall.com/b2c.php/pScripts/";
+    
 
 
     public function executeTest(sfWebRequest $request) {
@@ -30,13 +30,8 @@ class customerActions extends sfActions {
     protected function processForm(sfWebRequest $request, sfForm $form, $id) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
-        //$this->getUser()->setCulture('en');
-        // $getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-        //$this->getUser()->setAttribute('activelanguage', $getCultue);
-        //print_r($request->getParameter($form->getName()));
         $customer = $request->getParameter($form->getName());
         $product = $customer['product'];
         $plainPws = $customer["password"];
@@ -48,7 +43,6 @@ class customerActions extends sfActions {
         if ($form->isValid()) {
 
             $customer = $form->save();
-
             $customer->setPlainText($plainPws);
             if (isset($refVal) && $refVal != '') {
 
@@ -81,28 +75,11 @@ class customerActions extends sfActions {
             if($availableUniqueCount  == 0){
                 // Unique Ids are not avaialable. Then Redirect to the sorry page and send email to the support.
                 emailLib::sendUniqueIdsShortage();
-                $this->redirect($this->targetURL.'customer/shortUniqueIds');
+                $this->redirect($this->getTargetUrl().'customer/shortUniqueIds');
             }
             $uniqueId = $availableUniqueId->getUniqueNumber();
-
-//            $setuniqueId = '100058';
-//
-//            $tc = new Criteria();
-//            $tc->add(CallbackLogPeer::CHECK_STATUS, 3);
-//            $tc->addDescendingOrderByColumn(CallbackLogPeer::CREATED);
-//            $MaxUniqueRec = CallbackLogPeer::doSelectOne($tc);
-//
-//            $uniqueId = $MaxUniqueRec->getUniqueid()ph
-//
-//
-//            $uniqueId = $uniqueId + 1;
-//
-//
-//
-//
-           $customer->setUniqueid($uniqueId);
+            $customer->setUniqueid($uniqueId);
             $customer->save();
-
             $getFirstnumberofMobile = substr($mtnumber, 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($mtnumber, 1);
@@ -111,95 +88,18 @@ class customerActions extends sfActions {
                 $TelintaMobile = '46' . $mtnumber;
             }
             //------save the callback data
-       
             if ($id != NULL) {
                 $invite = InvitePeer::retrieveByPK($id);
                 if ($invite) {
                     $invite->setInviteNumber($customer->getMobileNumber());
                     $invite->save();
-                    /* if($invite->getInviteNumber())
-                      {
-                      $fonet=new Fonet();
-                      $cid=$invite->getCustomerId();
-                      // $customer=CustomerPeer::retrieveByPK($cid);
-                      // $fonet->recharge($customer,1,true);
-                      // $invite->setBonusPaid(1);
-                      // $invite->save();
-
-                      } */
                 }
             }
-
-
-            //$this->getUser()->setAttribute('customer_id', $customer->getId(), 'usersignup');
-            //$this->getUser()->setAttribute('product_id', $product, 'usersignup');
-
-
-            $this->redirect($this->targetURL.'signup/step2?cid=' . $customer->getId() . '&pid=' . $product);
-            //$this->redirect(sfConfig::get('app_epay_relay_script_url').$this->getController()->genUrl('@signup_step2?customer_id='.$customer->getId().'&product_id='.$product, true));
-        }
-    }
-
-    protected function processForms(sfWebRequest $request, sfForm $form, $id) {
-
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-
-        $this->getUser()->setCulture('en');
-        $getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-        $this->getUser()->setAttribute('activelanguage', $getCultue);
-
-        //print_r($request->getParameter($form->getName()));
-        $customer = $request->getParameter($form->getName());
-        $product = $customer['product'];
-        $plainPws = $customer["password"];
-        $refVal = $customer["referrer_id"];
-
-
-        $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
-
-        if ($form->isValid()) {
-
-            $customer = $form->save();
-
-            $customer->setPlainText($plainPws);
-            if (isset($refVal) && $refVal != '') {
-
-                $customer->setRegistrationTypeId('3');
-            } else {
-                $customer->setRegistrationTypeId('1');
+            $url=$this->getTargetUrl();
+                        $this->redirect($url.'payments/signup?cid='.$customer->getId().'&pid='.$product);
             }
-
-
-            $customer->save();
-            if ($id != NULL) {
-                $invite = InvitePeer::retrieveByPK($id);
-                if ($invite) {
-                    $invite->setInviteNumber($customer->getMobileNumber());
-                    $invite->save();
-                    /* if($invite->getInviteNumber())
-                      {
-                      $fonet=new Fonet();
-                      $cid=$invite->getCustomerId();
-                      // $customer=CustomerPeer::retrieveByPK($cid);
-                      // $fonet->recharge($customer,1,true);
-                      // $invite->setBonusPaid(1);
-                      // $invite->save();
-
-                      } */
-                }
-            }
-
-
-            //$this->getUser()->setAttribute('customer_id', $customer->getId(), 'usersignup');
-            //$this->getUser()->setAttribute('product_id', $product, 'usersignup');
-
-
-            $this->redirect('http://landncall.zerocall.com/b2c.php/customer/signupStep2?cid=' . $customer->getId() . '&pid=' . $product);
-            //$this->redirect(sfConfig::get('app_epay_relay_script_url').$this->getController()->genUrl('@signup_step2?customer_id='.$customer->getId().'&product_id='.$product, true));
-        }
     }
+     
 
     public function executeSignupStep2(sfWebRequest $request) {
 
@@ -210,12 +110,9 @@ class customerActions extends sfActions {
             $this->callbackdibs = 'yes';
         } else {
             //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 01/24/11
-            changeLanguageCulture::languageCulture($request, $this);
+            
 
-            $this->getUser()->setCulture('en');
-            $getCultue = $this->getUser()->getCulture();
-            // Store data in the user session
-            $this->getUser()->setAttribute('activelanguage', $getCultue);
+            
 
             $this->form = new PaymentForm();
             $this->callbackdibs = 'Yes';
@@ -247,7 +144,8 @@ class customerActions extends sfActions {
 
             $transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
             //TODO: $transaction->setAmount($order->getProduct()->getPrice());
-            $transaction->setDescription($this->getContext()->getI18N()->__('Registration and first product order'));
+           // $this->getContext()->getI18N()->__('Registration and first product order')
+            $transaction->setDescription('Registration');
             $transaction->setOrderId($order->getId());
             $transaction->setCustomerId($customer_id);
             //$transaction->setTransactionStatusId() // default value 1
@@ -262,78 +160,13 @@ class customerActions extends sfActions {
         }
     }
 
-    public function executeSignupTest(sfWebRequest $request) {
-
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-
-        $this->getUser()->setCulture('en');
-        $getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-        $this->getUser()->setAttribute('activelanguage', $getCultue);
-
-        $lang = $this->getUser()->getAttribute('activelanguage');
-        $this->lang = $lang;
-
-
-        $this->form = new CustomerFormB2C();
-        $id = $request->getParameter('invite_id');
-        $visitor_id = $request->getParameter('visitor');
-        //$this->form->widgetSchema->setLabel('the_field_id', false);
-        if ($visitor_id != NULL) {
-            $c = new Criteria();
-            $c->add(VisitorsPeer::ID, $request->getParameter('visitor'));
-            $visitor = VisitorsPeer::doSelectOne($c);
-            $status = $visitor->getStatus();
-            $visitor->setStatus($status . "> B2C Signup Page ");
-            $visitor->save();
-        }
-
-        if ($id != NULL) {
-            $c = new Criteria();
-            //$c->add(InvitePeer::ID,$id);
-            //$c->add(InvitePeer::INVITE_STATUS,'2');
-            $invite = InvitePeer::retrieveByPK($id);
-            if ($invite) {
-                $invite->setInviteStatus('2');
-                $invite->save();
-            }
-        }
-
-        //set referrer id
-        if ($referrer_id = $request->getParameter('ref')) {
-            $c = new Criteria();
-            $c->add(AgentCompanyPeer::ID, $referrer_id);
-
-            if (AgentCompanyPeer::doSelectOne($c))
-                $this->form->setDefault('referrer_id', $referrer_id);
-        }
-
-
-
-
-        if ($request->isMethod('post')) {
-
-            unset($this->form['imsi']);
-            unset($this->form['uniqueid']);
-
-            $this->processForms($request, $this->form, $id);
-        }
-    }
+  
 
     public function executeSignup(sfWebRequest $request) {
 
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-
-        // $this->getUser()->setCulture('en');
-        // $getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-        //$this->getUser()->setAttribute('activelanguage', $getCultue);
-
-        $lang = $this->getUser()->getAttribute('activelanguage');
-        $this->lang = $lang;
+        
 
 
         $this->form = new CustomerFormB2C();
@@ -411,7 +244,7 @@ class customerActions extends sfActions {
 
     public function executeDashboard(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
 
@@ -461,9 +294,9 @@ class customerActions extends sfActions {
         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
         if ($getFirstnumberofMobile == 0) {
             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-            $TelintaMobile = '46' . $TelintaMobile;
+            $TelintaMobile = '49' . $TelintaMobile;
         } else {
-            $TelintaMobile = '46' . $this->customer->getMobileNumber();
+            $TelintaMobile = '49' . $this->customer->getMobileNumber();
         }
         $emailId = $this->customer->getEmail();
         $uniqueId = $this->customer->getUniqueid();
@@ -475,20 +308,11 @@ class customerActions extends sfActions {
             emailLib::sendErrorTelinta($this->customer, $message_body);
         }
         //This is for Retrieve balance From Telinta
-        $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=getbalance&name=' . $uniqueId . '&type=customer');
+       // $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=getbalance&name=' . $uniqueId . '&type=customer');
+  $telintaGetBalance=Telienta::getBalance($this->customer);
+       
 
-        $string = $telintaGetBalance;
-        $find = 'No such a customer';
-        if (strpos($string, $find)) {
-            $message_body = "No Customer Found in Telinta Against Of This Mobile Number $TelintaMobile <br / >Unique Id: $uniqueId";
-            //Send Email to User/Agent/Support --- when Customer Refilll --- 01/15/11
-            emailLib::sendErrorTelinta($this->customer, $message_body);
-        } else {
-
-        }
-
-        $telintaGetBalance = str_replace('success=OK&Balance=', '', $telintaGetBalance);
-        $telintaGetBalance = str_replace('-', '', $telintaGetBalance);
+      
         $this->customer_balance = $telintaGetBalance;
 
 
@@ -500,7 +324,7 @@ class customerActions extends sfActions {
     //This Function add Again new Feature Landncall --
     public function executeSubscribevoip(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
 
@@ -588,7 +412,8 @@ class customerActions extends sfActions {
                 $this->customer = $customerids;
                 $transaction = new Transaction();
                 $transaction->setAmount($voipcharges);
-                $transaction->setDescription($this->getContext()->getI18N()->__('Transation for VoIP Purchase'));
+                //$this->getContext()->getI18N()->__('
+                $transaction->setDescription('Transation for VoIP Purchase');
                 $transaction->setOrderId($order->getId());
                 $transaction->setCustomerId($customerids);
                 $transaction->setTransactionStatusId(3);
@@ -740,7 +565,7 @@ class customerActions extends sfActions {
 
     public function executeVoiptermsandcondition(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
         //-----------------------
@@ -753,7 +578,7 @@ class customerActions extends sfActions {
 
     public function executeVoippurchased(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
         //-----------------------
@@ -766,7 +591,7 @@ class customerActions extends sfActions {
 
     public function executeUnsubscribevoip(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //$customerids =  $request->getParameter('cid');
         $customerids = $this->getUser()->getAttribute('customer_id', '', 'usersession');
         $this->customer = CustomerPeer::retrieveByPK($this->getUser()->getAttribute('customer_id', '', 'usersession'));
@@ -829,9 +654,9 @@ class customerActions extends sfActions {
     }
 
     public function executeRefill(sfWebRequest $request) {
-
+       $this->target = $this->getTargetUrl();
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
         //$this->redirectUnless($this->getUser()->isAuthenticated(),'@b2c_homepage');
         //$customer_id = $this->getUser()->getAttribute('customer_id',null, 'usersession');
@@ -862,7 +687,7 @@ class customerActions extends sfActions {
         $transaction = new Transaction();
 
         $transaction->setAmount($this->order->getExtraRefill());
-        $transaction->setDescription($this->getContext()->getI18N()->__('LandNCall AB Refill'));
+        $transaction->setDescription('Refill');
         $transaction->setOrderId($this->order->getId());
         $transaction->setCustomerId($this->order->getCustomerId());
 
@@ -871,14 +696,14 @@ class customerActions extends sfActions {
     }
 
     public function executeRefillAccept(sfWebRequest $request) {
-
+  $this->getUser()->setCulture($request->getParameter('lng'));
 
         $this->redirect('customer/dashboard');
     }
 
     public function executeRefillReject(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
 
         $order_id = $request->getParameter('orderid');
@@ -913,7 +738,7 @@ class customerActions extends sfActions {
     public function executeCallhistory(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
 
         //$this->customer = CustomerPeer::retrieveByPK(58);
@@ -959,7 +784,7 @@ class customerActions extends sfActions {
     public function executePaymenthistory(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
         //$this->customer = CustomerPeer::retrieveByPK(58);
 
@@ -971,15 +796,8 @@ class customerActions extends sfActions {
 
         //get  transactions
         $c = new Criteria();
-        $searchingCr = "LandNCall AB Refill via agent";
         $c->add(TransactionPeer::CUSTOMER_ID, $this->customer->getId());
-        $c->add(TransactionPeer::DESCRIPTION, 'LandNCall AB Refill', Criteria::NOT_EQUAL);
-        $c->addAND(TransactionPeer::DESCRIPTION, 'Auto Refill', Criteria::NOT_EQUAL);
-        $c->addAND(TransactionPeer::DESCRIPTION, 'Registrering inkl. taletid', Criteria::NOT_EQUAL);
-        $c->addOR(TransactionPeer::DESCRIPTION, 'Resenummer bekräftelse');
-        $c->addAND(TransactionPeer::DESCRIPTION, '%' . $searchingCr . '%', Criteria::NOT_LIKE);
-        $c->add(TransactionPeer::TRANSACTION_STATUS_ID, sfConfig::get('app_status_completed', -1)
-        );
+        $c->add(TransactionPeer::TRANSACTION_STATUS_ID, sfConfig::get('app_status_completed'));
         /*
           if (isset($request->getParameter('filter')))
           {
@@ -1039,7 +857,7 @@ class customerActions extends sfActions {
     public function executeRefillpaymenthistory(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
         //$this->customer = CustomerPeer::retrieveByPK(58);
 
@@ -1051,14 +869,9 @@ class customerActions extends sfActions {
 
         //get  transactions
         $c = new Criteria();
-        $searchingCr = "LandNCall AB Refill via agent";
+        
         $c->add(TransactionPeer::CUSTOMER_ID, $this->customer->getId());
-        $c->add(TransactionPeer::DESCRIPTION, 'LandNCall AB Refill');
-        $c->addOR(TransactionPeer::DESCRIPTION, 'Registrering inkl. taletid');
-        $c->addOR(TransactionPeer::DESCRIPTION, 'Auto Refill');
-        //$c->addOR(TransactionPeer::DESCRIPTION,'Resenummer bekräftelse');
-        $c->addOR(TransactionPeer::DESCRIPTION, '%' . $searchingCr . '%', Criteria::LIKE);
-        $c->add(TransactionPeer::TRANSACTION_STATUS_ID, sfConfig::get('app_status_completed', -1)
+        $c->add(TransactionPeer::TRANSACTION_STATUS_ID, sfConfig::get('app_status_completed')
         );
         // Here we can simple check the transaction stats and we can meet our requirements but here use the description value equel which is i dnt
         // Good approch but me not edit this i just pass one more "Resenummer bekräftelse" - ahtsham
@@ -1121,7 +934,7 @@ class customerActions extends sfActions {
     public function executePasswordchange(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
         $this->redirectUnless($this->getUser()->isAuthenticated(), "@homepage");
@@ -1133,36 +946,52 @@ class customerActions extends sfActions {
         $this->redirectUnless($this->customer, "@homepage");
 
         $this->form = new CustomerForm(CustomerPeer::retrieveByPK($this->customer->getId()));
-        unset($this->form['terms_conditions']);
-        //unset($this->form['password']);
-        unset($this->form['product']);
+      
 
-
-
-        //unset($this->form['password_confirm']);
+    unset($this->form['first_name']);
+                    unset($this->form['last_name']);
+                    unset($this->form['country_id']);
+                    unset($this->form['city']);
+                    unset($this->form['po_box_number']);
+                    unset($this->form['mobile_number']);
+                    unset($this->form['device_id']);
+                    unset($this->form['email']);
+                    unset($this->form['is_newsletter_subscriber']);
+                    unset($this->form['created_at']);
+                    unset($this->form['updated_at']);
+                    unset($this->form['customer_status_id']);
+                    unset($this->form['address']);
+                    unset($this->form['fonet_customer_id']);
+                    unset($this->form['referrer_id']);
+                    unset($this->form['telecom_operator_id']);
+                    unset($this->form['date_of_birth']);
+                    unset($this->form['other']);
+                    unset($this->form['subscription_type']);
+                    unset($this->form['auto_refill_amount']);
+                    unset($this->form['subscription_id']);
+                    unset($this->form['last_auto_refill']);
+                    unset($this->form['auto_refill_min_balance']);
+                    unset($this->form['c9_customer_number']);
+                    unset($this->form['registration_type_id']);
+                    unset($this->form['imsi']);
+                    unset($this->form['uniqueid']);
+                    unset($this->form['plain_text']);
+                    unset($this->form['ticketval']);
+                    unset($this->form['to_date']);
+                    unset($this->form['from_date']);
+                     unset($this->form['uniqueid']);
+                    unset($this->form['plain_text']);
+                    unset($this->form['ticketval']);
+                    unset($this->form['to_date']);
+                    unset($this->form['from_date']);
+                    unset($this->form['terms_conditions']);
+                    unset($this->form['manufacturer']);
+                    unset($this->form['product']);
+                   //  unset($this->form['password']);
+        // unset($this->form['password_confirm']);
         /////////////////////////////////////
-        unset($this->form['created_at']);
-        unset($this->form['fonet_customer_id']);
-        unset($this->form['referrer_id']);
-        unset($this->form['registration_type_id']);
-        unset($this->form['plain_text']);
-        unset($this->form['plain_text']);
-        unset($this->form['manufacturer']);
-        unset($this->form['device_id']);
-
-        $this->uniqueidValue = $this->customer->getUniqueId();
-        //This Section For Get the Language Symbol For Set Currency -
-        $getvoipInfo = new Criteria();
-        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $this->customer->getId());
-        $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
-        if (isset($getvoipInfos)) {
-            $this->voipnumbers = $getvoipInfos->getNumber();
-            $this->voip_customer = $getvoipInfos->getCustomerId();
-        } else {
-            $this->voipnumbers = '';
-            $this->voip_customer = '';
-        }
-
+            //   $this->form->getWidget('password')->setAttribute('value', '');
+ 
 
         /////////////////////////////////////////
         $this->oldpasswordError = '';
@@ -1182,8 +1011,9 @@ class customerActions extends sfActions {
             }
             $this->oldpassword = $customers["oldpassword"];
             $this->form->bind($request->getParameter($this->form->getName()), $request->getFiles($this->form->getName()));
-            //  echo 'before validation';
+ 
 
+ 
             if ($this->form->isValid() && $this->oldpasswordError == '') {
                 //	echo 'validated';
                 $customer = $this->form->save();
@@ -1201,41 +1031,15 @@ class customerActions extends sfActions {
         }
 
 
+      
 
-        //disable
-        //$this->form->widgetSchema['mobile_number']->setAttribute('readonly','readonly');
-        $this->form->getWidget('mobile_number')->setAttribute('readonly', 'readonly');
-        //$this->form->getWidget('mobile_number')->setAttribute('disabled','disabled');
-        //	$this->form->getWidget('email')->setAttribute('readonly','readonly');
-        //$this->form->getWidget('email')->setAttribute('disabled','disabled');
-        //$this->getValidator['mobile_number'] = new sfValidatorReadOnlyField(array('field' => 'mobile_number', 'object' => $this->form->getObject()));
-        //$this->form->getWidget('manufacturer')->setLabel('Mobile brand','Mobile brand');
-        // $this->widgetSchema->setLabel('customer_manufacturer','Mobile brand');
-        //$this->form->getWidget->('customer_manufacturer', "Yes");
-        //$this->form->getWidget('password')->setOption('always_render_empty', false);
-        //$this->form->getWidget('password_confirm')->setOption('always_render_empty', false);
-        //get default pre-requisites
-//                $c = new Criteria();
-//                $c->add(DevicePeer::ID, $this->customer->getDeviceId());
-//
-//                $device = DevicePeer::doSelectOne($c);
-//
-//                $manufacturer = $device->getManufacturer();
-//
-//                $this->form->setDefault(
-//                'manufacturer', $manufacturer->getId()
-//                );
-//
-//                $this->form->setDefault(
-//                'device_id', $device->getId()
-//                );
     }
 
     public function executeSettings(sfWebRequest $request) {
 
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
         $this->redirectUnless($this->getUser()->isAuthenticated(), "@homepage");
@@ -1322,11 +1126,10 @@ class customerActions extends sfActions {
     }
 
     public function executeLogin(sfWebRequest $request) {
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-        $this->target = $this->targetURL;
-        //-----------------------
-
+        
+        $this->target = $this->getTargetUrl();
+        $this->getTargetUrl();
+        
         if ($request->isMethod('post') &&
                 $request->getParameter('mobile_number') != '' &&
                 $request->getParameter('password') != '') {
@@ -1337,7 +1140,7 @@ class customerActions extends sfActions {
             $c = new Criteria();
             $c->add(CustomerPeer::MOBILE_NUMBER, $mobile_number);
             $c->add(CustomerPeer::PASSWORD, $password);
-            $c->add(CustomerPeer::CUSTOMER_STATUS_ID, sfConfig::get('app_status_completed'));
+            $c->add(CustomerPeer::CUSTOMER_STATUS_ID, 3);
 
             $customer = CustomerPeer::doSelectOne($c);
 
@@ -1353,12 +1156,24 @@ class customerActions extends sfActions {
 
                 $customer->setPlainText($paswordval);
                 $customer->save();
-
+             
+ 
                 //$this->redirect('@customer_dashboard');
                 if ($request->isXmlHttpRequest())
                     $this->renderText('ok');
                 else {
-                    $this->redirect('customer/dashboard');
+
+
+                    if(isset($pathArray['HTTP_REFERER']) && $pathArray['HTTP_REFERER']!=''){
+        $this->redirect($pathArray['HTTP_REFERER']);
+
+}else{
+                      $this->redirect($this->getTargetUrl().'customer/dashboard');
+
+}
+
+
+                  
                 }
             } else {
                 //
@@ -1388,7 +1203,7 @@ class customerActions extends sfActions {
     public function executeSendPassword(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
         //$this->forward404Unless($request->isMethod('post'));
         $this->redirectUnless($request->isMethod('post'), "@homepage");
@@ -1411,9 +1226,9 @@ class customerActions extends sfActions {
             $message_body .= '<br /><br />';
             $message_body .= $this->getContext()->getI18N()->__('Your password has been changed. Please use the following information to login to your WLS2 account.');
             $message_body .= '<br /><br />';
-            $message_body .= sprintf('Mobilnummer: %s', $customer->getMobileNumber());
+            $message_body .= sprintf($this->getContext()->getI18N()->__('Mobile Number: %s'), $customer->getMobileNumber());
             $message_body .= '<br />';
-            $message_body .= $this->getContext()->getI18N()->__('Lösenord') . ': ' . $new_password;
+            $message_body .= $this->getContext()->getI18N()->__('password') . ': ' . $new_password;
 
             $customer->save();
 
@@ -1442,7 +1257,7 @@ class customerActions extends sfActions {
             file_put_contents($invite_data_file, $invite2, FILE_APPEND);
 
             //Send Email to User --- when Forget Password Request Come --- 01/15/11
-            emailLib::sendForgetPasswordEmail($customer, $message);
+            emailLib::sendForgetPasswordEmail($customer, $message, $subject);
 
             $this->getUser()->setFlash('send_password_message', $this->getContext()->getI18N()->__('Your account details have been sent to your email address.'));
         }
@@ -1509,7 +1324,7 @@ class customerActions extends sfActions {
 
     public function executeGetHeader() {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
         echo $this->getPartial("header", array('test_dir' => '/testwp'));
         sfConfig::set('sf_web_debug', false);
@@ -1519,7 +1334,7 @@ class customerActions extends sfActions {
     public function executeC9Callhistory(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
 
 //try to find customer in session (only possible if user already logged in.)
         $this->customer = CustomerPeer::retrieveByPK(
@@ -1554,7 +1369,7 @@ class customerActions extends sfActions {
     public function executeWebsms(sfWebRequest $request) {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
 
@@ -1567,29 +1382,10 @@ class customerActions extends sfActions {
         $cunt = new Criteria();
         $cunt->addAscendingOrderByColumn(CountryPeer::NAME);
         $countries = CountryPeer::doSelect($cunt);
-
-//$country_codes = array();
-//$count=1;
-//
-//foreach($countries as $country){
-// $country_codes[$count]= $country->getCallingCode();
-// $count++;
-//}
-
         $this->msgSent = "";
         $this->countries = $countries;
         $this->res_cbf = "";
-
-
-        $uniqueId = $this->customer->getUniqueid();
-
-        //This is for Retrieve balance From Telinta
-        $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=getbalance&name=' . $uniqueId . '&type=customer');
-        $telintaGetBalance = str_replace('success=OK&Balance=', '', $telintaGetBalance);
-        $telintaGetBalance = str_replace('-', '', $telintaGetBalance);
-        $this->balance = $telintaGetBalance;
-//$this->balance = (double)Fonet::getBalance($this->customer);
-
+        $this->balance = (double) Telienta::getBalance($this->customer);
 
         $message = $request->getParameter('message');
 
@@ -1598,30 +1394,24 @@ class customerActions extends sfActions {
             $this->msgSent = "No";
             $country_code = $request->getParameter('country');
             $number = $request->getParameter('number');
-            $destination = $country_code . "" . $number;
+            $destination = $country_code . $number;
 
             $c = new Criteria();
             $c->add(CountryPeer::CALLING_CODE, $request->getParameter('country'));
             $country = CountryPeer::doSelectOne($c);
 
-
-
             $messages = array();
             if (strlen($message) < 142) {
-                $messages[1] = $message . "-Sent by zer0call-";
+                $messages[1] = $message . "-Sent by wls2-";
             } else if (strlen($message) > 142 and strlen($message) < 302) {
 
-                $messages[1] = substr($message, 1, 142) . "-Sent by zer0call-";
-                $messages[2] = substr($message, 143) . "-Sent by zer0call-";
+                $messages[1] = substr($message, 1, 142) . "-Sent by wls2-";
+                $messages[2] = substr($message, 143) . "-Sent by wls2-";
             } else if (strlen($message) > 382) {
-                $messages[1] = substr($message, 1, 142) . "-Sent by zer0call-";
-                $messages[2] = substr($message, 143, 302) . "-Sent by zer0call-";
-                $messages[3] = substr($message, 303, 432) . "-Sent by zer0call-";
+                $messages[1] = substr($message, 1, 142) . "-Sent by wls2-";
+                $messages[2] = substr($message, 143, 302) . "-Sent by wls2-";
+                $messages[3] = substr($message, 303, 432) . "-Sent by wls2-";
             }
-
-            //$this->res_cbf = $message[1];
-
-
 
             foreach ($messages as $sms_text) {
                 $cbf = new Cbf();
@@ -1630,83 +1420,36 @@ class customerActions extends sfActions {
                 $cbf->setMessage($sms_text);
                 $cbf->setCountryId($country->getId());
                 $cbf->setMobileNumber($this->customer->getMobileNumber());
-
-
                 $cbf->save();
-
-                //recharge fonet
-                //get currency conversion rate
-                $cc = CurrencyConversionPeer::retrieveByPK(1);
-                $amt = $cc->getBppDkk() * $country->getCbfRate();
+                
+                $amt = $country->getCbfRate();
                 $amt = number_format($amt, 2);
-                $amt = $amt;
 
 
-                //  Fonet::recharge($this->customer, -('000'.$amt));
-
-
-                $uniqueId = $this->customer->getUniqueid();
-                $OpeningBalance = $amt;
-
-                $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=customer&action=manual_charge&name=' . $uniqueId . '&amount=' . $OpeningBalance);
-
-                $data = array(
-                    'S' => 'H',
-                    'UN' => 'zapna1',
-                    'P' => 'Zapna2010',
-                    'DA' => $destination,
-                    'SA' => $this->customer->getMobileNumber(),
-                    'M' => $sms_text,
-                    'ST' => '5'
-                );
-
-
-                $queryString = http_build_query($data, '', '&');
-                $queryString = smsCharacter::smsCharacterReplacement($queryString);
-                $res = @file_get_contents('http://sms1.cardboardfish.com:9001/HTTPSMS?' . $queryString);
-                $this->res_cbf = 'Response from CBF is: ';
-                $this->res_cbf .= $res;
-
-                //echo $res;
-                $this->msgSent = "Yes";
+                if (CARBORDFISH_SMS::Send($destination, $sms_text, $this->customer->getMobileNumber())) {
+                    Telienta::charge($this->customer, $amt);
+                    $this->msgSent = "Yes";
+                    $this->balance = (double) Telienta::getBalance($this->customer);
+                }
             }
         }
     }
 
-    public function executeSmsHistory(sfWebrequest $request) {
+public function executeSmsHistory(sfWebrequest $request){
 
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-        //-----------------------
-
-        $this->customer = CustomerPeer::retrieveByPK(
-                        $this->getUser()->getAttribute('customer_id', null, 'usersession')
-        );
-        $this->redirectUnless($this->customer, "@homepage");
-
-//		$c = new Criteria();
-//		$c->add(ZerocallCdrPeer::ANI, BaseUtil::trimMobileNumber($this->customer->getMobileNumber()));
-//		$c->add(ZerocallCdrPeer::SOURCECTY, $this->customer->getCountry()->getCallingCode());
-//		$c->add(ZerocallCdrPeer::USEDVALUE, 0, Criteria::NOT_EQUAL);
-//		$c->addDescendingOrderByColumn(ZerocallCdrPeer::ANSWERTIMEB);
-
-        $c = new Criteria();
-        $c->add(CbfPeer::MOBILE_NUMBER, $this->customer->getMobileNumber());
-        $c->addDescendingOrderByColumn(CbfPeer::CREATED_AT);
-
-//		//setting filter
-//		$this->filter = new ZerocallCdrFormFilter();
-//
-//		if ($request->getParameter('zerocall_cdr_log_filters'))
-//		{
-//			$c->add($this->filter->buildCriteria($request->getParameter('zerocall_cdr_log_filters')));
-//			//$this->filter->bind($request->getParameter('zerocall_cdr_log_filters'));
-//		}
-        //set paging
-        $items_per_page = 25; //shouldn't be 0
-        $this->page = $request->getParameter('page');
-        if ($this->page == '')
-            $this->page = 1;
+    //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
+    changeLanguageCulture::languageCulture($request,$this);
+    //-----------------------
+    $this->customer = CustomerPeer::retrieveByPK(
+			$this->getUser()->getAttribute('customer_id', null, 'usersession')
+			);
+		$this->redirectUnless($this->customer, "@homepage");
+                $c = new Criteria();
+                $c->add(CbfPeer::MOBILE_NUMBER, $this->customer->getMobileNumber());
+                $c->addDescendingOrderByColumn(CbfPeer::CREATED_AT);
+		$items_per_page = 25; //shouldn't be 0
+		$this->page = $request->getParameter('page');
+        if($this->page == '') $this->page = 1;
 
         $pager = new sfPropelPager('Cbf', $items_per_page);
         $pager->setPage($this->page);
@@ -1716,28 +1459,13 @@ class customerActions extends sfActions {
         $pager->init();
 
         $this->smsRecords = $pager->getResults();
-        $this->total_pages = $pager->getNbResults() / $items_per_page;
-    }
+		$this->total_pages = $pager->getNbResults() / $items_per_page;
 
-    /* public function executeInvitationConformation(sfWebRequest $request)
-      {
-      // echo $recepient_email=$request->getParameter('email').$recepient_name=$request->getParameter('name').$message=$request->getParameter('message');
+}
 
-
-      } */
 
     public function executeTellAFriend(sfWebRequest $request) {
 
-
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
-        //-----------------------
-//         $this->getUser()->setCulture('en');
-//                $getCultue = $this->getUser()->getCulture();
-//                // Store data in the user session
-//                $this->getUser()->setAttribute('activelanguage', $getCultue);
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        //-----------------------
         $this->customer = CustomerPeer::retrieveByPK(
                         $this->getUser()->getAttribute('customer_id', null, 'usersession')
         );
@@ -1752,7 +1480,6 @@ class customerActions extends sfActions {
 
             //$this->form = new ContactForm();
 
-
             $recepient_email = $request->getParameter('email');
             $recepient_name = $request->getParameter('name');
 
@@ -1764,12 +1491,12 @@ class customerActions extends sfActions {
             $invite->setMessage($message);
             $invite->save();
 
-            //set email attributes
-            $subject = $this->getContext()->getI18N()->__("WLS2 inbjudan");
-            $name = $this->customer->getFirstName() . ' ' . $this->customer->getLastName();
-            $message_body = 'Hej ' . $recepient_name . ',<br /> ' . $this->getContext()->getI18N()->__("This invitation is sent to you with the refrence of") . ' ' . $name . ', ' . $this->getContext()->getI18N()->__("en användare av Smartsim från WLS2.");
+            $subject = $this->getContext()->getI18N()->__("WLS2 invitation");
 
-            $message_body_end = 'Vänligen klicka på acceptera för att börja spara pengar direkt med Smartsim du ocksåg' . '<a  href="http://wls2.zerocall.com/b2c.php/customer/signup?invite_id=' . $invite->getId() . '"> ' . $this->getContext()->getI18N()->__("Accept") . '</a><br/> Läs mer på <a href="www.zerocall.com">www.zerocall.com</a>';
+            $name = $this->customer->getFirstName() . ' ' . $this->customer->getLastName();
+            $message_body = $this->getContext()->getI18N()->__('Hi ') . $recepient_name . ',<br /> ' . $this->getContext()->getI18N()->__("This invitation is sent to you with the reference of") . ' ' . $name . ', ' . $this->getContext()->getI18N()->__("a user of Smartsim from the WLS2.");
+
+            $message_body_end = $this->getContext()->getI18N()->__('Please click accept to start saving money immediately with Smartsim.') . ' <a  href="http://wls2.zerocall.com/b2c.php/customer/signup?invite_id=' . $invite->getId() . '"> ' . $this->getContext()->getI18N()->__("Accept") . '</a><br/>'. $this->getContext()->getI18N()->__('Read more').' <a href="wls2.zerocall.com">wls2.zerocall.com</a>';
 
             //send email
             if ($recepient_name != ''):
@@ -1927,7 +1654,7 @@ class customerActions extends sfActions {
 
                 $transaction->setAgentCompanyId($customer->getReferrerId());
                 $transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
-                $transaction->setDescription($this->getContext()->getI18N()->__('Registrering inkl. taletid'));
+                $transaction->setDescription($this->getContext()->getI18N()->__('Anmeldung inc. sprechen'));
                 $transaction->setOrderId($order->getId());
                 $transaction->setCustomerId($customer->getId());
                 $transaction->setTransactionStatusId(3);
@@ -2065,9 +1792,9 @@ class customerActions extends sfActions {
             $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '46' . $TelintaMobile;
+                $TelintaMobile = '49' . $TelintaMobile;
             } else {
-                $TelintaMobile = '46' . $this->customer->getMobileNumber();
+                $TelintaMobile = '49' . $this->customer->getMobileNumber();
             }
             $uniqueId = $this->customer->getUniqueid();
             $OpeningBalance = $order->getExtraRefill();
@@ -2123,7 +1850,8 @@ class customerActions extends sfActions {
     }
 
     public function executeCalbackrefill(sfWebRequest $request) {
-   $order_id = $request->getParameter("orderid");
+    $this->getUser()->setCulture($request->getParameter('lng'));
+        $order_id = $request->getParameter("orderid");
         $urlval = $order_id." refill page-qqqqqqqqq" . $request->getParameter('transact');
 
         $email2 = new DibsCall();
@@ -2133,7 +1861,7 @@ class customerActions extends sfActions {
 
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
 
      
@@ -2169,8 +1897,6 @@ class customerActions extends sfActions {
         $ticket_id = $request->getParameter('transact');
         //set subscription id in case 'use current c.c for future auto refills' is set to 1
         //set auto_refill amount
-
-
     
         $order->save();
         $transaction->save();
@@ -2185,7 +1911,12 @@ class customerActions extends sfActions {
         if (isset($agentid) && $agentid != "") {
             echo "getagentid";
             commissionLib::refilCustomer($agentid, $productid, $transactionid);
+              $transaction->setAgentCompanyId($agentid);
+           $transaction->save();
+            
         }
+
+
 
         //TODO ask if recharge to be done is same as the transaction amount
         //die;
@@ -2196,16 +1927,16 @@ class customerActions extends sfActions {
             //  Fonet::recharge($this->customer, $transaction->getAmount());
             $vat = 0;
 
-            $TelintaMobile = '46' . $this->customer->getMobileNumber();
+            $TelintaMobile = '49' . $this->customer->getMobileNumber();
             $emailId = $this->customer->getEmail();
             $OpeningBalance = $transaction->getAmount();
             $customerPassword = $this->customer->getPlainText();
             $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '46' . $TelintaMobile;
+                $TelintaMobile = '49' . $TelintaMobile;
             } else {
-                $TelintaMobile = '46' . $this->customer->getMobileNumber();
+                $TelintaMobile = '49' . $this->customer->getMobileNumber();
             }
 
   $unidc=$this->customer->getUniqueid();
@@ -2213,44 +1944,14 @@ class customerActions extends sfActions {
  echo $unidc;
  echo "<br/>";
 
-if((int)$unidc>200000){
-              $cuserid = $this->customer->getId();
-               $amt=$OpeningBalance;
-                  $amt=CurrencyConverter::convertSekToUsd($amt);
-                $Test=ForumTel::rechargeForumtel($cuserid,$amt);
 
-
-                  $email2 = new DibsCall();
-        $email2->setCallurl($amt.$cuserid);
-
-        $email2->save();
-}else{
     //echo $OpeningBalance."Balance";
     //echo "<br/>";
     
             //This is for Recharge the Customer
-            $MinuesOpeningBalance = $OpeningBalance * 3;
-            $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=' . $unidc . '&amount=' . $OpeningBalance . '&type=customer');
-            $email2 = new DibsCall();
-            $email2->setCallurl('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=' . $unidc . '&amount=' . $OpeningBalance . '&type=customer');
-            $email2->save();
-            $email2 = new DibsCall();
-            $email2->setCallurl($telintaAddAccountCB);
-            $email2->save();
-            if(!$telintaAddAccountCB){
-                echo "<br/>We are not able to load the balance due to System Call";
-            }
-            $find = '';
-            $string = $telintaAddAccountCB;
-            $find = 'ERROR';
-            if (strpos($string, $find)) {
-                $message_body = " km testing     Error ON Refill Customer within Environment <br> Unique Id :$unidc <br / >Amount: $OpeningBalance";
-                //Send Email to User/Agent/Support --- when Customer Refilll --- 01/15/11
-                emailLib::sendErrorTelinta($this->customer, $message_body);
-            } else {
-
-                
-            }
+          //  $MinuesOpeningBalance = $OpeningBalance * 3;
+            Telienta::recharge($this->customer, $OpeningBalance);
+          
                          
             //This is for Recharge the Account
             //this condition for if follow me is Active
@@ -2266,7 +1967,7 @@ if((int)$unidc>200000){
             }
             // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=a'.$TelintaMobile.'&amount='.$OpeningBalance.'&type=account');
             // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=cb'.$TelintaMobile.'&amount='.$OpeningBalance.'&type=account');
-}
+
             $MinuesOpeningBalance = $OpeningBalance * 3;
             //type=<account_customer>&action=manual_charge&name=<name>&amount=<amount>
             //This is for Recharge the Customer
@@ -2292,15 +1993,7 @@ if((int)$unidc>200000){
             //send email
 
               $unidid = $this->customer->getUniqueid();
-              if((int)$unidid>200000){
-            $message_body = $this->getPartial('customer/order_receipt_us', array(
-                        'customer' => $this->customer,
-                        'order' => $order,
-                        'transaction' => $transaction,
-                        'vat' => $vat,
-                        'wrap' => false
-                    ));
-              }else{
+           
               $message_body = $this->getPartial('payments/order_receipt', array(
                         'customer' => $this->customer,
                         'order' => $order,
@@ -2309,7 +2002,7 @@ if((int)$unidc>200000){
                         'wrap' => false
                     ));
 
-              }
+
 
             emailLib::sendCustomerRefillEmail($this->customer, $order, $transaction);
         }
@@ -2331,7 +2024,7 @@ if((int)$unidc>200000){
 
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request, $this);
+        
         //-----------------------
         $customerid = $request->getParameter('customer_id');
         $ca = new Criteria();
@@ -2345,11 +2038,8 @@ if((int)$unidc>200000){
         return $this->redirect('customer/dashboard');
         // return sfView::NONE;
     }
-
     public function executeActivateAutoRefill(sfWebRequest $request) {
-
-        changeLanguageCulture::languageCulture($request, $this);
-
+          $this->getUser()->setCulture($request->getParameter('lng'));
         $urlval = $request->getParameter('transact');
         $customerid = $request->getParameter('customerid');
         $user_attr_3 = $request->getParameter('user_attr_3');
@@ -2385,253 +2075,18 @@ if((int)$unidc>200000){
     public function executeShortUniqueIds(sfWebRequest $request){
         
     }
+  public function executeChangeCulture(sfWebRequest $request){
 
+     // var_dump($request->getParameter('new'));
+        $this->getUser()->setCulture($request->getParameter('new'));
+       	//$this->redirect('customer/dashboard');
+        $pathArray = $request->getPathInfoArray();
+        $this->redirect($pathArray['HTTP_REFERER']);
 
-
- public function executeSignupus(sfWebRequest $request){
-
-
-
-     if ($request->isMethod('post'))
-  	{
-  		//post from step 1
-  		
-
-
-
-
-
-  	}
-  	else
-  	{
-
-  			$this->form = new CustomerForm();
-  		 
-  	}
-
-               changeLanguageCulture::languageCulture($request,$this);
-             
-               // $this->getUser()->setCulture('en');
-               // $getCultue = $this->getUser()->getCulture();
-                // Store data in the user session
-                //$this->getUser()->setAttribute('activelanguage', $getCultue);
-
-                $lang =  $this->getUser()->getAttribute('activelanguage');
-                $this->lang = $lang;
-
-
-                $this->form = new CustomerFormB2C();
-                $id=$request->getParameter('invite_id');
-                $visitor_id = $request->getParameter('visitor');
-                //$this->form->widgetSchema->setLabel('the_field_id', false);
-                if($visitor_id!=NULL){
-                    $c = new Criteria();
-                      $c->add(VisitorsPeer::ID, $request->getParameter('visitor'));
-                      $visitor=  VisitorsPeer::doSelectOne($c);
-                      $status = $visitor->getStatus();
-                      $visitor->setStatus($status."> B2C Signup Page ");
-                      $visitor->save();
-                }
-
-                if($id!=NULL)
-                {
-                    $c=new Criteria();
-                    //$c->add(InvitePeer::ID,$id);
-                    //$c->add(InvitePeer::INVITE_STATUS,'2');
-                    $invite =  InvitePeer::retrieveByPK($id);
-                    if($invite){
-                    $invite->setInviteStatus('2');
-                    $invite->save();
-
-
-                    }
-                }
-
-  		//set referrer id
-  		if ($referrer_id = $request->getParameter('ref'))
-  		{
-  			$c = new Criteria();
-  			$c->add(AgentCompanyPeer::ID, $referrer_id);
-
-  			if (AgentCompanyPeer::doSelectOne($c))
-  				$this->form->setDefault('referrer_id', $referrer_id);
-  		}
-
-
-                unset($this->form['manufacturer']);
-		unset($this->form['device_id']);
-
-
-  		if($request->isMethod('post')){
-
-						unset($this->form['imsi']);
-						unset($this->form['uniqueid']);
-
-  			$this->processFormus($request, $this->form , $id);
-
-
-
-  		}
-
-  }
-protected function processFormus(sfWebRequest $request, sfForm $form , $id)
-  {
-
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        changeLanguageCulture::languageCulture($request,$this);
-
-        //$this->getUser()->setCulture('en');
-       // $getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-       //$this->getUser()->setAttribute('activelanguage', $getCultue);
-
-  	//print_r($request->getParameter($form->getName()));
-  	$customer = $request->getParameter($form->getName());
-  	$product = $customer['product'];
-  	 $plainPws =  $customer["password"];
-          $refVal =  $customer["referrer_id"];
-
-
-    $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
-
-    if ($form->isValid())
-    {
-
-      $customer = $form->save();
-
-        $customer->setPlainText($plainPws);
-          if(isset($refVal) && $refVal!=''){
-
-              $customer->setRegistrationTypeId('3');
-
-          }else{
-              $customer->setRegistrationTypeId('1');
-          }
-
-        $mobile = "";
-        $mobile =   $customer->getMobileNumber();
-                //$form->getMobileNumber();
-        //$customer["mobile_number"];
-
-        $sms_text="";
-        $number = $customer->getMobileNumber();
-        $mtnumber = $customer->getMobileNumber();
-
-        $numberlength=strlen($mobile);
-        $endnumberlength=$numberlength-2;
-        $number = substr($number, 2, $endnumberlength);
-            //$uniqueId  = $text;
-
-              $uc = new Criteria();
-            $uc->add(UniqueIdsPeer::REGISTRATION_TYPE_ID, 3);
-            $uc->addAnd(UniqueIdsPeer::STATUS, 0);
-            $availableUniqueCount = UniqueIdsPeer::doCount($uc);
-            $availableUniqueId = UniqueIdsPeer::doSelectOne($uc);
-
-            if($availableUniqueCount  == 0){
-                // Unique Ids are not avaialable. Then Redirect to the sorry page and send email to the support.
-                emailLib::sendUniqueIdsShortage();
-                $this->redirect('http://landncall.zerocall.com/b2c.php/customer/shortUniqueIds');
-            }
-            $uniqueId = $availableUniqueId->getUniqueNumber();
-
-
-
-        $customer->setUniqueid($uniqueId);
-        $customer->save();
-
-        $getFirstnumberofMobile = substr($mtnumber, 0,1);     // bcdef
-        if($getFirstnumberofMobile==0){
-          $TelintaMobile = substr($mtnumber, 1);
-          $TelintaMobile =  '46'.$TelintaMobile ;
-        }else{
-          $TelintaMobile = '46'.$mtnumber;
-        }
-         //------save the callback data
-      
-
-      if($id!=NULL)
-      {
-                $invite =  InvitePeer::retrieveByPK($id);
-                if($invite){
-                    $invite->setInviteNumber($customer->getMobileNumber());
-                    $invite->save();
-                    /*if($invite->getInviteNumber())
-                    {
-                        $fonet=new Fonet();
-                        $cid=$invite->getCustomerId();
-                       // $customer=CustomerPeer::retrieveByPK($cid);
-                       // $fonet->recharge($customer,1,true);
-                       // $invite->setBonusPaid(1);
-                       // $invite->save();
-
-                    }*/
-
-                    }
-
-      }
-
-
-      //$this->getUser()->setAttribute('customer_id', $customer->getId(), 'usersignup');
-      //$this->getUser()->setAttribute('product_id', $product, 'usersignup');
-
-
-      $this->redirect('http://landncall.zerocall.com/b2c.php/customer/signupusstep2?cid='.$customer->getId().'&pid='.$product);
-      //$this->redirect(sfConfig::get('app_epay_relay_script_url').$this->getController()->genUrl('@signup_step2?customer_id='.$customer->getId().'&product_id='.$product, true));
     }
-  }
+ public function executeTermsAndCondition(sfWebRequest $request){
 
- public function executeSignupusstep2(sfWebRequest $request){
-  changeLanguageCulture::languageCulture($request, $this);
+    
 
-        //$this->getUser()->setCulture('en');
-        //$getCultue = $this->getUser()->getCulture();
-        // Store data in the user session
-        //$this->getUser()->setAttribute('activelanguage', $getCultue);
-
-        $this->form = new PaymentForm();
-
-
-        $product_id = $request->getParameter('pid');
-        $customer_id = $request->getParameter('cid');
-
-        $this->getUser()->setAttribute('product_ids', $product_id);
-        $this->getUser()->setAttribute('cusid', $customer_id);
-
-        if ($product_id == '' || $customer_id == '') {
-            $this->forward404('Product id not found in session');
-        }
-
-        $order = new CustomerOrder();
-        $transaction = new Transaction();
-
-        $order->setProductId($product_id);
-        $order->setCustomerId($customer_id);
-        $order->setExtraRefill($order->getProduct()->getInitialBalance());
-
-        //$extra_refil_choices = ProductPeer::getRefillChoices();
-        //TODO: restrict quantity to be 1
-        $order->setQuantity(1);
-
-        //$order->setExtraRefill($extra_refil_choices[0]);//minumum refill amount
-        $order->setIsFirstOrder(1);
-
-        $order->save();
-
-        $transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
-        //TODO: $transaction->setAmount($order->getProduct()->getPrice());
-        $transaction->setDescription($this->getContext()->getI18N()->__('Registrering inkl. taletid'));
-        $transaction->setOrderId($order->getId());
-        $transaction->setCustomerId($customer_id);
-        //$transaction->setTransactionStatusId() // default value 1
-
-        $transaction->save();
-
-        $this->order = $order;
-        $this->forward404Unless($this->order);
-
-        $this->order_id = $order->getId();
-        $this->amount = $transaction->getAmount();
- }
-
+    }
 }

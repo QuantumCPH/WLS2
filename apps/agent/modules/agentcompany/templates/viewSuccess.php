@@ -6,18 +6,18 @@
 
 ?>
 
-<a href="#" onclick="showCompany()" title="company info"><?php echo __('Company info') ?></a>
-&nbsp; | &nbsp;
+<a href="#" onclick="showCompany()" title="company info" class="external_link"><?php echo __('Company info') ?></a>
+
 <?php if($sf_user->isAuthenticated()): ?>
      <?php if($agent_company->getIsPrepaid()): ?>
 
-        <?php echo link_to(__('Account Recharge'), 'affiliate/accountRefill') ?>
+        <?php echo link_to(__('Account Recharge'), 'affiliate/accountRefill',array('class'=>'external_link')) ?>
 
-    &nbsp; | &nbsp;
+    
 
-        <?php echo link_to(__('Recharge Receipts'), 'affiliate/agentOrder') ?>
+        <?php echo link_to(__('Recharge Receipts'), 'affiliate/agentOrder',array('class'=>'external_link')) ?>
 
-    &nbsp; | &nbsp;
+    
     
     <?php endif; ?>
 <?php endif; ?>
@@ -27,19 +27,20 @@
 &nbsp; | &nbsp;
 -->
  <?php if($agent_company->getIsPrepaid()): ?>
- <?php echo link_to(__('Payment History'), 'affiliate/paymentHistory') ?>
+ <?php echo link_to(__('Payment History'), 'affiliate/paymentHistory',array('class'=>'external_link')) ?>
 <?php endif; ?>
 <br/>
 <div id="company-info" style="display:block">
-    <h1><?php echo __('Company info') ?></h1>
-
+<div id="sf_admin_container"><h1><?php echo __('Company info') ?></h1></div>
+        
+  <div class="borderDiv"> 
 
       <label class="grid_2 required"><?php echo __('Company Name:') ?></label>
       <div class="grid_2 content">
             <?php echo $agent_company->getName() ?>
       </div>
 
-      <label class="grid_2 required"><?php echo __('CVR Number:') ?></label>
+      <label class="grid_2 required"><?php echo __('Vat Number:') ?></label>
       <div class="grid_2 content">
             <?php echo $agent_company->getCVRNumber() ?>
       </div>
@@ -60,12 +61,12 @@
 
       <label class="grid_2 required"><?php echo __('Country:') ?></label>
       <div class="grid_2 content">
-            <?php echo $agent_company->getCountry()->getName() ?>
+            <?php echo $agent_company->getEnableCountry()->getName() ?>
       </div>
 
       <label class="grid_2 required"><?php echo __('City:') ?></label>
       <div class="grid_2 content">
-            <?php echo $agent_company->getCity()?$agent_company->getCity()->getName():'N/A' ?>
+            <?php echo $agent_company->getCityname()?$agent_company->getCityname():'N/A' ?>
       </div>
 
       <div class="clear"></div>
@@ -82,7 +83,7 @@
 
       <div class="clear"></div>
 
-      <label class="grid_2 required"><?php echo __('Head Phone Nr:') ?></label>
+      <label class="grid_2 required"><?php echo __('Head Phone No:') ?></label>
       <div class="grid_2 content">
             <?php echo $agent_company->getHeadPhoneNumber() ?>
       </div>
@@ -94,27 +95,20 @@
 
       <div class="clear"></div>
 
-      <label class="grid_2 required"><?php echo __('Company form:') ?></label>
+<!--      <label class="grid_2 required"><?php echo __('Company form:') ?></label>
       <div class="grid_2 content">
             <?php echo ''.$agent_company->getCompanyType() ?>
       </div>
 
-      <label class="grid_2 required"><?php echo __('Product Details:') ?></label>
-      <div class="grid_2 content">
-            <?php echo ''.$agent_company->getProductDetail() ?>
-      </div>
-
-      <div class="clear"></div>
-
-      <label class="grid_2 required"><?php echo __('Commission period:') ?></label>
-      <div class="grid_2 content">
-            <?php echo ''.$agent_company->getCommissionPeriod() ?>
-      </div>
 
       <label class="grid_2 required"><?php echo __('Account Manager:') ?></label>
       <div class="grid_2 content">
             <?php echo ''.$agent_company->getAccountManager() ?>
       </div>
+
+      <div class="clear"></div>-->
+
+
 
       <div class="clear"></div>
 
@@ -122,9 +116,10 @@
       <div class="grid_2 content">
             <?php echo $agent_company->getCreatedAt() ?>
       </div>
-
+      <div class="clr"></div>
 </div>
 
+</div>
 <div id="bank-info" style="display:none">
     <h1>Bank info</h1>
 

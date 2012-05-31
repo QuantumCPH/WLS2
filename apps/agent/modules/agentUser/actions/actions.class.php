@@ -64,7 +64,10 @@ class agentUserActions extends sfActions {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 01/24/11 - Ahtsham
          changeLanguageCulture::languageCulture($request,$this);
-         
+  if($request->getParameter('new'))
+                $this->getUser()->setCulture($request->getParameter('new'));
+        else
+            $this->getUser()->setCulture($this->getUser()->getCulture());
         $this->form = new AgentLoginForm();
 
         if($request->isMethod('post')){
@@ -80,18 +83,23 @@ class agentUserActions extends sfActions {
 
                 if($agent_user){
                     $this->getUser()->setAuthenticated(true);
-                    $this->getUser()->setAttribute('agent_id', $agent_user->getId(), 'usersession');
-                      $this->getUser()->setAttribute('username', $agent_user->getUsername(), 'usersession');
-                    $this->getUser()->setAttribute('agent_company_id', $agent_user->getAgentCompanyId(), 'usersession');
+                    $this->getUser()->setAttribute('agent_id', $agent_user->getId(), 'agentsession');
+                      $this->getUser()->setAttribute('username', $agent_user->getUsername(), 'agentsession');
+                    $this->getUser()->setAttribute('agent_company_id', $agent_user->getAgentCompanyId(), 'agentsession');
                     //$this->redirect('@homepage');
-                    $this->redirect('affiliate/report?show_summary=1');
+
+        
+                     $this->redirect( sfConfig::get('app_main_url').'affiliate/report?show_summary=1');
+
+
+                   
                 }
             }
         }
     }
 
     public function executeLogout(){
-        $this->getUser()->getAttributeHolder()->removeNamespace('usersession');
+        $this->getUser()->getAttributeHolder()->removeNamespace('agentsession');
         $this->getUser()->setAuthenticated(false);
         $this->redirect('@homepage');
     }

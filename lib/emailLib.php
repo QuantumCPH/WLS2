@@ -1,4 +1,6 @@
 <?php
+
+require_once(sfConfig::get('sf_lib_dir') . '/changeLanguageCulture.php');
 class emailLib{
 
       public static function sendAgentRefilEmail(AgentCompany $agent,$agent_order)
@@ -35,6 +37,7 @@ class emailLib{
                 'vat'=>$vat,
                 'agent_name'=>$recepient_agent_name,
                 'wrap'=>false,
+                'agent' => $agent
         ));
 
         
@@ -43,9 +46,9 @@ class emailLib{
 
         //Support Information
       $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        #$sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2');
 
         //------------------Sent The Email To Customer
         
@@ -59,7 +62,7 @@ class emailLib{
             $email2->setReceipientName($recepient_agent_name);
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
-             $email2->setEmailType('LandNCall AB refill via agent');
+             $email2->setEmailType('WLS 2 refill via agent');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -73,7 +76,7 @@ class emailLib{
             $email3->setReceipientName($sender_name);
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
-            $email3->setEmailType('LandNCall AB refill via agent');
+            $email3->setEmailType('WLS 2 refill via agent');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -85,7 +88,7 @@ class emailLib{
             $email4->setReceipientName($sender_namecdu);
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
-            $email4->setEmailType('LandNCall AB refill via agent');
+            $email4->setEmailType('WLS 2 refill via agent');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -127,7 +130,7 @@ class emailLib{
         }
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
-        $message_body = get_partial('affiliate/order_receipt', array(
+        $message_body = get_partial('affiliate/refill_order_receipt', array(
                 'customer'=>$customer,
                 'order'=>$order,
                 'transaction'=>$transaction,
@@ -143,9 +146,9 @@ class emailLib{
 
         //Support Information
       $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        #$sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2');
 
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
@@ -155,7 +158,7 @@ class emailLib{
             $email->setReceipientEmail($recepient_email);
             $email->setAgentId($agent_company_id);
             $email->setCutomerId($customer_id);
-            $email->setEmailType('LandNCall AB refill via agent');
+            $email->setEmailType('WLS 2 refill via agent');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -170,7 +173,7 @@ class emailLib{
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
             $email2->setCutomerId($customer_id);
-            $email2->setEmailType('LandNCall AB refill via agent');
+            $email2->setEmailType('WLS 2 refill via agent');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -185,7 +188,7 @@ class emailLib{
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB refill via agent');
+            $email3->setEmailType('WLS 2 refill via agent');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -198,7 +201,7 @@ class emailLib{
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB refill via agent');
+            $email4->setEmailType('WLS 2 refill via agent');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -209,20 +212,6 @@ class emailLib{
     public static function sendCustomerRegistrationViaAgentEmail(Customer $customer,$order)
     {
 
-        echo 'sending email';
-        echo '<br/>';
-        $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
-        echo $product_price;
-        echo '<br/>';
-	$vat = .20 * $product_price;
-        echo $vat;
-        echo '<br/>';
-        
-//        //create transaction
-//        $transaction = new Transaction();
-//        $transaction->setOrderId($order->getId());
-//        $transaction->setCustomer($customer);
-//        $transaction->setAmount($form['extra_refill']);
 
         $tc  =new Criteria();
         $tc->add(TransactionPeer::CUSTOMER_ID, $customer->getId() );
@@ -241,6 +230,7 @@ class emailLib{
             $recepient_agent_email  = '';
             $recepient_agent_name = '';
         }
+        $vat = $order->getProduct()->getRegistrationFee()*.25;
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
         $message_body = get_partial('affiliate/order_receipt', array(
@@ -259,9 +249,9 @@ class emailLib{
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        #$sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2');
 
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
@@ -271,7 +261,7 @@ class emailLib{
             $email->setReceipientEmail($recepient_email);
             $email->setAgentId($agent_company_id);
             $email->setCutomerId($customer_id);
-            $email->setEmailType('LandNCall AB Customer registration via agent');
+            $email->setEmailType('WLS 2 Customer registration via agent');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -286,7 +276,7 @@ class emailLib{
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
             $email2->setCutomerId($customer_id);
-            $email2->setEmailType('LandNCall AB Customer registration via agent');
+            $email2->setEmailType('WLS 2 Customer registration via agent');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -301,7 +291,7 @@ class emailLib{
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB Customer registration via agent');
+            $email3->setEmailType('WLS 2 Customer registration via agent');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -315,7 +305,7 @@ class emailLib{
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB Customer registration via agent');
+            $email4->setEmailType('WLS 2 Customer registration via agent');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -323,19 +313,19 @@ class emailLib{
 
     }
     
-    public static function sendForgetPasswordEmail(Customer $customer,$message_body)
+    public static function sendForgetPasswordEmail(Customer $customer,$message_body, $subject)
     {
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
 
-        $subject = "Begäran om lösenord";
+       // $subject = __("Request for password");
         $recepient_email    = trim($customer->getEmail());
         $recepient_name     = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
         $customer_id        = trim($customer->getId());
         $referrer_id        = trim($customer->getReferrerId());
         
         //Support Information
-        $sender_email = sfConfig::get('app_email_sender_email', 'support@LandNCall AB.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB support');
+        $sender_email = sfConfig::get('app_email_sender_email', 'support@WLS 2.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2 support');
 
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
@@ -345,7 +335,7 @@ class emailLib{
             $email->setReceipientEmail($recepient_email);
             $email->setCutomerId($customer_id);
             $email->setAgentId($referrer_id);
-            $email->setEmailType('LandNCall AB Forget Password');
+            $email->setEmailType('WLS 2 Forget Password');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -389,9 +379,9 @@ class emailLib{
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-         $sender_emailcdu = sfConfig::get('app_email_sender_email', 'jan.larsson@landncall.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+         $sender_emailcdu = sfConfig::get('app_email_sender_email', 'rs@zapna.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
             $email = new EmailQueue();
@@ -400,7 +390,7 @@ class emailLib{
             $email->setReceipientEmail($recepient_email);
             $email->setAgentId($referrer_id);
             $email->setCutomerId($customer_id);
-            $email->setEmailType('LandNCall AB Customer Registration');
+            $email->setEmailType('WLS 2 Customer Registration');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -414,7 +404,7 @@ class emailLib{
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($referrer_id);
             $email2->setCutomerId($customer_id);
-            $email2->setEmailType('LandNCall AB Customer Registration');
+            $email2->setEmailType('WLS 2 Customer Registration');
             $email2->setMessage($message_body);
             $email2->save();            
          endif;
@@ -428,7 +418,7 @@ class emailLib{
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($referrer_id);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB refill via agent');
+            $email3->setEmailType('WLS 2 refill via agent');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -441,7 +431,7 @@ class emailLib{
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($referrer_id);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB refill via agent');
+            $email4->setEmailType('WLS 2 refill via agent');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -452,9 +442,9 @@ class emailLib{
 
         $subject = __('Payment Confirmation');
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB ');
-         $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', ' jan.larsson@landncall.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB ');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2 ');
+         $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2 ');
 
         $recepient_email = trim($customer->getEmail());
         $recepient_name = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
@@ -470,7 +460,7 @@ class emailLib{
             $email->setReceipientName($recepient_name);
             $email->setCutomerId($customer_id);
             $email->setAgentId($referrer_id);
-            $email->setEmailType('LandNCall AB Customer Auto Refill');
+            $email->setEmailType('WLS 2 Customer Auto Refill');
 
             $email->save();
         endif;
@@ -484,7 +474,7 @@ class emailLib{
             $email2->setReceipientName($sender_name);
             $email2->setCutomerId($customer_id);
             $email2->setAgentId($referrer_id);
-            $email2->setEmailType('LandNCall AB Customer Auto Refill');
+            $email2->setEmailType('WLS 2 Customer Auto Refill');
             $email2->save();
          endif;
 ////////////////////////////////////////////////////////
@@ -497,7 +487,7 @@ class emailLib{
             $email3->setReceipientName($sender_namecdu);
             $email3->setCutomerId($customer_id);
             $email3->setAgentId($referrer_id);
-            $email3->setEmailType('LandNCall AB Customer Auto Refill');
+            $email3->setEmailType('WLS 2 Customer Auto Refill');
             $email3->save();
          endif;
     }
@@ -507,9 +497,9 @@ class emailLib{
 
         $subject            = __('Payment Confirmation');
         $sender_email       = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name        = sfConfig::get('app_email_sender_name', 'LandNCall AB ');
-        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB ');
+        $sender_name        = sfConfig::get('app_email_sender_name', 'WLS 2 ');
+        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'WLS 2 ');
 
         $recepient_email    = trim($customer->getEmail());
         $recepient_name     = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
@@ -526,7 +516,7 @@ class emailLib{
             $email->setReceipientName($recepient_name);
             $email->setCutomerId($customer_id);
             $email->setAgentId($referrer_id);
-            $email->setEmailType('LandNCall AB Customer Confirm Payment');
+            $email->setEmailType('WLS 2 Customer Confirm Payment');
             
             $email->save();
         endif;
@@ -540,7 +530,7 @@ class emailLib{
             $email2->setReceipientName($sender_name);
             $email2->setCutomerId($customer_id);
             $email2->setAgentId($referrer_id);
-            $email2->setEmailType('LandNCall AB Customer Confirm Payment');
+            $email2->setEmailType('WLS 2 Customer Confirm Payment');
             $email2->save();
         endif;
             //send to cdu
@@ -552,33 +542,46 @@ class emailLib{
             $email3->setReceipientName($sender_namecdu);
             $email3->setCutomerId($customer_id);
             $email3->setAgentId($referrer_id);
-            $email3->setEmailType('LandNCall AB Customer Confirm Payment');
+            $email3->setEmailType('WLS 2 Customer Confirm Payment');
             $email3->save();
         endif;
                 
     }
 
 
-    public static function sendCustomerConfirmRegistrationEmail($inviteuserid){
-        $subject = 'Bonus Bekräftelse Smartsim';
+    public static function sendCustomerConfirmRegistrationEmail($inviteuserid,$customerr,$subject){
 
-        $sender_email       = sfConfig::get('app_email_sender_email', 'support@landncall.com');
-        $sender_name        = sfConfig::get('app_email_sender_name', 'LandNCall AB support');
-        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB support');
-        $message_body   =   '
-Härmed bekräftas att du har fått provision insatt på ditt konto för att du har tipsat en vän om Smartsim från LandNCall.
-Gå in på ”Mina sidor” och gå till ”Övrig historik” under ”Samtalshistorik” så ser du vad du har tjänat.<br/>Med vänlig hälsning,
-<br/>
-LandNCall<br/>
-www.landncall.com';
-
-        $c = new Criteria();
+          $c = new Criteria();
   	$c->add(CustomerPeer::ID, $inviteuserid);
         $customer = CustomerPeer::doSelectOne($c);
         $recepient_email = trim($customer->getEmail());
         $recepient_name = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
         $customer_id        = trim($customer->getId());
+
+
+     $subject =$subject;
+  $subject=$subject;
+        $sender_email       = sfConfig::get('app_email_sender_email', 'support@wls.com');
+        $sender_name        = sfConfig::get('app_email_sender_name', 'WLS 2 support');
+        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'WLS 2 support');
+
+          sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
+        $message_body = get_partial('pScripts/bonus_web_reg', array(
+                'customer'=>$customerr,
+                'recepient_name'=>$recepient_name,
+
+                'wrap'=>true,
+        ));
+//        $message_body   ='
+//Härmed bekräftas att du har fått provision insatt på ditt konto för att du har tipsat en vän om Smartsim från wls.
+//Gå in på ”Mina sidor” och gå till ”Övrig historik” under ”Samtalshistorik” så ser du vad du har tjänat.<br/>Med vänlig hälsning,
+//<br/>
+//wls<br/>
+//www.WLS2.zerocall.com';
+
+        
+      
         //$referrer_id        = trim($customer->getReferrerId());
 
         //send to user
@@ -590,7 +593,7 @@ www.landncall.com';
             $email->setReceipientName($recepient_name);
             $email->setCutomerId($customer_id);
             //$email->setAgentId($referrer_id);
-            $email->setEmailType('LandNCall AB Customer Confirm Bonus');
+            $email->setEmailType('WLS 2 Customer Confirm Bonus');
 
             $email->save();
         endif;
@@ -604,7 +607,7 @@ www.landncall.com';
             $email2->setReceipientName($sender_name);
             $email2->setCutomerId($customer_id);
             //$email2->setAgentId($referrer_id);
-            $email2->setEmailType('LandNCall AB Customer Confirm Bonus');
+            $email2->setEmailType('WLS 2 Customer Confirm Bonus');
             $email2->save();
         endif;
         //////////////////////////////////////////////////////////////////
@@ -616,7 +619,7 @@ www.landncall.com';
             $email3->setReceipientEmail($sender_emailcdu);
             $email3->setCutomerId($customer_id);
             //$email3->setAgentId($referrer_id);
-            $email3->setEmailType('LandNCall AB Customer Confirm Bonus');
+            $email3->setEmailType('WLS 2 Customer Confirm Bonus');
             $email3->save();
         endif;
 
@@ -626,20 +629,6 @@ www.landncall.com';
     public static function sendCustomerRegistrationViaWebEmail(Customer $customer,$order)
     {
 
-    //echo 'sending email';
-        echo '<br/>';
-        $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
-       // echo $product_price;
-        echo '<br/>';
-	$vat = .20 * $product_price;
-       // echo $vat;
-        echo '<br/>';
-
-//        //create transaction
-//        $transaction = new Transaction();
-//        $transaction->setOrderId($order->getId());
-//        $transaction->setCustomer($customer);
-//        $transaction->setAmount($form['extra_refill']);
 
         $tc  =new Criteria();
         $tc->add(TransactionPeer::CUSTOMER_ID, $customer->getId() );
@@ -658,14 +647,40 @@ www.landncall.com';
             $recepient_agent_email  = '';
             $recepient_agent_name = '';
         }
+
+          $lang = 'de';
+           // $this->lang = $lang;
+
+            $countrylng = new Criteria();
+            $countrylng->add(EnableCountryPeer::LANGUAGE_SYMBOL, $lang);
+            $countrylng = EnableCountryPeer::doSelectOne($countrylng);
+            if ($countrylng) {
+                $countryName = $countrylng->getName();
+                $languageSymbol = $countrylng->getLanguageSymbol();
+                $lngId = $countrylng->getId();
+
+                $postalcharges = new Criteria();
+                $postalcharges->add(PostalChargesPeer::COUNTRY, $lngId);
+                $postalcharges->add(PostalChargesPeer::STATUS, 1);
+                $postalcharges = PostalChargesPeer::doSelectOne($postalcharges);
+                if ($postalcharges) {
+                    $postalcharge = $postalcharges->getCharges();
+                } else {
+                    $postalcharge = '';
+                }
+            }
+
+            $vat = ($order->getProduct()->getRegistrationFee()+$postalcharge)*.25;
+            
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
-        $message_body = get_partial('pScripts/order_receipt', array(
+        $message_body = get_partial('pScripts/order_receipt_web_reg', array(
                 'customer'=>$customer,
                 'order'=>$order,
                 'transaction'=>$transaction,
                 'vat'=>$vat,
                 'agent_name'=>$recepient_agent_name,
+                'postalcharge'=>$postalcharge,
                 'wrap'=>true,
         ));
 
@@ -677,9 +692,9 @@ www.landncall.com';
 
         //Support Information
         $sender_email       = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name        = sfConfig::get('app_email_sender_name', 'LandNCall AB ');
-        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB ');
+        $sender_name        = sfConfig::get('app_email_sender_name', 'WLS 2 ');
+        $sender_emailcdu       = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_namecdu        = sfConfig::get('app_email_sender_name_cdu', 'WLS 2 ');
 
         //------------------Sent The Email To Customer
         if($recepient_email!=''){
@@ -688,7 +703,7 @@ www.landncall.com';
             $email->setReceipientName($recepient_name);
             $email->setReceipientEmail($recepient_email);
             $email->setCutomerId($customer_id);
-            $email->setEmailType('LandNCall AB Customer registration via link');
+            $email->setEmailType('WLS 2 Customer registration via link');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -703,7 +718,7 @@ www.landncall.com';
             $email3->setReceipientName($sender_name);
             $email3->setReceipientEmail($sender_email);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB Customer registration via link');
+            $email3->setEmailType('WLS 2 Customer registration via link');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -716,7 +731,7 @@ www.landncall.com';
             $email4->setReceipientName($sender_namecdu);
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB Customer registration via link');
+            $email4->setEmailType('WLS 2 Customer registration via link');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -729,31 +744,11 @@ www.landncall.com';
     public static function sendCustomerRegistrationViaAgentSMSEmail(Customer $customer,$order)
     {
 
-        echo 'sending email';
-        echo '<br/>';
-        $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
-        echo $product_price;
-        echo '<br/>';
-	$vat = .20 * $product_price;
-        echo $vat;
-        echo '<br/>';
-            echo 'ID:'.$customer->getId();
-                echo '<br/>';
-                    echo '<br/>'.$customer->getReferrerId();
-
-
-//        //create transaction
-//        $transaction = new Transaction();
-//        $transaction->setOrderId($order->getId());
-//        $transaction->setCustomer($customer);
-//        $transaction->setAmount($form['extra_refill']);
 
         $tc  =new Criteria();
         $tc->add(TransactionPeer::CUSTOMER_ID, $customer->getId() );
         $tc->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
         $transaction = TransactionPeer::doSelectOne($tc);
-
-
         //This Section For Get The Agent Information
         $agent_company_id = $customer->getReferrerId();
         if($agent_company_id!=''){
@@ -765,7 +760,7 @@ www.landncall.com';
             $recepient_agent_email  = '';
             $recepient_agent_name = '';
         }
-
+         $vat = ($order->getProduct()->getRegistrationFee())*.25;
       sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
         $message_body = get_partial('pScripts/order_receipt_sms', array(
                 'customer'=>$customer,
@@ -783,9 +778,9 @@ www.landncall.com';
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2');
 
         //------------------Sent The Email To Customer
         
@@ -801,7 +796,7 @@ www.landncall.com';
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
             $email2->setCutomerId($customer_id);
-            $email2->setEmailType('LandNCall AB Customer registration via agent SMS ');
+            $email2->setEmailType('Customer registration via agent SMS ');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -816,7 +811,7 @@ www.landncall.com';
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB Customer registration via agent SMS ');
+            $email3->setEmailType('Customer registration via agent SMS ');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -830,7 +825,7 @@ www.landncall.com';
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB Customer registration via agent SMS ');
+            $email4->setEmailType('Customer registration via agent SMS ');
 
             $email4->setMessage($message_body);
             $email4->save();
@@ -893,9 +888,9 @@ www.landncall.com';
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'rs@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'WLS 2');
 
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
@@ -905,7 +900,7 @@ www.landncall.com';
             $email->setReceipientEmail($recepient_email);
             $email->setAgentId($agent_company_id);
             $email->setCutomerId($customer_id);
-            $email->setEmailType('LandNCall AB Customer registration via APP');
+            $email->setEmailType('WLS 2 Customer registration via APP');
             $email->setMessage($message_body);
             $email->save();
         }
@@ -920,7 +915,7 @@ www.landncall.com';
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
             $email2->setCutomerId($customer_id);
-            $email2->setEmailType('LandNCall AB Customer registration via APP');
+            $email2->setEmailType('WLS 2 Customer registration via APP');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -935,7 +930,7 @@ www.landncall.com';
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
             $email3->setCutomerId($customer_id);
-            $email3->setEmailType('LandNCall AB Customer registration via APP');
+            $email3->setEmailType('WLS 2 Customer registration via APP');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
@@ -949,7 +944,7 @@ www.landncall.com';
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
             $email4->setCutomerId($customer_id);
-            $email4->setEmailType('LandNCall AB Customer registration via APP');
+            $email4->setEmailType('WLS 2 Customer registration via APP');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
@@ -962,7 +957,7 @@ public static function sendvoipemail(Customer $customer,$order,$transaction)
 
         //set vat
 	$vat = 0;
-	$subject = 'Bekräftelse - nytt resenummer frän LandNCall';
+	$subject = 'Bekräftelse - nytt resenummer frän wls';
         $recepient_email    = trim($customer->getEmail());
         $recepient_name     = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
         $customer_id        = trim($customer->getId());
@@ -1004,16 +999,16 @@ public static function sendvoipemail(Customer $customer,$order,$transaction)
         
         
         
-         $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'>".image_tag('http://landncall.zerocall.com/images/logo.gif')."</tr></table><table cellspacing='0' width='600px'><tr><td>Grattis till ditt nya resenummer. Detta nummer är alltid kopplat till den telefon där du har Smartsim aktiverat. Med resenumret blir du nådd utomlands då du har ett lokalt SIM-kort. Se prislistan för hur mycket det kostar att ta emot samtal. 
+         $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'>".image_tag('https://wls2.zerocall.com/images/logo.gif')."</tr></table><table cellspacing='0' width='600px'><tr><td>Grattis till ditt nya resenummer. Detta nummer är alltid kopplat till den telefon där du har Smartsim aktiverat. Med resenumret blir du nådd utomlands då du har ett lokalt SIM-kort. Se prislistan för hur mycket det kostar att ta emot samtal.
 Ditt resenummer är $voipnumbers.<br/><br/>
 Med vänlig hälsning<br/><br/>
-LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr></table>";
+WLS2<br/><a href='http://www.wls2.zerocall.com.com'>www.wls2.zerocall.com.com</a></td></tr></table>";
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'jan.larsson@landncall.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'rs@zapna.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
         //------------------Sent The Email To Customer
         if(trim($recepient_email)!=''){
             $email = new EmailQueue();
@@ -1088,7 +1083,7 @@ LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr>
              $email->setReceipientEmail($recepient_email);
              $email->setCutomerId($customer_id);
              $email->setAgentId($referrer_id);
-             $email->setEmailType('LandnCall Customer Balance');
+             $email->setEmailType('wls Customer Balance');
              $email->setReceipientName($recepient_name);
              $email->save();
        endif;
@@ -1103,13 +1098,13 @@ LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr>
          $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'></tr></table><table cellspacing='0' width='600px'><tr><td>
              ".$message." <br/><br/>
 Med vänlig hälsning<br/><br/>
-LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr></table>";
+WLS2<br/><a href='http://www.wls2.zerocall.com.com'>www.wls2.zerocall.com.com</a></td></tr></table>";
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'zerocallengineering@googlegroups.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'rs@zapna.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
        
 
        //--------------Sent The Email To okhan
@@ -1147,13 +1142,13 @@ LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr>
          $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'></tr></table><table cellspacing='0' width='600px'><tr><td>
              ".$message." <br/><br/>
 Uniuqe Ids finsihed.<br/><br/>
-LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr></table>";
+WLS2<br/><a href='http://www.wls2.zerocall.com.com'>www.wls2.zerocall.com.com</a></td></tr></table>";
 
         //Support Informationt
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'zerocallengineering@googlegroups.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'rs@zapna.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
 
 
        //--------------Sent The Email To okhan
@@ -1192,13 +1187,57 @@ LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr>
          $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'></tr></table><table cellspacing='0' width='600px'><tr><td>
              ".$message." <br/><br/>
 Uniuqe Id ".$uniqueid." has issue while assigning on ".$customer->getMobileNumber()."<br/><br/>
-LandNCall<br/><a href='http://www.landncall.com'>www.landncall.com</a></td></tr></table>";
+wls2<br/><a href='http://www.wls2.zerocall.com.com'>www.wls2.zerocall.com.com</a></td></tr></table>";
 
         //Support Informationt
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
         $sender_emailcdu = sfConfig::get('app_email_sender_email', 'zerocallengineering@googlegroups.com');
-        $sender_namecdu = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
+
+
+       //--------------Sent The Email To okhan
+         if (trim($sender_email)!=''):
+            $email3 = new EmailQueue();
+            $email3->setSubject($subject);
+            $email3->setReceipientName($sender_name);
+            $email3->setReceipientEmail($sender_email);
+            $email3->setAgentId($referrer_id);
+            $email3->setCutomerId($customer_id);
+            $email3->setEmailType('Unique Ids Finished');
+            $email3->setMessage($message_body);
+            $email3->save();
+        endif;
+        //-----------------------------------------
+         //--------------Sent The Email To CDU
+         if (trim($sender_emailcdu)!=''):
+            $email4 = new EmailQueue();
+            $email4->setSubject($subject);
+            $email4->setReceipientName($sender_namecdu);
+            $email4->setReceipientEmail($sender_emailcdu);
+            $email4->setAgentId($referrer_id);
+            $email4->setCutomerId($customer_id);
+            $email4->setEmailType('Unique Ids Finished');
+            $email4->setMessage($message_body);
+            $email4->save();
+        endif;
+        //-----------------------------------------
+    }
+
+    public static function sendUniqueIdsIssueSmsReg($uniqueid,  Customer $customer)
+    {
+
+        $subject = 'Unique Ids finished.';
+         $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'></tr></table><table cellspacing='0' width='600px'><tr><td>
+             ".$message." <br/><br/>
+Uniuqe Id ".$uniqueid." has issue while assigning on ".$customer->getMobileNumber()." in sms registration<br/><br/>
+WLS2<br/><a href='http://www.wls2.zerocall.com'>www.wls2.zerocall.com</a></td></tr></table>";
+
+        //Support Informationt
+        $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'WLS 2');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email', 'zerocallengineering@googlegroups.com');
+        $sender_namecdu = sfConfig::get('app_email_sender_name', 'WLS 2');
 
 
        //--------------Sent The Email To okhan

@@ -50,32 +50,32 @@ $wrap_content  = isset($wrap)?$wrap:false;
  ?>
  
 <?php if($wrap_content): ?>
-	<p><?php echo __('Hej') ?>&nbsp;<?php echo $customer->getFirstName();?></p>
+	<p><?php echo __('Hi') ?>&nbsp;<?php echo $customer->getFirstName();?></p>
 	
 	<p>
-	<?php echo __('Tack för din beställning av <b>%1%</b>.', array('%1%'=>$order->getProduct()->getName())) ?>
+	<?php echo __('Thank you for your order of <b>%1%</b>.', array('%1%'=>$order->getProduct()->getName())) ?>
 	</p>
 	
 	<p>
-	<?php echo __('Dina varor kommer att skickas i dag. Du bör ha leverans senast inom två arbertsdagar.'); ?> Ditt kundnummer &auml;r  <?php echo $customer->getUniqueid();?>. Det kan du anv&auml;nda i din kontakt med kundservice</p>
+	<?php echo __('Your goods will be shipped today. You should have delivery within two days. Your customer number is '); echo $customer->getUniqueid();?>. <?php echo __(' There, you can use in your dealings with customer service'); ?></p>
 	
 	<p>
-	<?php echo __('Tveka inte att ta kontakt med oss om det är något du undrar över.') ?>
+	<?php echo __('Do not hesitate to contact us if you have any questions.') ?>
 	</p>
         <p>
-            <a href="mailto:Support@landncall.com">Support@landncall.com</a>
+            <a href="mailto:Support@wls.com">Support@wls.com</a>
 	</p>
         <p>
-	<?php echo __('Med vänlig hälsning') ?>
+	<?php echo __('Yours sincerely,') ?>
 	</p>
         <p>
-	<?php echo __('Johanna') ?>
+	<?php echo __('XXXXXXX') ?>
 	</p>
 	<br />
 <?php endif; ?>
 <table width="600px">
 	<tr style="border:0px solid #fff">
-		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://landncall.zerocall.com/images/logo.gif');?></td>
+		<td colspan="4" align="right" style="text-align:right; border:0px solid #fff"><?php echo image_tag('http://wls2.zerocall.com/images/logo.gif');?></td>
 	</tr>
 </table>
 <table class="receipt" cellspacing="0" width="600px">
@@ -136,15 +136,15 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <?php if ($order->getIsFirstOrder())
     {
         echo $order->getProduct()->getName(); 
-        if($transaction->getDescription()=="Registrering inkl. taletid"){
-          echo "<br />[Smartsim inklusive pott]";
+        if($transaction->getDescription()=="Anmeldung inc. sprechen"){
+          echo "<br />["; echo __('Smartsim including pot'); echo "]";
         }else{
             echo  '<br />['. $transaction->getDescription() .']';
         }
     }
     else
     {
-	if($transaction->getDescription()=="LandNCall AB Refill"){
+	if($transaction->getDescription()=="Refill"){
           echo "Refill ".$transaction->getAmount();
         }else{
           echo $transaction->getDescription();  
@@ -181,7 +181,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
   </tr>
   <tr class="footer">
     <td class="payer_summary" colspan="4" style="font-weight:normal; white-space: nowrap;"> 
-    Landncall AB&nbsp;&nbsp;&nbsp;&nbsp;Box 42017, SE-126 12 Stockholm&nbsp;&nbsp;&nbsp; Org.nr.556810-8921 </td>    
+    <?php echo __('WLS2&nbsp;&nbsp;&nbsp;Box XXXXX, XX-XXX XX XXXXXXX&nbsp;&nbsp;&nbsp; Org.nr.XXXXXX-XXXX')?> </td>
   </tr>
 </table>
         
