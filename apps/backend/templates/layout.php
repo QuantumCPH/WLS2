@@ -165,6 +165,32 @@
                       }else{
                         echo link_to(__('Agent Commission Package'), 'agent_commission_package/index');
                       }?>
+
+                     <?php
+                      if($actionName=="selectCompany" && $modulName=="agent_company"){
+                        echo link_to(__('Refil Agent Company'), 'agent_company/selectCompany', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Refil Agent Company'), 'agent_company/selectCompany');
+                      }?>
+
+  <?php
+  if($actionName=="chargeCompany" && $modulName=="agent_company"){
+                        echo link_to(__('Charge Agent Company'), 'agent_company/chargeCompany', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Charge Agent Company'), 'agent_company/chargeCompany');
+                      }?>
+
+                     <?php
+  if($actionName=="agentCompanyPayment" && $modulName=="agent_company"){
+                        echo link_to(__('Payment History'), 'agent_company/agentCompanyPayment', array('class'=>'subSelect'));
+                      }else{
+                        echo link_to(__('Payment History'), 'agent_company/agentCompanyPayment');
+                      }?>
+
+
+
+
+                  
                 </div>
             </li>
             <li>
@@ -216,7 +242,7 @@
             <li>
                 <a href="#"
                 onmouseover="mopen('m4')"
-                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Security') ?></a>
+                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Admin Users') ?></a>
                 <div id="m4"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
@@ -230,6 +256,28 @@
 
                 </div>
             </li>
+
+           <li>
+                <a href="#"
+                onmouseover="mopen('m9')"
+                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Download') ?></a>
+                <div id="m9"
+                    onmouseover="mcancelclosetime()"
+                    onmouseout="mclosetime()">
+                    <?php
+                     if($actionName=='index' && $modulName=="client_documents"){
+                        echo link_to(__('Downlaod User Guide'), 'client_documents/index', array('class'=>'subSelect'));
+                     }else{
+                        echo link_to(__('Downlaod User Guide'), 'client_documents/index');
+                     }
+                     ?>
+
+                </div>
+            </li>
+          
+
+
+
 <li><a href="#"
                 onmouseover="mopen('m1')"
                 onmouseout="mclosetime()"
@@ -297,24 +345,38 @@
                         }
                         ?>
                         <?php 
-//                        if($actionName=='list' && $modulName=="usage_alert"){
-//                          echo link_to(__('Usage Alert'), 'usage_alert/index',array('class'=>'subSelect'));
-//                        }else{
-//                          echo link_to(__('Usage Alert'), 'usage_alert/index');
-//                        }
+                        if($actionName=='list' && $modulName=="usage_alert"){
+                          echo link_to(__('Low Credit Alert'), 'usage_alert/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Low Credit Alert'), 'usage_alert/index');
+                        }
                         ?>
                         <?php 
-//                        if($actionName=='list' && $modulName=="usage_alert_sender"){
-//                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index',array('class'=>'subSelect'));
-//                        }else{
-//                          echo link_to(__('Usage Alert Sender'), 'usage_alert_sender/index');
-//                        }
+                        if($actionName=='list' && $modulName=="usage_alert_sender"){
+                          echo link_to(__('Low Credit Alert Sender'), 'usage_alert_sender/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Low Credit Alert Sender'), 'usage_alert_sender/index');
+                        }
                         ?>
                         <?php 
                         if($actionName=='list' && $modulName=="telecom_operator"){
                           echo link_to(__('Telecom Operator'), 'telecom_operator/index',array('class'=>'subSelect'));
                         }else{
                           echo link_to(__('Telecom Operator'), 'telecom_operator/index');
+                        }
+                        ?>
+                           <?php
+                        if($actionName=='deActivateCustomer' && $modulName=="customer"){
+                          echo link_to(__('DeActivat eCustomer'), 'customer/deActivateCustomer',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('DeActivat eCustomer'), 'customer/deActivateCustomer');
+                        }
+                        ?>
+                           <?php
+                        if($actionName=='index' && $modulName=="transactionDescription"){
+                          echo link_to(__('Transaction Description'), 'transactionDescription/index',array('class'=>'subSelect'));
+                        }else{
+                          echo link_to(__('Transaction Description'), 'transactionDescription/index');
                         }
                         ?>
                 </div>

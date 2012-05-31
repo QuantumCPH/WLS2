@@ -10,7 +10,4 @@
  */
 class agent_commission_packageActions extends autoagent_commission_packageActions
 {
-       public function handleErrorSave() {
-     $this->forward('agent_commission_package','edit');
-  }
 }

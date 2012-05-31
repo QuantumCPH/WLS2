@@ -10,9 +10,6 @@
  */
 class agent_userActions extends autoagent_userActions
 {
-         public function handleErrorSave() {
-     $this->forward('agent_user','edit');
-  }
     public function executeAddUser($request){
 
         $id = $request->getParameter('id');

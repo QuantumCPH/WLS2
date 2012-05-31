@@ -43,14 +43,14 @@
 				<div class="form-row">
 				  <label class="required">Country:</label>
 				  <div class="content">
-				  	<?php echo $agent_company->getEnableCountry()->getName() ?>
+				  	<?php echo $agent_company->getCountry()->getName() ?>
 				  </div>
 				</div>
 
 				<div class="form-row">
 				  <label class="required">City:</label>
 				  <div class="content">
-				  	<?php echo $agent_company->getCityname(); ?>
+				  	<?php echo $agent_company->getCity()->getName() ?>
 				  </div>
 				</div>
 
@@ -84,7 +84,12 @@
 				  </div>
 				</div>
 
-				 
+				<div class="form-row">
+				  <label class="required">company form:</label>
+				  <div class="content">
+				  	<?php echo ''.$agent_company->getCompanyForm() ?>
+				  </div>
+				</div>
 
 				<div class="form-row">
 				  <label class="required">Product Details:</label>

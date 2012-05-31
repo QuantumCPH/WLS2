@@ -5,7 +5,6 @@
  */
 
 ?>
-
 <div id="sf_admin_container">
 
 <h1>Add  News Update</h1>
@@ -18,7 +17,7 @@
     <label >Enter the Topic   </label><br/> <input type="text" name="heading" value="<?php echo $message->getHeading()?>"/><br>
     <label>Enter the Message </label><br/><textarea cols="50" rows="10" name="message" value=""><?php echo $message->getMessage()?></textarea><br>
 
-    <label>
+   <label>
         Starting Date </label>
        <div class="jcalendar-wrapper">
        <div class="jcalendar-selects">
@@ -73,16 +72,12 @@
            <?php } ?>
            
          </select>
- <input type="hidden" id="id" name="id" value="<?php echo $id ?>" />
-  <input type="hidden" id="value" name="value" value="update" />
-       </div>
-       </div>
-  <ul class="sf_admin_actions">
 
-      <li><input class="sf_admin_action_list" value="list" type="button" onclick="document.location.href='newsList';" /></li><li>
- </li>
- 
- <input type="submit" value="Update"/></li></ul>
+       </div>
+       </div>
+   
+  <input type="hidden" id="value" name="value" value="update" />
+  <input type="hidden" id="id" name="id" value="<?php echo $id ?>" />
+  <br><input type="submit" value="Update"/>
 </form>
-</div>
 </div>

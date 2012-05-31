@@ -42,7 +42,7 @@
 </script>
 <div id="sf_admin_container">
 
-<h1>Add  NewsUpdate</h1>
+<h1>Add News Update</h1>
 
 <div id="sf_admin_header">
 </div>
@@ -52,7 +52,7 @@
     <label >Enter the Topic   </label><br/> <input type="text" name="heading"/><br>
     <label>Enter the Message </label><br/><textarea cols="50" rows="10" name="message"></textarea><br>
   
-     <label >
+    <label >
       Starting Date </label>
        <div class="jcalendar-wrapper">
        <div class="jcalendar-selects">
@@ -110,7 +110,7 @@
            
            <option value="2010">2010</option>
            <option value="2011">2011</option>
-           
+            <option value="2012">2012</option>
          </select>        
        
        </div>
@@ -118,12 +118,7 @@
     
     
 
-  <br>
-  <ul class="sf_admin_actions">
-       <li><input class="sf_admin_action_list" value="list" type="button" onclick="document.location.href='newsList';" /></li>
-      <li>
-  <input class="sf_admin_action_save"  type="submit" value="Save" /></li></ul>
+  <br><input type="submit" value="Create"/>
 </form>
 
 </div></div>
-

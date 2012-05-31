@@ -1,19 +1,20 @@
 <div id="sf_admin_container">
 <form method="post" action="">
-
-   <?php  if(isset($message)){
-   ?> 
+    
+    <?php  if(isset($message)){
+   ?>
     <div class="save-ok">
      <h2> <?php echo  __($message); ?> </h2>
     </div>
   <?php } ?> 
-    <h1><?php echo __('Product For Agent:') ?> <?php
+
+    <h1> Product For Agent: <?php
                  
              echo  $agenttdata->getName();
                 
                   ?> </h1>
-    <table cellspacing="0" cellpadding="2" class="tblAlign">
-        <tr class="headings"><th width="20%" align="left"><?php echo __('Product Name') ?>  </th>
+        <table cellspacing="0" cellpadding="2" class="tblAlign">
+            <tr class="headings"><th width="20%" align="left"><?php echo __('Product Name') ?>  </th>
             <th  width="10%" align="left"><?php echo __('Action') ?></th>
             <th  width="10%" align="left"><?php echo __('Reg share value') ?></th>
             <th  width="10%" align="left"><?php echo __('Reg. share value %') ?></th>
@@ -22,8 +23,7 @@
             <th  width="10%" align="left"><?php echo __('extra refill share value %') ?></th>
             <th  width="10%" align="left"><?php echo __('Extra payments share enable') ?></th>
         </tr>
-
-<input type="hidden" name="agentid" value="<?php echo $agentid; ?>" />
+        <input type="hidden" name="agentid" value="<?php echo $agentid; ?>" />
  <?php    foreach($products as $product){?>
  
 <tr><td><?php  echo $product->getName() ?></td> <td><input name="product['<?php echo  $product->getId() ?>']" value="<?php echo  $product->getId() ?>" type="checkbox"  <?php
@@ -63,8 +63,9 @@
 </td>
 <td><input name="epve['<?php echo  $product->getId() ?>']" value="1" type="checkbox"   <?php  if(isset($temp) && $temp>0){ ?>  <?php  if($tempv->getExtraPaymentsShareEnable()==1 ){  ?>  checked="checked"  <?php  } ?>   <?php  } ?>   />
 </td>
+
 </tr>
-    <?php } ?></table>
-    <div class="submitBtn"><input  type="submit" name="submit" class="UpdateBtn" style="float:right;" value="<?php echo __('Update') ?>" /></div>
-</form>
-</div>
+    <?php } ?></table><div class="submitBtn">
+<input  type="submit" name="submit" value="Update" class="UpdateBtn" style="float:right;"  />
+      </div>
+</form></div>

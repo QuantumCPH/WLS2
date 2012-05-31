@@ -29,10 +29,6 @@ class BaseUniqueIdsForm extends BaseFormPropel
       'status'               => new sfValidatorBoolean(),
     ));
 
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorPropelUnique(array('model' => 'UniqueIds', 'column' => array('unique_number')))
-    );
-
     $this->widgetSchema->setNameFormat('unique_ids[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
