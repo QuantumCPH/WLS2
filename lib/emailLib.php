@@ -670,7 +670,7 @@ class emailLib{
                 }
             }
 
-            $vat = ($order->getProduct()->getRegistrationFee()+$postalcharge)*.25;
+            $vat = ($postalcharge)*.25;
             
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');

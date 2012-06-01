@@ -42,7 +42,7 @@ class Telienta {
             try {
 
                 $tCustomer = $pb->add_customer(array('customer_info' => array(
-                                'name' => $uniqueId,
+                                'name' => $uniqueid,
                                 'iso_4217' => self::$currency,
                                 'i_parent' => $Parent,
                                 'i_customer_type' => 1,
@@ -68,7 +68,7 @@ class Telienta {
 
         $customer->setICustomer($tCustomer->i_customer);
         $customer->save();
-
+        
         return true;
     }
 
