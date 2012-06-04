@@ -309,7 +309,7 @@ class customerActions extends sfActions {
         }
         //This is for Retrieve balance From Telinta
        // $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=getbalance&name=' . $uniqueId . '&type=customer');
-  $telintaGetBalance=Telienta::getBalance($this->customer);
+        $telintaGetBalance=Telienta::getBalance($this->customer);
        
 
       

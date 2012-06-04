@@ -522,22 +522,22 @@ class paymentsActions extends sfActions {
                     $OpeningBalance = $comsion;
                     //This is for Recharge the Customer
                 
-                         Telienta::recharge($this->customers, $OpeningBalance);
+                         Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
 
                     //This is for Recharge the Account
-                 
+                  
                     $transaction_i->save();
                     $invite->save();
 
                     $invitevar = $invite->getCustomerId();
                     if (isset($invitevar)) {
 
-                         if($this->getUser()->getCulture()=='en'){
+                           if($this->getUser()->getCulture()=='en'){
 
-          $subject ='Bonus awarded';
-   }else{
-         $subject ='Bonus vergeben';
-   }
+                                  $subject ='Bonus awarded';
+                           }else{
+                                 $subject ='Bonus vergeben';
+                           }
 
   //email abou bonus
     //   emailLib::sendCustomerConfirmRegistrationEmail(1,1,$subject);
