@@ -172,7 +172,7 @@ class paymentsActions extends sfActions {
         $order->setIsFirstOrder(1);
         $order->save();
         //$transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
-        $transaction->setAmount($order->getProduct()->getPrice() + $this->postalcharge + $order->getProduct()->getRegistrationFee()+(($this->postalcharge + $order->getProduct()->getRegistrationFee())*.25));
+        $transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
         //TODO: $transaction->setAmount($order->getProduct()->getPrice());
         $transaction->setDescription('Registration');
         $transaction->setOrderId($order->getId());
@@ -522,22 +522,22 @@ class paymentsActions extends sfActions {
                     $OpeningBalance = $comsion;
                     //This is for Recharge the Customer
                 
-                         Telienta::recharge($this->customers, $OpeningBalance);
+                         Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
 
                     //This is for Recharge the Account
-                 
+                  
                     $transaction_i->save();
                     $invite->save();
 
                     $invitevar = $invite->getCustomerId();
                     if (isset($invitevar)) {
 
-                         if($this->getUser()->getCulture()=='en'){
+                           if($this->getUser()->getCulture()=='en'){
 
-          $subject ='Bonus awarded';
-   }else{
-         $subject ='Bonus vergeben';
-   }
+                                  $subject ='Bonus awarded';
+                           }else{
+                                 $subject ='Bonus vergeben';
+                           }
 
   //email abou bonus
     //   emailLib::sendCustomerConfirmRegistrationEmail(1,1,$subject);

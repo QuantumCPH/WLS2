@@ -163,7 +163,7 @@
                         ?>
                     </li>
                     <li><a onmouseover="mopen('m2')" onmouseout="mclosetime()" href="#" onclick="return false;"
-                            <?php echo $actionName == 'registerCustomer' || $actionName == 'setProductDetails' || $actionName == 'refill' ? 'class="current"' : ''; ?>><?php echo __('Services'); ?></a>
+                            <?php echo $actionName == 'registerCustomer' || $actionName == 'setProductDetails' || $actionName == 'refill' || $actionName == 'changenumberservice' ? 'class="current"' : ''; ?>><?php echo __('Services'); ?></a>
                         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
                             <?php
                             if ($modulName == "affiliate" && $actionName == 'registerCustomer' || $actionName == 'setProductDetails') {
@@ -176,6 +176,11 @@
                                 echo link_to(__('Refill'), 'affiliate/refill', array('class' => 'subSelect'));
                             } else {
                                 echo link_to(__('Refill'), 'affiliate/refill');
+                            }
+                             if ($modulName == "affiliate" && $actionName == 'changenumberservice') {
+                                echo link_to(__('Change Number'), 'affiliate/changenumberservice', array('class' => 'subSelect'));
+                            } else {
+                                 echo link_to(__('Change Number'), 'affiliate/changenumberservice');
                             }
                             ?>
                         </div>

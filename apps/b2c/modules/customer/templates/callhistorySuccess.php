@@ -102,7 +102,7 @@
 ?>
 
 
-<?php if (count($callRecords) == 0): ?>
+<?php if (count($tilentaCallHistryResult) == 0): ?>
                                 <tr>
                                     <td colspan="6"><p><?php echo __('There are currently no call records to show.') ?></p></td>
                                 </tr>

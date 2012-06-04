@@ -517,7 +517,7 @@ margin-bottom:10px;
     width: 331px;
     height: 27px;
     border:0px;
-    padding-left:18px;
+    padding-left:10px;
     margin-left: 0px !important;
     margin-bottom: 0px !important;
 }
@@ -576,4 +576,14 @@ a.external_link {
     line-height: 27px;
     margin-right: 5px;
     padding: 5px;
+}
+ul.changenumber{
+    list-style: none;
+}
+ul.changenumber li{
+    float:none !important;
+    clear: both;
+    display: block;
+    width: 500px;
+    height: 40px;
 }
