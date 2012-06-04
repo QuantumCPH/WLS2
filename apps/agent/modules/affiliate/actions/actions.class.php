@@ -3,7 +3,7 @@
 require_once(sfConfig::get('sf_lib_dir') . '/Browser.php');
 require_once(sfConfig::get('sf_lib_dir') . '/emailLib.php');
 require_once(sfConfig::get('sf_lib_dir') . '/changeLanguageCulture.php');
-
+require_once(sfConfig::get('sf_lib_dir') . '/sms.class.php');
 /**
  * affiliate actions.
  * @package    zapnacrm
@@ -1151,7 +1151,12 @@ class affiliateActions extends sfActions {
         $this->redirect($pathArray['HTTP_REFERER']);
 
     }
+   public function executeChangenumberservice(sfWebRequest $request) {
+
+       changeLanguageCulture::languageCulture($request,$this);
+       $this->browser = new Browser();
     
+   } 
       public function executeChangenumber(sfWebRequest $request) {
             changeLanguageCulture::languageCulture($request, $this);
 
@@ -1199,9 +1204,9 @@ class affiliateActions extends sfActions {
 
         //get Agent
         $ca = new Criteria();
-        $ca->add(AgentCompanyPeer::ID, $agent_company_id = $this->getUser()->getAttribute('agent_company_id', '', 'usersession'));
+        $ca->add(AgentCompanyPeer::ID, $agent_company_id = $this->getUser()->getAttribute('agent_company_id', '', 'agentsession'));
         $agent = AgentCompanyPeer::doSelectOne($ca);
-
+//var_dump($agent);
         //get Agent commission package
         $cpc = new Criteria();
         $cpc->add(AgentCommissionPackagePeer::ID, $agent->getAgentCommissionPackageId());
@@ -1344,7 +1349,7 @@ class affiliateActions extends sfActions {
 
                          $mobile_number=substr($mobile_number,1);
                          $number = $countrycode . $mobile_number;
-                         $sms = SmsTextPeer::retrieveByPK(12);
+                         $sms = SmsTextPeer::retrieveByPK(8);
                          $sms_text = $sms->getMessageText();
                          $sms_text = str_replace(array("(oldnumber)", "(newnumber)"),array($mobile_number, $newnumber),$sms_text);
                                    
@@ -1389,6 +1394,7 @@ class affiliateActions extends sfActions {
                 $this->balance_error = 1;
                 $is_recharged = false;
                 $this->error_mobile_number = 'invalid mobile number';
+                $this->getUser()->setFlash('error', 'invalid mobile number');
             }
         }    
 }

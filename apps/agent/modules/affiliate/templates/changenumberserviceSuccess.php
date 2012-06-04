@@ -50,7 +50,7 @@ jQuery(function(){
                 <select name="countrycode" id="countrycode" >
                     <?php
                     $enableCountry = new Criteria();
-                    $enableCountry->add(CountryPeer::CALLING_CODE, 46);
+                    $enableCountry->add(CountryPeer::CALLING_CODE, 49);
                     $country = CountryPeer::doSelectOne($enableCountry);
                     ?>
                         <option value="<?php echo $country->getCallingCode(); ?>"><?php echo $country->getName(); ?></option>
@@ -59,7 +59,7 @@ jQuery(function(){
             <li>
                 <label><?php echo __('Product Name') ?></label>
                 <?php  $c = new Criteria();
-                $c->add(ProductPeer::ID, 18);
+                $c->add(ProductPeer::ID, 3);
                 $product = ProductPeer::doSelectOne($c);  ?>
                 <select name="product">
                     <option value="<?php echo $product->getID(); ?>" ><?php echo $product->getName(); ?></option>

@@ -9,25 +9,25 @@
     <ul class="fl col changenumber">
         <li>
             <label>New Mobile Number</label>
-            <label><?php echo  $newNumber;  ?></label>
+            <label><?php echo  $newNumber;  ?></label><br />
         </li>
         <li>
             <label>Customer Name</label>
-            <label><?php echo  $customer->getFirstName(); ?>&nbsp;<?php echo  $customer->getLastName(); ?></label>
+            <label><?php echo  $customer->getFirstName(); ?>&nbsp;<?php echo  $customer->getLastName(); ?></label><br />
         </li>
         <li>
             <label>Old Mobile Number</label>
-            <label><?php echo  $customer->getMobileNumber(); ?></label>
+            <label><?php echo  $customer->getMobileNumber(); ?></label><br />
         </li>
         <li>
             <label>Product Detail</label>
-            <label><?php echo $product->getDescription(); ?></label>
+            <label><?php echo $product->getDescription(); ?></label><br />
         </li>
         <li>
             <label>Amount</label>
-            <label><?php echo  $product->getPrice(); ?></label>
+            <label><?php echo  $product->getPrice(); ?></label><br />
         </li>
-        <li style="margin-left:188px"><input type="submit" name="Pay" value="Pay" /></li>
+        <li style="margin-left:188px"><input type="submit" name="Pay" value="Pay" /><br /></li>
     </ul>
     </form>
     <div class="clr"></div>
