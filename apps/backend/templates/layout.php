@@ -186,20 +186,30 @@
                       }else{
                         echo link_to(__('Payment History'), 'agent_company/agentCompanyPayment');
                       }?>
-
-
-
-
                   
                 </div>
             </li>
+
+
+
             <li>
                 <a href="#"
                 onmouseover="mopen('m7')"
-                onmouseout="mclosetime()" <?php echo $modulName=='newupdate' || $modulName=='faqs' || $modulName=='userguide'? 'class = "current"':''?>><?php echo __('Updates') ?></a>
+                onmouseout="mclosetime()" <?php echo $modulName=='newupdate' ||  $modulName=='agent_company' || $modulName=='faqs' || $modulName=='userguide'? 'class = "current"':''?>><?php echo __('Updates') ?></a>
                 <div id="m7"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
+
+
+                      <?php
+                    if($actionName=='newsList' && $modulName=="agent_company"){
+                      echo link_to(__('List All Updates'), 'agent_company/newsList', array('class'=>'subSelect'));
+                    }else{
+                      echo link_to(__('List All Updates'), 'agent_company/newsList');
+                    }
+                    ?>
+
+
 
                     <?php 
                     if($actionName=='list' && $modulName=="newupdate"){  
@@ -239,6 +249,34 @@
                     <?php echo link_to(__('product orders'), 'product_order/index') ?>
                 </div>
             </li>
+
+
+
+
+           
+            <li>
+                <a href="#"
+                onmouseover="mopen('m11')"
+                onmouseout="mclosetime()" <?php echo $modulName=='invoice'? 'class = "current"':''?>><?php echo __('Reports') ?></a>
+                <div id="m11"
+                    onmouseover="mcancelclosetime()"
+                    onmouseout="mclosetime()">
+                    <?php
+                     if($actionName=='selectIntervalAlert' && $modulName=="invoice"){
+                        echo link_to(__('Low Credit Alert Report'), 'invoice/selectIntervalAlert', array('class'=>'subSelect'));
+                     }else{
+                        echo link_to(__('Low Credit Alert Report'), 'invoice/selectIntervalAlert');
+                     }
+                     ?>
+
+                </div>
+            </li>
+
+
+
+
+
+
             <li>
                 <a href="#"
                 onmouseover="mopen('m4')"
@@ -256,11 +294,11 @@
 
                 </div>
             </li>
-
+          
            <li>
                 <a href="#"
                 onmouseover="mopen('m9')"
-                onmouseout="mclosetime()" <?php echo $modulName=='user'? 'class = "current"':''?>><?php echo __('Download') ?></a>
+                onmouseout="mclosetime()" <?php echo $modulName=='client_documents'? 'class = "current"':''?>><?php echo __('Download') ?></a>
                 <div id="m9"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
@@ -271,7 +309,6 @@
                         echo link_to(__('Downlaod User Guide'), 'client_documents/index');
                      }
                      ?>
-
                 </div>
             </li>
           
@@ -381,8 +418,7 @@
                         ?>
                 </div>
             </li>
-
-    
+   
 			<li class="last">
                 <?php echo link_to(__('Logout'), 'user/logout'); ?>
             </li>
