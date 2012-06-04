@@ -119,6 +119,21 @@
 </div>
 
 <div class="form-row">
+  <?php echo label_for('agent_company[mobile_number]', __($labels['agent_company{mobile_number}']), 'class="required" ') ?>
+  <div class="content<?php if ($sf_request->hasError('agent_company{mobile_number}')): ?> form-error<?php endif; ?>">
+  <?php if ($sf_request->hasError('agent_company{mobile_number}')): ?>
+    <?php echo form_error('agent_company{mobile_number}', array('class' => 'form-error-msg')) ?>
+  <?php endif; ?>
+
+  <?php $value = object_input_tag($agent_company, 'getMobileNumber', array (
+  'size' => 7,
+  'minlength' => 10,    
+  'control_name' => 'agent_company[mobile_number]',
+)); echo $value ? $value : '&nbsp;' ?>
+    </div>
+</div>
+    
+<div class="form-row">
   <?php echo label_for('agent_company[sms_code]', __($labels['agent_company{sms_code}']), 'class="required" ') ?>
   <div class="content<?php if ($sf_request->hasError('agent_company{sms_code}')): ?> form-error<?php endif; ?>">
   <?php if ($sf_request->hasError('agent_company{sms_code}')): ?>
