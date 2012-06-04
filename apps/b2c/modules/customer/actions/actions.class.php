@@ -15,7 +15,7 @@ require_once(sfConfig::get('sf_lib_dir') . '/telinta.class.php');
  * @version    SVN: $Id: actions.class.php,v 1.8 2010-09-19 22:20:12 orehman Exp $
  */
 class customerActions extends sfActions {
-  private function getTargetUrl() {
+  public function getTargetUrl() {
         return sfConfig::get('app_main_url');
     }
 
@@ -1127,8 +1127,8 @@ class customerActions extends sfActions {
 
     public function executeLogin(sfWebRequest $request) {
         
-        $this->target = $this->getTargetUrl();
-        $this->getTargetUrl();
+    $this->target = $this->getTargetUrl();   
+           
         
         if ($request->isMethod('post') &&
                 $request->getParameter('mobile_number') != '' &&
