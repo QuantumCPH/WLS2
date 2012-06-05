@@ -576,8 +576,8 @@ class paymentsActions extends sfActions {
                         ));
 
                 $subject = $this->getContext()->getI18N()->__('Payment Confirmation');
-                $sender_email = sfConfig::get('app_email_sender_email', 'support@wls2.com');
-                $sender_name = sfConfig::get('app_email_sender_name', 'WLS2 support');
+                $sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
+                $sender_name = sfConfig::get('app_email_sender_name', 'Zapna support');
 
                 $recepient_email = trim($this->customer->getEmail());
                 $recepient_name = sprintf('%s %s', $this->customer->getFirstName(), $this->customer->getLastName());
