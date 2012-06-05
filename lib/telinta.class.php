@@ -18,7 +18,7 @@ class Telienta {
     private static $currency = 'NOK';
     private static $iParentRLandnCall = 82214;
     private static $iParentUS = 82214;
-    private static $a_iProduct = 10186;
+    private static $a_iProduct = 11720;
     private static $cb_iProduct = 7992;
     private static $voip_iProduct = 7994;
     private static $telintaSOAPUrl = "https://mybilling.telinta.com";
