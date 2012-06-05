@@ -373,10 +373,29 @@ class paymentsActions extends sfActions {
                 $is_transaction_ok = true;
             }
 
-
+                $lang =  'no';
+                //$this->lang = $lang;
+                $countrylng = new Criteria();
+                $countrylng->add(EnableCountryPeer::LANGUAGE_SYMBOL, $lang);
+                $countrylng = EnableCountryPeer::doSelectOne($countrylng);
+                if($countrylng){
+                    $countryName = $countrylng->getName();
+                    $languageSymbol = $countrylng->getLanguageSymbol();
+                    $lngId = $countrylng->getId();
+                    $postalcharges = new Criteria();
+                    $postalcharges->add(PostalChargesPeer::COUNTRY, $lngId);
+                    $postalcharges->add(PostalChargesPeer::STATUS, 1);
+                    $postalcharges = PostalChargesPeer::doSelectOne($postalcharges);
+                    if($postalcharges){
+                        $postalcharge =  $postalcharges->getCharges();
+                    }else{
+                        $postalcharge =  0;
+                    }
+                }
+            //$product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
             $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
 
-            $product_price_vat = .20 * $product_price;
+            $product_price_vat = .25 * ($order->getProduct()->getRegistrationFee()+$postalcharge);
 
             $order->setQuantity(1);
             // $order->getCustomer()->getAgentCompany();
