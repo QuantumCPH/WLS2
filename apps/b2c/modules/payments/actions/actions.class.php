@@ -604,6 +604,7 @@ class paymentsActions extends sfActions {
                 $this->logMessage('Error in transaction.');
             } 
         }
+        return sfView::NONE;
     }
 
     public function executeCtpay(sfWebRequest $request) {
