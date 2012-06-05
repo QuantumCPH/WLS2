@@ -299,9 +299,9 @@ public function executePaymenthistory(sfWebRequest $request)
         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);
         if ($getFirstnumberofMobile == 0) {
             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-            $this->TelintaMobile = '46' . $TelintaMobile;
+            $this->TelintaMobile = '47' . $TelintaMobile;
         } else {
-            $this->TelintaMobile = '46' . $this->customer->getMobileNumber();
+            $this->TelintaMobile = '47' . $this->customer->getMobileNumber();
         }
 
         $this->numbername = $this->customer->getUniqueid();

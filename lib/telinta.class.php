@@ -15,9 +15,9 @@ set_time_limit(10000000);
 
 class Telienta {
 
-    private static $currency = 'EUR';
-    private static $iParentRLandnCall = 72668;
-    private static $iParentUS = 72668;
+    private static $currency = 'NOK';
+    private static $iParentRLandnCall = 82214;
+    private static $iParentUS = 82214;
     private static $a_iProduct = 10186;
     private static $cb_iProduct = 7992;
     private static $voip_iProduct = 7994;

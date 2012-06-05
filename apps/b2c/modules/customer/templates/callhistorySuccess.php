@@ -57,9 +57,9 @@
                             $getFirstnumberofMobile = substr($customer->getMobileNumber(), 0, 1);
                             if ($getFirstnumberofMobile == 0) {
                                 $TelintaMobile = substr($customer->getMobileNumber(), 1);
-                                $TelintaMobile = '46' . $TelintaMobile;
+                                $TelintaMobile = '47' . $TelintaMobile;
                             } else {
-                                $TelintaMobile = '46' . $customer->getMobileNumber();
+                                $TelintaMobile = '47' . $customer->getMobileNumber();
                             }
 
 

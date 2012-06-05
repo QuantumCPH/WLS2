@@ -303,16 +303,16 @@ class pScriptsActions extends sfActions
                             Fonet::recharge($customer, $customer->getAutoRefillAmount()))   			{
 
                         $this->customer = $customer;
-                        $TelintaMobile = '46'.$this->customer->getMobileNumber();
+                        $TelintaMobile = '47'.$this->customer->getMobileNumber();
                         $emailId = $this->customer->getEmail();
                         $OpeningBalance = $customer->getAutoRefillAmount();
                         $customerPassword = $this->customer->getPlainText();
                         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0,1);     // bcdef
                         if($getFirstnumberofMobile==0){
                             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                            $TelintaMobile =  '46'.$TelintaMobile ;
+                            $TelintaMobile =  '47'.$TelintaMobile ;
                         }else{
-                            $TelintaMobile = '46'.$this->customer->getMobileNumber();
+                            $TelintaMobile = '47'.$this->customer->getMobileNumber();
                         }
                         $uniqueId = $this->customer->getUniqueid();
                       //This is for Recharge the Customer
@@ -521,9 +521,9 @@ die;
                 $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0,1);     // bcdef
                 if($getFirstnumberofMobile==0){
                   $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                  $TelintaMobile =  '46'.$TelintaMobile ;
+                  $TelintaMobile =  '47'.$TelintaMobile ;
                 }else{
-                  $TelintaMobile = '46'.$this->customer->getMobileNumber();
+                  $TelintaMobile = '47'.$this->customer->getMobileNumber();
                 }
                  $uniqueId = $this->customer->getUniqueid();
               $emailId = $this->customer->getEmail();
@@ -869,9 +869,9 @@ die;
                                                 $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0,1);     // bcdef
                                                 if($getFirstnumberofMobile==0){
                                                   $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                                                  $TelintaMobile =  '46'.$TelintaMobile ;
+                                                  $TelintaMobile =  '47'.$TelintaMobile ;
                                                 }else{
-                                                  $TelintaMobile = '46'.$this->customer->getMobileNumber();
+                                                  $TelintaMobile = '47'.$this->customer->getMobileNumber();
                                                 }
                                                 $uniqueId = $this->customer->getUniqueid();
                                               $emailId = $this->customer->getEmail();
@@ -1667,7 +1667,7 @@ public function executeSmsRegistration(sfWebrequest $request) {
     $product = ProductPeer::doSelectOne($pc);
     $mobile = substr($number, 2);
     //This Function For Get the Enable Country Id =
-    $calingcode = '49';
+    $calingcode = '47';
     $customer = new Customer();
     $customer->setFirstName($mobile);
     $customer->setLastName($mobile);
@@ -2670,11 +2670,11 @@ if(($caltype!="IC") && ($caltype!="hc")){
                         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0,1);     // bcdef
                         if($getFirstnumberofMobile==0){
                           $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                          $TelintaMobile =  '46'.$TelintaMobile ;
+                          $TelintaMobile =  '47'.$TelintaMobile ;
                         }else{
-                          $TelintaMobile = '46'.$this->customer->getMobileNumber();
+                          $TelintaMobile = '47'.$this->customer->getMobileNumber();
                         }
-                        //$TelintaMobile = '46'.$this->customer->getMobileNumber();
+                        //$TelintaMobile = '47'.$this->customer->getMobileNumber();
                         $emailId = $this->customer->getEmail();
                         $uniqueId = $this->customer->getUniqueid();
                         $OpeningBalance = $transaction->getAmount();
@@ -2766,7 +2766,7 @@ if(($caltype!="IC") && ($caltype!="hc")){
             $CallCode= $country_id->getCallingCode();
             $countryId = $country_id->getId();
         }else{
-            $CallCode = '46';
+            $CallCode = '47';
             $countryId = "2";
         }
         $this->customer_balance = -1;

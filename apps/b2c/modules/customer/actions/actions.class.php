@@ -83,9 +83,9 @@ class customerActions extends sfActions {
             $getFirstnumberofMobile = substr($mtnumber, 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($mtnumber, 1);
-                $TelintaMobile = '46' . $TelintaMobile;
+                $TelintaMobile = '47' . $TelintaMobile;
             } else {
-                $TelintaMobile = '46' . $mtnumber;
+                $TelintaMobile = '47' . $mtnumber;
             }
             //------save the callback data
             if ($id != NULL) {
@@ -290,13 +290,13 @@ class customerActions extends sfActions {
             $this->customer_balance = (double) Fonet::getBalance($this->customer);
         }
 
-        //echo  $TelintaMobile = '46'.$this->customer->getMobileNumber();
+        //echo  $TelintaMobile = '47'.$this->customer->getMobileNumber();
         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
         if ($getFirstnumberofMobile == 0) {
             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-            $TelintaMobile = '49' . $TelintaMobile;
+            $TelintaMobile = '47' . $TelintaMobile;
         } else {
-            $TelintaMobile = '49' . $this->customer->getMobileNumber();
+            $TelintaMobile = '47' . $this->customer->getMobileNumber();
         }
         $emailId = $this->customer->getEmail();
         $uniqueId = $this->customer->getUniqueid();
@@ -372,13 +372,13 @@ class customerActions extends sfActions {
             $this->customer_balance = (double) Fonet::getBalance($this->customer);
         }
 
-        //echo  $TelintaMobile = '46'.$this->customer->getMobileNumber();
+        //echo  $TelintaMobile = '47'.$this->customer->getMobileNumber();
         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
         if ($getFirstnumberofMobile == 0) {
             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-            $TelintaMobile = '46' . $TelintaMobile;
+            $TelintaMobile = '47' . $TelintaMobile;
         } else {
-            $TelintaMobile = '46' . $this->customer->getMobileNumber();
+            $TelintaMobile = '47' . $this->customer->getMobileNumber();
         }
         $emailId = $this->customer->getEmail();
         $uniqueId = $this->customer->getUniqueid();
@@ -470,12 +470,12 @@ class customerActions extends sfActions {
                     $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
                     if ($getFirstnumberofMobile == 0) {
                         $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                        $TelintaMobile = '46' . $TelintaMobile;
+                        $TelintaMobile = '47' . $TelintaMobile;
                     } else {
-                        $TelintaMobile = '46' . $this->customer->getMobileNumber();
+                        $TelintaMobile = '47' . $this->customer->getMobileNumber();
                     }
 
-                    //$TelintaMobile = '46'.$this->customer->getMobileNumber();
+                    //$TelintaMobile = '47'.$this->customer->getMobileNumber();
                     $emailId = $this->customer->getEmail();
                     $uniqueId = $this->customer->getUniqueid();
 
@@ -607,9 +607,9 @@ class customerActions extends sfActions {
             $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '46' . $TelintaMobile;
+                $TelintaMobile = '47' . $TelintaMobile;
             } else {
-                $TelintaMobile = '46' . $this->customer->getMobileNumber();
+                $TelintaMobile = '47' . $this->customer->getMobileNumber();
             }
         }
 
@@ -1792,9 +1792,9 @@ public function executeSmsHistory(sfWebrequest $request){
             $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '49' . $TelintaMobile;
+                $TelintaMobile = '47' . $TelintaMobile;
             } else {
-                $TelintaMobile = '49' . $this->customer->getMobileNumber();
+                $TelintaMobile = '47' . $this->customer->getMobileNumber();
             }
             $uniqueId = $this->customer->getUniqueid();
             $OpeningBalance = $order->getExtraRefill();
@@ -1927,16 +1927,16 @@ public function executeSmsHistory(sfWebrequest $request){
             //  Fonet::recharge($this->customer, $transaction->getAmount());
             $vat = 0;
 
-            $TelintaMobile = '49' . $this->customer->getMobileNumber();
+            $TelintaMobile = '47' . $this->customer->getMobileNumber();
             $emailId = $this->customer->getEmail();
             $OpeningBalance = $transaction->getAmount();
             $customerPassword = $this->customer->getPlainText();
             $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
             if ($getFirstnumberofMobile == 0) {
                 $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '49' . $TelintaMobile;
+                $TelintaMobile = '47' . $TelintaMobile;
             } else {
-                $TelintaMobile = '49' . $this->customer->getMobileNumber();
+                $TelintaMobile = '47' . $this->customer->getMobileNumber();
             }
 
   $unidc=$this->customer->getUniqueid();

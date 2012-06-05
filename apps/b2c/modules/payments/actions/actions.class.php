@@ -416,9 +416,9 @@ class paymentsActions extends sfActions {
                 $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
                 if ($getFirstnumberofMobile == 0) {
                     $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                    $TelintaMobile = '49' . $TelintaMobile;
+                    $TelintaMobile = '47' . $TelintaMobile;
                 } else {
-                    $TelintaMobile = '49' . $this->customer->getMobileNumber();
+                    $TelintaMobile = '47' . $this->customer->getMobileNumber();
                 }
 
                 
@@ -514,9 +514,9 @@ class paymentsActions extends sfActions {
                     $getFirstnumberofMobile = substr($this->customers->getMobileNumber(), 0, 1);     // bcdef
                     if ($getFirstnumberofMobile == 0) {
                         $TelintaMobile = substr($this->customers->getMobileNumber(), 1);
-                        $TelintaMobile = '49' . $TelintaMobile;
+                        $TelintaMobile = '47' . $TelintaMobile;
                     } else {
-                        $TelintaMobile = '49' . $this->customers->getMobileNumber();
+                        $TelintaMobile = '47' . $this->customers->getMobileNumber();
                     }
                     $uniqueId = $this->customers->getUniqueid();
                     $OpeningBalance = $comsion;

@@ -73,7 +73,7 @@ echo '&nbsp;';
                 $getFirstnumberofMobile = substr($unumber->getMobileNumber(), 0,1);     // bcdef
                 if($getFirstnumberofMobile==0){
                   $TelintaMobile = substr($unumber->getMobileNumber(), 1);
-                  $TelintaMobile =  '49'.$TelintaMobile ;
+                  $TelintaMobile =  '47'.$TelintaMobile ;
                 }else{
                   $TelintaMobile = ''.$unumber->getMobileNumber();
                 }
@@ -105,7 +105,7 @@ echo " ";   echo substr($Telintambs, 15);
                 $getFirstnumberofMobile = substr($customer->getMobileNumber(), 0,1);     // bcdef
                 if($getFirstnumberofMobile==0){
                     $TelintaMobile = substr($customer->getMobileNumber(), 1);
-                   $TelintaMobile =  '0049'.$TelintaMobile ;
+                   $TelintaMobile =  '0047'.$TelintaMobile ;
   $Telintambs=$TelintaMobile;
 
  echo substr($Telintambs, 0,4); echo " ";   echo substr($Telintambs, 4,3);
@@ -115,7 +115,7 @@ echo " ";   echo substr($Telintambs, 11,2);
 echo " ";   echo substr($Telintambs, 13,2);
 echo " ";   echo substr($Telintambs, 15);
                 }else{
-                  $TelintaMobile = '0049'.$customer->getMobileNumber();
+                  $TelintaMobile = '0047'.$customer->getMobileNumber();
 
                     $Telintambs=$TelintaMobile;
  echo substr($Telintambs, 0,4); echo " ";   echo substr($Telintambs, 4,3);
