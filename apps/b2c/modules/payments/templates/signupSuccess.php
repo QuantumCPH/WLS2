@@ -201,7 +201,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
 
 
               </label>
-              <input type="hidden" id="vat" value="<?php echo $product_price_vat+$postalcharge*.25; ?>" />
+              <input type="hidden" id="vat" value="<?php echo ($product_price_vat+$postalcharge*.25); ?>" />
                 <input type="hidden" id="postal" value="<?php  echo $postalcharge; ?>" />
               <label class="fr ac" >
                   <?php echo $postalcharge;  ?>&nbsp; NOK
