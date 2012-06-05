@@ -171,8 +171,7 @@ class paymentsActions extends sfActions {
         //$order->setExtraRefill($extra_refil_choices[0]);//minumum refill amount
         $order->setIsFirstOrder(1);
         $order->save();
-        //$transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
-        $transaction->setAmount($order->getProduct()->getPrice() - $order->getProduct()->getInitialBalance() + $order->getExtraRefill());
+        $transaction->setAmount($order->getProduct()->getPrice() + $this->postalcharge + $order->getProduct()->getRegistrationFee()+(($this->postalcharge + $order->getProduct()->getRegistrationFee())*.25));
         //TODO: $transaction->setAmount($order->getProduct()->getPrice());
         $transaction->setDescription('Registration');
         $transaction->setOrderId($order->getId());
@@ -604,6 +603,7 @@ class paymentsActions extends sfActions {
                 $this->logMessage('Error in transaction.');
             } 
         }
+        return sfView::NONE;
     }
 
     public function executeCtpay(sfWebRequest $request) {

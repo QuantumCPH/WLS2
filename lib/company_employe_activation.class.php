@@ -32,7 +32,7 @@ class CompanyEmployeActivation {
 
         $pb = new PortaBillingSoapClient(self::$telintaSOAPUrl, 'Admin', 'Customer');
         
-        $vatNumber = "WLS2B2B" . $company->getVatNo();
+        $vatNumber = "NOB2B" . $company->getVatNo();
         while (!$tCustomer && $retry_count < $max_retries) {
             try {
                 $tCustomer = $pb->add_customer(array('customer_info' => array(
@@ -307,7 +307,7 @@ class CompanyEmployeActivation {
                                 'password' => 'asdf1asd',
                                 'h323_password' => 'asdf1asd',
                                 'activation_date' => date('Y-m-d'),
-                                'batch_name' => "WLS2B2B" . $company->getVatNo(),
+                                'batch_name' => "NOB2B" . $company->getVatNo(),
                                 'follow_me_enabled' => $followMeEnabled
                                 )));
             } catch (SoapFault $e) {
