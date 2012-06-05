@@ -120,7 +120,7 @@ class paymentsActions extends sfActions {
         $this->form = new PaymentForm();
 
 ///////////////////////postal charges section//////////////////////////////
-        $lang =  'de';
+        $lang =  'no';
         $this->lang = $lang;
 
         $countrylng = new Criteria();
@@ -545,7 +545,7 @@ class paymentsActions extends sfActions {
                         emailLib::sendCustomerConfirmRegistrationEmail($invite->getCustomerId(),$this->customer,$subject);
                     }
                 }
-              $lang = 'de';
+              $lang = 'no';
             $this->lang = $lang;
 
             $countrylng = new Criteria();
