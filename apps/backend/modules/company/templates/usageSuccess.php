@@ -33,7 +33,7 @@
                 <td><?php  echo  date('i:s',$xdr->charged_quantity); ?></td>
                 <td><?php echo number_format($xdr->charged_amount / 4, 2); ?></td>
                 <td><?php echo number_format($xdr->charged_amount, 2);
-            $amount_total+= number_format($xdr->charged_amount, 2); ?> &euro;</td>
+            $amount_total+= number_format($xdr->charged_amount, 2); ?> NOK</td>
             <td><?php
                 $typecall = substr($xdr->account_id, 0, 1);
                 if ($typecall == 'a') {

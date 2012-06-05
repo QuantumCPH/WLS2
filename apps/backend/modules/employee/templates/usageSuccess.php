@@ -29,7 +29,7 @@
                 <td><?php echo number_format($xdr->charged_quantity / 60, 2); ?></td>
                 <td><?php echo number_format($xdr->charged_amount / 4, 2); ?></td>
                 <td><?php echo number_format($xdr->charged_amount, 2);
-            $amount_total+= number_format($xdr->charged_amount, 2); ?> &euro;</td>
+            $amount_total+= number_format($xdr->charged_amount, 2); ?> NOK</td>
                 <td><?php
             $typecall = substr($xdr->account_id, 0, 1);
             if ($typecall == 'a') {
@@ -62,7 +62,7 @@
 <?php } else { ?>
             <tr>
                 <td colspan="4" align="right"><strong><?php echo __('Subtotal') ?></strong></td>
-                <td><?php echo number_format($amount_total, 2, ',', '') ?> &euro;</td>
+                <td><?php echo number_format($amount_total, 2, ',', '') ?> NOK</td>
                 <td>&nbsp;</td>
             </tr>
 <?php } ?>

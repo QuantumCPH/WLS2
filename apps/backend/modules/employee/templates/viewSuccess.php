@@ -29,7 +29,7 @@
                     <div class="content">
                         <?php
                         echo (float) $balance;
-                        echo " &euro;";
+                        echo " NOK";
                         ?>
                     </div>
                 </div>

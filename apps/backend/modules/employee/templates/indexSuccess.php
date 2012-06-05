@@ -155,7 +155,7 @@
 //        }
 //        }
       echo  $balnc=(float)$telintaGetBalance+(float)$telintaGetBalance1+($telintaGetBalancerese>0)?(float)$telintaGetBalancerese:0;
-          echo "&euro;";
+          echo "NOK";
                                                 ?></td>
 
       <?php } ?>

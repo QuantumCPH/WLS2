@@ -162,11 +162,10 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
               
               
               <label class="fr ac">
-              	<span class="product_price_span"><?php echo $order->getProduct()->getRegistrationFee() ?> </span>&euro;
-              	<br />
+              	<span class="product_price_span"><?php echo $order->getProduct()->getRegistrationFee() ?> </span>NOK            	<br />
               	<span id="extra_refill_span">
 					<?php echo $order->getProduct()->getPrice() ?>
-				</span>&euro;
+				</span>NOK
 			  </label>
 
             </li>
@@ -205,17 +204,17 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
               <input type="hidden" id="vat" value="<?php echo $product_price_vat+$postalcharge*.25; ?>" />
                 <input type="hidden" id="postal" value="<?php  echo $postalcharge; ?>" />
               <label class="fr ac" >
-                  <?php echo $postalcharge;  ?>&nbsp; &euro;
+                  <?php echo $postalcharge;  ?>&nbsp; NOK
                 <br />
               	<span id="vat_span">
                     <?php echo format_number($product_price_vat+$postalcharge*.25) ?>
-              	</span>&euro;
+              	</span>NOK
                 <br />
               	<?php //$total = $product_price + $extra_refill + $vat ?>
                 <?php $total = $product_price + $postalcharge + ($product_price_vat+$postalcharge*.25) ?>
               	<span id="total_span">
               	<?php echo format_number($total) ?>
-              	</span>&euro;
+              	</span>NOK
               </label>
             </li>
 	
@@ -266,7 +265,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
                                                                                                         'id'=>'user_attr_3',
 			  										'style'=>'width: 80px;'
 			  									)) 
-                                  ?>&euro;
+                                  ?>NOK
             </li>
            <li id="user_attr_2_field">
               <label for="user_attr_2" style="margin-right: 90px;"><?php echo __('Auto refill amount:') ?></label>

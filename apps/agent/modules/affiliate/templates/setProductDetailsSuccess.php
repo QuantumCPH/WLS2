@@ -124,10 +124,10 @@
                         </label>
 
 
-                        <label><?php echo $order->getProduct()->getRegistrationFee() ?> &euro;
+                        <label><?php echo $order->getProduct()->getRegistrationFee() ?> NOK
                             <br/>
                             <br/>
-                            <?php echo format_number($order->getProduct()->getPrice()) ?> &euro;
+                            <?php echo format_number($order->getProduct()->getPrice()) ?> NOK
                         </label>
 
 
@@ -173,12 +173,12 @@
                         <label class="fr ac" >
                             <span id="vat_span">
 <?php echo format_number($product_price_vat) ?>
-                            </span> &euro;
+                            </span> NOK
                             <br />
 <?php $total = $product_price + $product_price_vat ?>
                             <span id="total_span">
 <?php echo format_number($total) ?>
-                            </span> &euro;
+                            </span> NOK
                         </label>
                     </li>
 <?php if ($sf_user->hasFlash('error_message')): ?>
