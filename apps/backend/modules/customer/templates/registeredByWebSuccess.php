@@ -1,82 +1,70 @@
-<?php    ?>
+<div id="sf_admin_container"><h1><?php echo  __('Registered Customer by Web') ?></h1></div>
+<table width="75%" cellspacing="0" cellpadding="2" class="tblAlign">
+    <thead>
+        <tr class="headings">
+            <th>Id</th>
+            <th>Customer No</th>
+            <th>Name</th>
+            <th>Mobile No</th>
+            <th>Password</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>PO-BOX</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Auto Refill</th>
+            <th>Unique ID</th>
+            <th>Active No</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="13" style="text-align:center;font-weight: bold;"><?php echo count($customers)." - Results" ?></td>
+        </tr>
+        </tfoot>
+        <tbody> <?php   $incrment=1;    ?>
+        <?php foreach($customers as $customer): ?>
+        <?php
+        if($incrment%2==0){
+            $class= 'class="even"';
+        }else{
+            $class= 'class="odd"';
+        }
+        ?>
+        <tr <?php echo $class;?>>
+        <td><?php  echo $incrment; ?></td>
+        <td><?php  echo $customer->getId() ?></td>
+        <td><?php echo  $customer->getFirstName()." ".$customer->getLastName(); ?></td>
+        <td><?php echo  $customer->getMobileNumber() ?></td>
+        <td><?php echo  $customer->getPlainText() ?></td>
+        <td><?php echo  $customer->getAddress() ?></td>
+        <td><?php echo  $customer->getCity() ?></td>
+        <td><?php echo  $customer->getPoBoxNumber() ?></td>
+        <td><?php echo  $customer->getEmail() ?></td>
+        <td><?php echo  $customer->getCreatedAt() ?></td>
+        <?php if ($customer->getAutoRefillAmount()!=NULL && $customer->getAutoRefillAmount()>1){ ?>
+        <td>Yes</td>
+        <?php } else{ ?>
+        <td>No</td>
+        <?php } ?>
 
-<ul>
-            <li>
-                <div id="sf_admin_content">
-		<table width="100%" border="2" cellspacing="0" cellpadding="2" align="center">
-                  <thead >
-                    <th id="sf_admin_list_th_id" >Id</th>
-                    <th id="sf_admin_list_th_first_name">First Name</th>
-                    <th id="sf_admin_list_th_last_name" >Last Name</th>
-					<th id="sf_admin_list_th_mobile_number" >Mobile Number</th>
-					 <th id="sf_admin_list_th_mobile_number" >Password</th>
-					 <th id="sf_admin_list_th_fonet_customer">Fonet Customer ID</th>    
-					 <th id="sf_admin_list_th_address">Address</th>
-                    <th id="sf_admin_list_th_city" >City</th>
-                    <th id="sf_admin_list_th_po_box_number" >PO-BOX Number</th>                    
-                    <th id="sf_admin_list_th_email" >Email</th>
-                    <th id="sf_admin_list_th_created_at" >Created At</th>                    
-                    
-                                                                          
-                    <th id="sf_admin_list_th_date_of_birth">Date Of Birth</th>
-                    <th id="sf_admin_list_th_auto_refill">Auto Refill</th>
-                     <th id="sf_admin_list_th_auto_refill">Unique ID</th>
-                       <th id="sf_admin_list_th_auto_refill">Active No</th>
-                  </thead>
-                  <tfoot>
-                    <tr><th colspan="16">
-                    <div class="float:right">
-                    </div>
-                    <?php echo count($customers)." - Results" ?></th></tr>
-                  </tfoot>
-                  <tbody>
-                <?php foreach($customers as $customer): ?>
-                
-                 <tr>
-                  <td><?php  echo $customer->getId() ?></td>
-                  <td><?php echo  $customer->getFirstName() ?></td>
-                  <td><?php echo  $customer->getLastName() ?></td>
-				  <td><?php echo  $customer->getMobileNumber() ?></td>
-				    <td><?php echo  $customer->getPlainText() ?></td>
-				  <td><?php echo  $customer->getFonetCustomerId() ?></td>
-				  <td><?php echo  $customer->getAddress() ?></td>
-                  <td><?php echo  $customer->getCity() ?></td>
-                  <td><?php echo  $customer->getPoBoxNumber() ?></td>                 
-                  <td><?php echo  $customer->getEmail() ?></td>
-                  <td><?php echo  $customer->getCreatedAt() ?></td>                                  
-                  <td><?php echo  $customer->getDateOfBirth() ?></td>
-                  <?php if ($customer->getAutoRefillAmount()!=NULL && $customer->getAutoRefillAmount()>1){ ?>
-                  <td>Yes</td>
-                  
-                  <?php } else 
-                      { ?>
-                  <td>No</td>
-                  <?php } ?>
-                  
-               
-            <td>  <?php  echo $customer->getUniqueid();     ?>   </td>
-      
-		 <td>  <?php  $unid   =  $customer->getUniqueid();
+
+        <td>  <?php  echo $customer->getUniqueid();     ?>   </td>
+
+        <td>  <?php  $unid   =  $customer->getUniqueid();
         if(isset($unid) && $unid!=""){
-            $un = new Criteria();
-            $un->add(CallbackLogPeer::UNIQUEID, $unid);
-            $un -> addDescendingOrderByColumn(CallbackLogPeer::CREATED);
-            $unumber = CallbackLogPeer::doSelectOne($un);
-            echo $unumber->getMobileNumber();            
-         }else{  }  ?> </td>
-                  
-                  
-                </tr>
-                <?php endforeach; ?>
-
-                
-                  </tbody>
-              </table>
-                </div>
-            </li>
-            
-          </ul>
-   
+        $un = new Criteria();
+        $un->add(CallbackLogPeer::UNIQUEID, $unid);
+        $un -> addDescendingOrderByColumn(CallbackLogPeer::CREATED);
+        $unumber = CallbackLogPeer::doSelectOne($un);
+        echo $unumber->getMobileNumber();
+        }else{  }  ?> </td>
 
 
+        </tr><?php   $incrment++;    ?>
+        <?php endforeach; ?>
+
+
+    </tbody>
+</table>
 
