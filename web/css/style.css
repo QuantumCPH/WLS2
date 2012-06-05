@@ -141,13 +141,8 @@ input#generic {
     color:red !important;
 }
 
-#header{
-    /*background: url("../images/top-ground.png") no-repeat scroll center top  transparent;
-    height: 137px;
-    margin: 0 auto 5px;
-    width: 1010px;*/
-    background: url("../images/header.png") repeat-x scroll center top transparent;
-    height: 133px;
+#header{   
+    height: 75px;
     margin: 0 auto 26px;
     width: 75%;
 }
@@ -212,8 +207,7 @@ font-weight:bold;
 margin-bottom:10px;
 }
 
-.logo {
-    padding-left: 25px;
+.logo {    
     padding-top: 13px;
 }
 .action-links{

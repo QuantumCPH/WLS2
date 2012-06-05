@@ -14,21 +14,11 @@ h2{
 }
 #header{
     width:75%;
-    height: 133px;
+    height: 75px;
     margin:0 auto 26px;
 }
 .logo{
     padding-top: 13px;
-    padding-left: 25px;
-  /*
-    padding-bottom:3px;
-    margin-bottom:15px;
-    
-    border-bottom: 2px solid #D44D05;
-    color:#D44D05;
-    font-family:'Times New Roman', Times, serif;
-    font-size: 54px;
-    font-weight:bold;*/
 }
 .topNav{
     width:586px;
