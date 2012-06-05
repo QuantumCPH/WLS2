@@ -648,7 +648,7 @@ class emailLib{
             $recepient_agent_name = '';
         }
 
-          $lang = 'de';
+          $lang = 'no';
            // $this->lang = $lang;
 
             $countrylng = new Criteria();
