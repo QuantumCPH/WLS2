@@ -9,7 +9,7 @@ require_once(sfConfig::get('sf_lib_dir').'/smsCharacterReplacement.php');
 /**
  * scripts actions.
  *
- * @package    WLS2
+ * @package    Zapna
  * @subpackage scripts
  * @author     Baran Khursheed Khan
  * @version    actions.class.php,v 1.5 2012-01-16 22:20:12 BK Exp $
@@ -531,7 +531,7 @@ die;
               $customerPassword = $this->customer->getPlainText();
 
               //Section For Telinta Add Cusomter
-              $telintaRegisterCus = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?reseller=R_Partner_WLS2&action=add&name='.$uniqueId.'&currency=EUR&opening_balance=0&credit_limit=0&enable_dialingrules=Yes&int_dial_pre=00&email='.$emailId.'&type=customer');
+              $telintaRegisterCus = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?reseller=R_Zapna_NO&action=add&name='.$uniqueId.'&currency=EUR&opening_balance=0&credit_limit=0&enable_dialingrules=Yes&int_dial_pre=00&email='.$emailId.'&type=customer');
 
               // For Telinta Add Account
               $telintaAddAccount = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=account&action=activate&name='.$uniqueId.'&customer='.$uniqueId.'&opening_balance=-'.$OpeningBalance.'&product=YYYLandncall_Forwarding&outgoing_default_r_r=2034&activate_follow_me=Yes&follow_me_number=0&billing_model=1&password='.$customerPassword);
@@ -1165,9 +1165,9 @@ die;
         echo '<br/>';
         echo sfConfig::get('app_email_smtp_password');
         echo '<br/>';
-        echo sfConfig::get('app_email_sender_email', 'support@wls.com');
+        echo sfConfig::get('app_email_sender_email', 'support@zapna.no');
         echo '<br/>';
-        echo sfConfig::get('app_email_sender_name', 'WLS2 support');
+        echo sfConfig::get('app_email_sender_name', 'Zapna support');
         
 
   	$connection = Swift_SmtpTransport::newInstance()
@@ -1179,8 +1179,8 @@ die;
 
 
 
-	$sender_email = sfConfig::get('app_email_sender_email', 'support@wls.com');
-	$sender_name = sfConfig::get('app_email_sender_name', 'WLS support');
+	$sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
+	$sender_name = sfConfig::get('app_email_sender_name', 'Zapna support');
 
         echo '<br/>';
         echo $sender_email ;
@@ -2150,7 +2150,7 @@ public function executeSmsRegisterationwcb(sfWebrequest $request){
                   'UN'=>'zapna1',
                   'P'=>'Zapna2010',
                 'DA'=>$mtnumber,
-                 'SA' =>'WLS',
+                 'SA' =>'Zapna',
                   'M'=>$sms_text,
                   'ST'=>'5'
             );
@@ -2188,7 +2188,7 @@ public function executeSmsRegisterationwcb(sfWebrequest $request){
                   'UN'=>'zapna1',
                   'P'=>'Zapna2010',
                 'DA'=>$mtnumber,
-                 'SA' =>'WLS',
+                 'SA' =>'Zapna',
                   'M'=>$sms_text,
                   'ST'=>'5'
             );
@@ -2321,7 +2321,7 @@ LandNCall";
                   'UN'=>'zapna1',
                   'P'=>'Zapna2010',
                 'DA'=>$mtnumber,
-                 'SA' =>'WLS',
+                 'SA' =>'Zapna',
                   'M'=>$sms_text,
                   'ST'=>'5'
             );
@@ -2402,7 +2402,7 @@ if(($caltype!="IC") && ($caltype!="hc")){
                   'UN'=>'zapna1',
                   'P'=>'Zapna2010',
                   'DA'=>$number,
-                  'SA' =>'WLS',
+                  'SA' =>'Zapna',
                   'M'=>$sms_text,
                   'ST'=>'5'
             );
@@ -2421,7 +2421,7 @@ if(($caltype!="IC") && ($caltype!="hc")){
                   'UN'=>'zapna1',
                   'P'=>'Zapna2010',
                   'DA'=>$number,
-                  'SA' =>'WLS',
+                  'SA' =>'Zapna',
                   'M'=>$sms_text,
                   'ST'=>'5'
             );

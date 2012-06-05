@@ -55,16 +55,16 @@ $wrap_content  = isset($wrap)?$wrap:false;
 	
 	
 	<p>
-	<?php echo __('We hereby confirm that you have received commissions deposited into your account that you have referred a friend about Smartsim from wls.Go in to "Payment History" to see what you have earned.') ?>
+	<?php echo __('We hereby confirm that you have received commissions deposited into your account that you have referred a friend about Smartsim from zapna.Go in to "Payment History" to see what you have earned.') ?>
 	</p>
         <p>
-            <a href="mailto:Support@wls.com">Support@wls.com</a>
+            <a href="mailto:support@zapna.no">support@zapna.no</a>
 	</p>
         <p>
 	<?php echo __('Yours sincerely,') ?>
 	</p>
         <p>
-	<?php echo __('wls2.zerocall.com') ?>
+	<?php echo __('zapna.no') ?>
 	</p>
 	<br />
 <?php endif; ?>

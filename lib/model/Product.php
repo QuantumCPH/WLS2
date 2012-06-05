@@ -8,6 +8,6 @@ class Product extends BaseProduct
 	}
 
          function getTotalAmount(){
-            return $this->getPrice();
+            return $this->getPrice()+$this->getRegistrationFee();
         }
 }

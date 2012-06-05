@@ -118,7 +118,7 @@
             <li>
                 <a href="#"
                 onmouseover="mopen('m5')"
-                onmouseout="mclosetime()" <?php echo $modulName=='customer'? 'class = "current"':''?>><?php echo __('Wls2') ?></a>
+                onmouseout="mclosetime()" <?php echo $modulName=='customer'? 'class = "current"':''?>><?php echo __('Zapna') ?></a>
                 <div id="m5"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
@@ -329,7 +329,7 @@
                         <?php
                         // As per Omair Instruction - He need these changes - kmmalik - 08/17/2011
                          //echo link_to('<b>Zerocall Setting</b>', '') ?>
-                        <a href="javascript:;" class="label"><b><?php echo __('WLS2 Setting') ?></b></a>
+                        <a href="javascript:;" class="label"><b><?php echo __('Zapna Setting') ?></b></a>
                         <?php 
 //                        if($actionName=='list' && $modulName=="device"){
 //                          echo link_to(__('Mobile Models'), 'device/index',array('class'=>'subSelect'));

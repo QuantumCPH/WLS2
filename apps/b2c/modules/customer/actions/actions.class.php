@@ -1224,7 +1224,7 @@ class customerActions extends sfActions {
             $customer->setPassword($new_password);
             $message_body = $this->getContext()->getI18N()->__('Hi') . ' ' . $customer->getFirstName() . '!';
             $message_body .= '<br /><br />';
-            $message_body .= $this->getContext()->getI18N()->__('Your password has been changed. Please use the following information to login to your WLS2 account.');
+            $message_body .= $this->getContext()->getI18N()->__('Your password has been changed. Please use the following information to login to your Zapna account.');
             $message_body .= '<br /><br />';
             $message_body .= sprintf($this->getContext()->getI18N()->__('Mobile Number: %s'), $customer->getMobileNumber());
             $message_body .= '<br />';
@@ -1402,15 +1402,15 @@ class customerActions extends sfActions {
 
             $messages = array();
             if (strlen($message) < 142) {
-                $messages[1] = $message . "-Sent by wls2-";
+                $messages[1] = $message . "-Sent by Zapna-";
             } else if (strlen($message) > 142 and strlen($message) < 302) {
 
-                $messages[1] = substr($message, 1, 142) . "-Sent by wls2-";
-                $messages[2] = substr($message, 143) . "-Sent by wls2-";
+                $messages[1] = substr($message, 1, 142) . "-Sent by zapna-";
+                $messages[2] = substr($message, 143) . "-Sent by Zapna-";
             } else if (strlen($message) > 382) {
-                $messages[1] = substr($message, 1, 142) . "-Sent by wls2-";
-                $messages[2] = substr($message, 143, 302) . "-Sent by wls2-";
-                $messages[3] = substr($message, 303, 432) . "-Sent by wls2-";
+                $messages[1] = substr($message, 1, 142) . "-Sent by Zapan-";
+                $messages[2] = substr($message, 143, 302) . "-Sent by Zapna-";
+                $messages[3] = substr($message, 303, 432) . "-Sent by Zapna-";
             }
 
             foreach ($messages as $sms_text) {
@@ -1491,12 +1491,12 @@ public function executeSmsHistory(sfWebrequest $request){
             $invite->setMessage($message);
             $invite->save();
 
-            $subject = $this->getContext()->getI18N()->__("WLS2 invitation");
+            $subject = $this->getContext()->getI18N()->__("Zapna invitation");
 
             $name = $this->customer->getFirstName() . ' ' . $this->customer->getLastName();
-            $message_body = $this->getContext()->getI18N()->__('Hi ') . $recepient_name . ',<br /> ' . $this->getContext()->getI18N()->__("This invitation is sent to you with the reference of") . ' ' . $name . ', ' . $this->getContext()->getI18N()->__("a user of Smartsim from the WLS2.");
+            $message_body = $this->getContext()->getI18N()->__('Hi ') . $recepient_name . ',<br /> ' . $this->getContext()->getI18N()->__("This invitation is sent to you with the reference of") . ' ' . $name . ', ' . $this->getContext()->getI18N()->__("a user of Smartsim from the Zapna.");
 
-            $message_body_end = $this->getContext()->getI18N()->__('Please click accept to start saving money immediately with Smartsim.') . ' <a  href="http://wls2.zerocall.com/b2c.php/customer/signup?invite_id=' . $invite->getId() . '"> ' . $this->getContext()->getI18N()->__("Accept") . '</a><br/>'. $this->getContext()->getI18N()->__('Read more').' <a href="wls2.zerocall.com">wls2.zerocall.com</a>';
+            $message_body_end = $this->getContext()->getI18N()->__('Please click accept to start saving money immediately with Smartsim.') . ' <a  href="http://wls2.zerocall.com/b2c.php/customer/signup?invite_id=' . $invite->getId() . '"> ' . $this->getContext()->getI18N()->__("Accept") . '</a><br/>'. $this->getContext()->getI18N()->__('Read more').' <a href="http://www.zapna.no">www.zapna.no</a>';
 
             //send email
             if ($recepient_name != ''):

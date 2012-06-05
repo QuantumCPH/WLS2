@@ -77,23 +77,23 @@ function countChar(str)
 <br/><br/>&nbsp;<br/>&nbsp;
 
 <center>
-    <h1 style="font-family: Verdana; font-size: 18px; line-height: 20px; align:center; padding-top: 10px;"> <?php echo __('Tell a friend about Wls!') ?></h1>
+    <h1 style="font-family: Verdana; font-size: 18px; line-height: 20px; align:center; padding-top: 10px;"> <?php echo __('Tell a friend about Zapna!') ?></h1>
 </center>
 	  
 
           
 
 <br/>
-<h3><?php echo __('Tell your friends about Wls & earn extra balance!') ?></h3>
-<p style="align:justified;"><?php echo __('Tell your friends about Wls and earn 10 euro as soon as your friends have made their first payment with Wls! Spread the word about Wls and let your friends know about WLS2 services.') ?></p>
+<h3><?php echo __('Tell your friends about Zapna & earn extra balance!') ?></h3>
+<p style="align:justified;"><?php echo __('Tell your friends about Zapna and earn 10 euro as soon as your friends have made their first payment with Zapna! Spread the word about Zapna and let your friends know about Zapna services.') ?></p>
 <br/>
 <h3><?php echo __('How does it work?'); ?></h3>
-<p style="align:justified;"><?php echo __('You can tell your friends about Wls in two simple ways:') ?><br />
+<p style="align:justified;"><?php echo __('You can tell your friends about Zapna in two simple ways:') ?><br />
     
 <?php echo __('Fill out the fields below and click the Send Email button - your friend will receive an Email') ?></p>
 <br/>
 <h3><?php echo __("What you'll get from this?") ?></h3>
-<p style="align:justified;"><?php echo __("As soon as your friends have made their first payment with Wls, youll automatically receive 10 euro in your Wls balance - so if 10 of your friends register on Wls, youll gain 100 euro in your account. Just share the news and enjoy this great new treat from Wls.") ?> </p>
+<p style="align:justified;"><?php echo __("As soon as your friends have made their first payment with Zapna, youll automatically receive 10 euro in your Zapna balance - so if 10 of your friends register on Zapna, youll gain 100 nok in your account. Just share the news and enjoy this great new treat from Zapna.") ?> </p>
      <div class="split-form">
       <div class="fl col">
 	    <form  id="form1" method="POST" action="<?php echo url_for('customer/tellAFriend', true) ?>">
