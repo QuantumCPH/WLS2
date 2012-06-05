@@ -1353,10 +1353,10 @@ class affiliateActions extends sfActions {
                          $sms_text = $sms->getMessageText();
                          $sms_text = str_replace(array("(oldnumber)", "(newnumber)"),array($mobile_number, $newnumber),$sms_text);
                                    
-                         ROUTED_SMS::Send($number, $sms_text,"WLS2");
+                         ROUTED_SMS::Send($number, $sms_text,"Zapna");
                          //Send SMS ----
                          $number = $newMobileNo;
-                         ROUTED_SMS::Send($number, $sms_text,"WLS2");
+                         ROUTED_SMS::Send($number, $sms_text,"Zapna");
                        
                     }
 //exit;

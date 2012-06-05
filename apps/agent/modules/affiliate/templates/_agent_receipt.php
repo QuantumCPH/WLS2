@@ -51,7 +51,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
 
 <table class="receipt" cellspacing="0" width="600px">
 <tr bgcolor="#CCCCCC" class="receipt_header">
-    <td colspan="4"> WLS
+    <td colspan="4"> Zapna
     </td>
   </tr>
   <tr>
@@ -124,7 +124,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td>&nbsp;</td>
     <td><?php echo __('Total') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($agent_order->getAmount()) ?></td>
+    <td><?php echo format_number($agent_order->getAmount()) ?> NOK</td>
   </tr>
 </table>
 <?php if($wrap_content): ?>
@@ -148,12 +148,12 @@ $wrap_content  = isset($wrap)?$wrap:false;
 
 <p>
 	<?php echo __('If you have any questions please feel free to contact our customer support center at '); ?>
-	<a href="mailto:support@wls.com">support@wls.com</a>
+	<a href="mailto:support@zapna.no">support@zapna.no</a>
 </p>
 
 <p><?php echo __('Cheers') ?></p>
 
 <p>
 <?php echo __('Support') ?><br />
-WLS
+Zapna
 </p>

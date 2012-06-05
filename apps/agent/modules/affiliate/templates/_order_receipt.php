@@ -61,7 +61,7 @@ $wrap_content  = isset($wrap)?$wrap:false;
 	<?php echo __('Do not hesitate to contact us if you have any questions.') ?>
 	</p>
         <p>
-            <a href="mailto:support@wls2.com">support@wls2.com</a>
+            <a href="mailto:support@zapna.no">support@zapna.no</a>
 	</p>
         <p>
 	<?php echo __('Yours sincerely,') ?>
@@ -151,14 +151,14 @@ $wrap_content  = isset($wrap)?$wrap:false;
     <td>&nbsp;</td>
     <td><?php echo __('Total') ?></td>
     <td>&nbsp;</td>
-    <td><?php echo format_number($subTotal+$vat) ?></td>
+    <td><?php echo format_number($subTotal+$vat) ?>NOK</td>
   </tr>
   <tr>
   	<td colspan="4" style="border-bottom: 2px solid #c0c0c0;">&nbsp;</td>
   </tr>
   <tr class="footer">
     <td class="payer_summary" colspan="4" style="font-weight:normal; white-space: nowrap;">
-    <?php echo __('WLS2&nbsp;&nbsp;&nbsp;&nbsp;Box XXXXX, XX-XXX XX XXXXXXX&nbsp;&nbsp;&nbsp; XXX.XX.XXXXXX-XXXX');?> </td>
+    <?php echo __('Zapna&nbsp;&nbsp;&nbsp;&nbsp;Box XXXXX, XX-XXX XX XXXXXXX&nbsp;&nbsp;&nbsp; XXX.XX.XXXXXX-XXXX');?> </td>
   </tr>
 </table>
         

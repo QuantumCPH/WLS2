@@ -104,13 +104,6 @@
                 </div>
 <?php } ?>
 
-                <div style="vertical-align: top;float: right;margin-right: 10px;">
-
-<?php echo link_to(image_tag('/images/german.png'), 'affiliate/changeCulture?new=de'); ?>
-
-<?php echo link_to(image_tag('/images/english.png'), 'affiliate/changeCulture?new=en'); ?>
-
-                </div>
                 <div class="clr"></div>
             </div>
 
