@@ -408,7 +408,7 @@ class customerActions extends sfActions {
                 }
                 // echo $voip_customer->getId()."Baran here<hr/>";
                 $voip_customer->setUpdatedAt(date('Y-m-d H:i:s'));
-                $voip_customer->setCustomerId($customerids);
+                $voip_customer->setCustomerId($customer->getMobileNumber());
                 $voip_customer->setIsAssigned(1);
                 $voip_customer->save();
 
