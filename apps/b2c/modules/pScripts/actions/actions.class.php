@@ -2897,8 +2897,13 @@ if(($caltype!="IC") && ($caltype!="hc")){
         return sfView::NONE;
     }
 
+ public function executeAbcTest(sfWebRequest $request) {
+    $Parameters="testtsts".$request->getURI();
 
- 
+         $email2 = new DibsCall();
+         $email2->setCallurl($Parameters);
 
-
+            $email2->save();
+ return sfView::NONE;
+ }
 }
