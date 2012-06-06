@@ -39,7 +39,7 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
         echo $customer_balance==-1?'&oslash;':number_format($customer_balance,2);
         //This Section For Get the Language Symbol For Set Currency -
         $getvoipInfo = new Criteria();
-        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getId());
+        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getMobileNumber());
         $getvoipInfo->add(SeVoipNumberPeer::IS_ASSIGNED, 1);
         $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo);//->getId();
         if(isset($getvoipInfos)){
