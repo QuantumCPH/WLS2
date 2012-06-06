@@ -19,8 +19,8 @@ class Telienta {
     private static $iParentRLandnCall = 82214;
     private static $iParentUS = 82214;
     private static $a_iProduct = 11720;
-    private static $cb_iProduct = 7992;
-    private static $voip_iProduct = 7994;
+    private static $cb_iProduct = 11748;
+    private static $voip_iProduct = 11749;
     private static $telintaSOAPUrl = "https://mybilling.telinta.com";
     private static $telintaSOAPUser = 'API_login';
     private static $telintaSOAPPassword = 'ee4eriny';
