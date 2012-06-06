@@ -373,10 +373,7 @@ class paymentsActions extends sfActions {
                 $is_transaction_ok = true;
             }
 
-
-            $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
-
-            $product_price_vat = .20 * $product_price;
+                           
 
             $order->setQuantity(1);
             // $order->getCustomer()->getAgentCompany();
@@ -470,10 +467,10 @@ class paymentsActions extends sfActions {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //Section For Telinta Add Cusomter
              
-                    Telienta::ResgiterCustomer($this->customer, $OpeningBalance);
+                //    Telienta::ResgiterCustomer($this->customer, $OpeningBalance);
                       // For Telinta Add Account
                
-                    Telienta::createAAccount($TelintaMobile,$this->customer);
+               //     Telienta::createAAccount($TelintaMobile,$this->customer);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //if the customer is invited, Give the invited customer a bonus of 10dkk
                 $invite_c = new Criteria();
@@ -521,7 +518,7 @@ class paymentsActions extends sfActions {
                     $OpeningBalance = $comsion;
                     //This is for Recharge the Customer
                 
-                         Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
+                    //     Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
 
                     //This is for Recharge the Account
                   
@@ -544,7 +541,7 @@ class paymentsActions extends sfActions {
                         emailLib::sendCustomerConfirmRegistrationEmail($invite->getCustomerId(),$this->customer,$subject);
                     }
                 }
-              $lang = 'no';
+            $lang = 'no';
             $this->lang = $lang;
 
             $countrylng = new Criteria();
@@ -564,7 +561,11 @@ class paymentsActions extends sfActions {
                 } else {
                     $postalcharge = '';
                 }
-            }
+             }
+             //$product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
+            $product_price = $order->getProduct()->getPrice() - $order->getExtraRefill();
+
+            $product_price_vat = .25 * ($order->getProduct()->getRegistrationFee()+$postalcharge);
                 $message_body = $this->getPartial('payments/order_receipt', array(
                             'customer' => $this->customer,
                             'order' => $order,

@@ -152,7 +152,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
 			  </label>
 
               <input type="hidden" id="product_price" value="<?php 
-              	$product_price_vat = ($order->getProduct()->getRegistrationFee())*.25;
+              	$product_price_vat = ($order->getProduct()->getRegistrationFee()+$postalcharge)*.25;
 
               	$product_price = ($order->getProduct()->getPrice()+$order->getProduct()->getRegistrationFee());
               	
@@ -201,17 +201,19 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
 
 
               </label>
-              <input type="hidden" id="vat" value="<?php echo (($product_price_vat+$postalcharge)*.25); ?>" />
+              <input type="hidden" id="vat" value="<?php echo $product_price_vat; ?>" />
                 <input type="hidden" id="postal" value="<?php  echo $postalcharge; ?>" />
               <label class="fr ac" >
                   <?php echo $postalcharge;  ?>&nbsp; NOK
                 <br />
               	<span id="vat_span">
-                    <?php echo format_number(($product_price_vat+$postalcharge)*.25) ?>
+                    <?php echo format_number($product_price_vat) ?>
               	</span>NOK
                 <br />
-              	<?php //$total = $product_price + $extra_refill + $vat ?>
-                <?php $total = $product_price + $postalcharge + (($product_price_vat+$postalcharge)*.25) ?>
+              	<?php //$total = $product_price + $extra_refill + $vat 
+ //$order->getProduct()->getPrice() + $this->postalcharge + $order->getProduct()->getRegistrationFee()+(($this->postalcharge + $order->getProduct()->getRegistrationFee())*.25)     
+                ?>
+                <?php $total = $product_price + $postalcharge + $product_price_vat ?>
               	<span id="total_span">
               	<?php echo format_number($total) ?>
               	</span>NOK
@@ -278,7 +280,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
      ?>
             </li>
             <li id="" style="border-style:solid;border-width:3px;width: 320px; padding-left: 10px;">
-                <br /><b align="justfy">  <?php echo __('Zapna recommends to activate this service so you <br /> do not have to manually  refill when your account<br />  balance runs low. 100 or 200 Euros each  when the <br /> balances reaches 25 or 50 Euro. This facility is <br /> added to your account in minutes.')?></b>
+                <br /><b align="justfy">  <?php echo __('Zapna recommends to activate this service so you <br /> do not have to manually  refill when your account<br />  balance runs low. 100 or 200 NOK each  when the <br /> balances reaches 25 or 50 NOK. This facility is <br /> added to your account in minutes.')?></b>
 
 
 

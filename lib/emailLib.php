@@ -648,7 +648,7 @@ class emailLib{
             $recepient_agent_name = '';
         }
 
-          $lang = 'de';
+          $lang = 'no';
            // $this->lang = $lang;
 
             $countrylng = new Criteria();
@@ -670,7 +670,7 @@ class emailLib{
                 }
             }
 
-            $vat = ($postalcharge)*.25;
+            $vat = ($order->getProduct()->getRegistrationFee()+$postalcharge)*.25;
             
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
@@ -1002,7 +1002,7 @@ public static function sendvoipemail(Customer $customer,$order,$transaction)
          $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'>".image_tag('https://wls2.zerocall.com/images/logo.gif')."</tr></table><table cellspacing='0' width='600px'><tr><td>Grattis till ditt nya resenummer. Detta nummer är alltid kopplat till den telefon där du har Smartsim aktiverat. Med resenumret blir du nådd utomlands då du har ett lokalt SIM-kort. Se prislistan för hur mycket det kostar att ta emot samtal.
 Ditt resenummer är $voipnumbers.<br/><br/>
 Med vänlig hälsning<br/><br/>
-WLS2<br/><a href='http://www.wls2.zerocall.com.com'>www.wls2.zerocall.com.com</a></td></tr></table>";
+WLS2<br/><a href='zapna.on'>zapna.on</a></td></tr></table>";
 
         //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
