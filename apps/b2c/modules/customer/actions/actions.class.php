@@ -539,7 +539,7 @@ class customerActions extends sfActions {
 
         //--------------------------Telinta------------------/
         $getvoipInfo = new Criteria();
-        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
+        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $this->customer->getMobileNumber());
         $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
         if (isset($getvoipInfos)) {
             $voipnumbers = $getvoipInfos->getNumber();
