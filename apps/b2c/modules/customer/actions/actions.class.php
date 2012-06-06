@@ -365,7 +365,7 @@ class customerActions extends sfActions {
                 $voipcharges = "-40";
 
                 $order = new CustomerOrder();
-                $order->setProductId(12);
+                $order->setProductId(5);
                 $order->setCustomerId($customerids);
                 $order->setExtraRefill($voipcharges);
                 $order->setIsFirstOrder(1);
