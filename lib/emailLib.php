@@ -1288,25 +1288,20 @@ WLS2<br/><a href='http://www.wls2.zerocall.com'>www.wls2.zerocall.com</a></td></
         $email->setMessage($message);
         $email->save();
      }
- public static function sendAdminRefillEmail(Customer $customer,$order)
+
+public static function sendAdminRefilEmail(AgentCompany $agent,$agent_order)
+
     {
         $vat = 0;
 
-
-        if($order){
-            $vat = $order->getIsFirstOrder() ?
-                    ($order->getProduct()->getPrice() * $order->getQuantity() -
-                    $order->getProduct()->getInitialBalance()) * .20 :
-                    0;
-        }
         //create transaction
-        $tc  =new Criteria();
-        $tc->add(TransactionPeer::CUSTOMER_ID, $customer->getId() );
-        $tc->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
-        $transaction = TransactionPeer::doSelectOne($tc);
+
+
+
+
 
         //This Section For Get The Agent Information
-        $agent_company_id = $customer->getReferrerId();
+        $agent_company_id = $agent->getId();
         if($agent_company_id!=''){
             $c = new Criteria();
             $c->add(AgentCompanyPeer::ID, $agent_company_id);
@@ -1316,41 +1311,36 @@ WLS2<br/><a href='http://www.wls2.zerocall.com'>www.wls2.zerocall.com</a></td></
             $recepient_agent_email  = '';
             $recepient_agent_name = '';
         }
+
         //$this->renderPartial('affiliate/order_receipt', array(
+        $agentamount=$agent_order->getAmount();
+        $createddate=$agent_order->getCreatedAt('m-d-Y');
+        $agentid=$agent_order->getAgentOrderId();
+        $order_des=$agent_order->getOrderDescription();
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
-        $message_body = get_partial('customer/order_receipt_simple', array(
-                'customer'=>$customer,
-                'order'=>$order,
-                'transaction'=>$transaction,
+        $message_body = get_partial('agent_company/agent_order_receipt', array(
+                'order'=>$agentid,
+                'transaction'=>$agentamount,
+                'createddate'=>$createddate,
+                'description'=>$order_des,
                 'vat'=>$vat,
                 'agent_name'=>$recepient_agent_name,
                 'wrap'=>false,
+                'agent' => $agent
         ));
 
-        $subject = __('Payment Confirmation');
-        $recepient_email    = trim($customer->getEmail());
-        $recepient_name     = sprintf('%s %s', $customer->getFirstName(), $customer->getLastName());
-        $customer_id        = trim($customer->getId());
 
-        //Support Information
+        $subject = __('Agent Payment Confirmation');
+
+
+       //Support Information
         $sender_email = sfConfig::get('app_email_sender_email', 'okhan@zapna.com');
-        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'cdu@zapna.com');
-        $sender_name = sfConfig::get('app_email_sender_name', 'zerocall');
-        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'zerocall');
-        $rs_email = sfConfig::get('app_email_sender_email', 'rs@zapna.com');
+        $sender_emailcdu = sfConfig::get('app_email_sender_email_cdu', 'jan.larsson@landncall.com');
+        $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB');
+        $sender_namecdu = sfConfig::get('app_email_sender_name_cdu', 'LandNCall AB');
 
         //------------------Sent The Email To Customer
-        if(trim($recepient_email)!=''){
-            $email = new EmailQueue();
-            $email->setSubject($subject);
-            $email->setReceipientName($recepient_name);
-            $email->setReceipientEmail($recepient_email);
-            $email->setAgentId($agent_company_id);
-            $email->setCutomerId($customer_id);
-            $email->setEmailType('Zapna norway refill/charge via admin');
-            $email->setMessage($message_body);
-            $email->save();
-        }
+
         //----------------------------------------
 
         //------------------Sent the Email To Agent
@@ -1361,8 +1351,7 @@ WLS2<br/><a href='http://www.wls2.zerocall.com'>www.wls2.zerocall.com</a></td></
             $email2->setReceipientName($recepient_agent_name);
             $email2->setReceipientEmail($recepient_agent_email);
             $email2->setAgentId($agent_company_id);
-            $email2->setCutomerId($customer_id);
-            $email2->setEmailType('Zapna norway refill/charge via admin');
+             $email2->setEmailType('Zapna norway Agent refill via admin');
             $email2->setMessage($message_body);
 
             $email2->save();
@@ -1376,39 +1365,25 @@ WLS2<br/><a href='http://www.wls2.zerocall.com'>www.wls2.zerocall.com</a></td></
             $email3->setReceipientName($sender_name);
             $email3->setReceipientEmail($sender_email);
             $email3->setAgentId($agent_company_id);
-            $email3->setCutomerId($customer_id);
-            $email3->setEmailType('Zapna norway refill/charge via admin');
+            $email3->setEmailType('Zapna norway Agent refill via admin');
             $email3->setMessage($message_body);
             $email3->save();
         endif;
         //-----------------------------------------
-      //--------------Sent The Email To cdu
+          //--------------Sent The Email To cdu
          if (trim($sender_emailcdu)!=''):
             $email4 = new EmailQueue();
             $email4->setSubject($subject);
             $email4->setReceipientName($sender_namecdu);
             $email4->setReceipientEmail($sender_emailcdu);
             $email4->setAgentId($agent_company_id);
-            $email4->setCutomerId($customer_id);
-            $email4->setEmailType('Zapna norway refill/charge via admin');
-            $email4->setMessage($message_body);
-            $email4->save();
-        endif;
-        //-----------------------------------------
-         //--------------Sent The Email To RS
-         if (trim($rs_email)!=''):
-            $email4 = new EmailQueue();
-            $email4->setSubject($subject);
-            $email4->setReceipientName($sender_namecdu);
-            $email4->setReceipientEmail($rs_email);
-            $email4->setAgentId($agent_company_id);
-            $email4->setCutomerId($customer_id);
-            $email4->setEmailType('Zapna norway refill/charge via admin');
+            $email4->setEmailType('Zapna norway Agent refill via admin');
             $email4->setMessage($message_body);
             $email4->save();
         endif;
         //-----------------------------------------
     }
+
 
 }
 ?>
