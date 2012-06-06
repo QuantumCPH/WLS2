@@ -15,7 +15,8 @@ class client_documentsActions extends sfActions
   	$DB_Server 	= "localhost";
 	$DB_Username 	= "root";
 	$DB_Password 	= "1Qazxsw@";
-	$DB_DBName   	= "landncall";
+        //$DB_Password 	= "";
+	$DB_DBName   	= "norway";
 	$success= mysql_pconnect($DB_Server, $DB_Username, $DB_Password);	
 	mysql_select_db($DB_DBName);	
   }
@@ -31,7 +32,8 @@ class client_documentsActions extends sfActions
 	$DB_Server 	= "localhost";
 	$DB_Username 	= "root";
 	$DB_Password 	= "1Qazxsw@";
-	$DB_DBName   	= "landncall";
+        //$DB_Password 	= "";
+	$DB_DBName   	= "norway";
 	$success= mysql_pconnect($DB_Server, $DB_Username, $DB_Password);	
 	mysql_select_db($DB_DBName);
 	
@@ -65,7 +67,8 @@ class client_documentsActions extends sfActions
   	$DB_Server 	= "localhost";
 	$DB_Username 	= "root";
 	$DB_Password 	= "1Qazxsw@";
-	$DB_DBName   	= "landncall";
+        //$DB_Password 	= "";
+	$DB_DBName   	= "norway";
 	$success= mysql_pconnect($DB_Server, $DB_Username, $DB_Password);	
 	mysql_select_db($DB_DBName);
 	$editid = $request->getParameter('id');	
@@ -104,7 +107,8 @@ class client_documentsActions extends sfActions
   	$DB_Server 	= "localhost";
 	$DB_Username 	= "root";
 	$DB_Password 	= "1Qazxsw@";
-	$DB_DBName   	= "landncall";
+        //$DB_Password 	= "";
+	$DB_DBName   	= "norway";
 	$success= mysql_pconnect($DB_Server, $DB_Username, $DB_Password);	
 	mysql_select_db($DB_DBName);
 	
