@@ -635,6 +635,5 @@ a.changePass{
     color:#D44D05;
 }
 #forgot_password_form p.text1{
-    margin-bottom: 32px !important;
-    padding-top: 14px !important;
+    margin-bottom: 18px !important;
 }

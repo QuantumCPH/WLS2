@@ -45,7 +45,7 @@
             </div>
             <ul class="sf_admin_actions">
                 <li>
-                    <input type="submit" name="Agent Company" class="sf_admin_action_filter" value="filter">
+                    <input type="submit" name="Agent Company" class="sf_admin_action_filter" value="filter" />
                 </li>
             </ul>
       </fieldset>
@@ -97,6 +97,7 @@
          </tr>
     <?php  } ?>
     </table>
+    <br />
 </div>
  
 

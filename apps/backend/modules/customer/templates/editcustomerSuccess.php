@@ -104,7 +104,7 @@
             </td>
         </tr>
         </table>
-        <ul class="sf_admin_actions"><li><input type="submit" name="submit"  value="update"></li></ul>
+        <ul class="sf_admin_actions"><li><input class="sf_admin_action_create" type="submit" name="submit"  value="update" /></li></ul>
         
 
 
