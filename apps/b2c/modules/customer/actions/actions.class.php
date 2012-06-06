@@ -388,7 +388,7 @@ class customerActions extends sfActions {
                 $customer = CustomerPeer::doSelectOne($customer);
                 //
                 $rs = new Criteria();
-                $rs->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
+                $rs->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getMobileNumber());
                 $rs->addAnd(SeVoipNumberPeer::IS_ASSIGNED, 3);
                 $voip_customer = '';
                 if (SeVoipNumberPeer::doCount($rs) > 0) {
@@ -416,11 +416,11 @@ class customerActions extends sfActions {
                 // die;
                 //--------------------------Telinta------------------/
                 $getvoipInfo = new Criteria();
-                $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
+                $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getMobileNumber());
                 $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
                 if (isset($getvoipInfos)) {
                     $voipnumbers = $getvoipInfos->getNumber();
-                    $voipnumbers = substr($voipnumbers, 2);
+                    //$voipnumbers = substr($voipnumbers, 2);
                     $voip_customer = $getvoipInfos->getCustomerId();
                     $this->customer = $customer;
                     $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
