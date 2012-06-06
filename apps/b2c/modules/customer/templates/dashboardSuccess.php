@@ -24,7 +24,7 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
                                   echo   $amt=CurrencyConverter::convertUsdToSek($Tes);
                               echo " NOK"  ;
                                    $getvoipInfo = new Criteria();
-        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getId());
+        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getMobileNumber());
         $getvoipInfo->add(SeVoipNumberPeer::IS_ASSIGNED, 1);
         $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo);//->getId();
         if(isset($getvoipInfos)){

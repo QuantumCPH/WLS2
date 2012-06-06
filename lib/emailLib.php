@@ -987,7 +987,7 @@ public static function sendvoipemail(Customer $customer,$order,$transaction)
         
         // Please remove the receipt that is sent out when activating 
            $getvoipInfo = new Criteria();
-        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getId());
+        $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customer->getMobileNumber());
         $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo);//->getId();
         if(isset($getvoipInfos)){
             $voipnumbers = $getvoipInfos->getNumber() ;
@@ -999,7 +999,7 @@ public static function sendvoipemail(Customer $customer,$order,$transaction)
         
         
         
-         $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'>".image_tag('https://wls2.zerocall.com/images/logo.gif')."</tr></table><table cellspacing='0' width='600px'><tr><td>Grattis till ditt nya resenummer. Detta nummer är alltid kopplat till den telefon där du har Smartsim aktiverat. Med resenumret blir du nådd utomlands då du har ett lokalt SIM-kort. Se prislistan för hur mycket det kostar att ta emot samtal.
+         $message_body = "<table width='600px'><tr style='border:0px solid #fff'><td colspan='4' align='right' style='text-align:right; border:0px solid #fff'>".image_tag('https://wls2.zerocall.com/images/zapna_logo_small.jpg')."</tr></table><table cellspacing='0' width='600px'><tr><td>Grattis till ditt nya resenummer. Detta nummer är alltid kopplat till den telefon där du har Smartsim aktiverat. Med resenumret blir du nådd utomlands då du har ett lokalt SIM-kort. Se prislistan för hur mycket det kostar att ta emot samtal.
 Ditt resenummer är $voipnumbers.<br/><br/>
 Med vänlig hälsning<br/><br/>
 WLS2<br/><a href='zapna.on'>zapna.on</a></td></tr></table>";
