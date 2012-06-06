@@ -518,17 +518,7 @@ class paymentsActions extends sfActions {
                          Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
 
                     //This is for Recharge the Account
-                    //this condition for if follow me is Active
-                    $getvoipInfo = new Criteria();
-                    $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $this->customers->getMobileNumber());
-                    $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
-                    if (isset($getvoipInfos)) {
-                        $voipnumbers = $getvoipInfos->getNumber();
-                        $voip_customer = $getvoipInfos->getCustomerId();
-                       
-                    } else {
-                        
-                    }
+                  
                     $transaction_i->save();
                     $invite->save();
 
