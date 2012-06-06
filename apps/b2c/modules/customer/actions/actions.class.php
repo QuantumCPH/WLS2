@@ -543,7 +543,7 @@ class customerActions extends sfActions {
         $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
         if (isset($getvoipInfos)) {
             $voipnumbers = $getvoipInfos->getNumber();
-            $voipnumbers = substr($voipnumbers, 2);
+           // $voipnumbers = substr($voipnumbers, 2);
            $voip_customer = $getvoipInfos->getCustomerId();
           
             $getvoipInfos->setIsAssigned(3);
