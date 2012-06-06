@@ -260,11 +260,7 @@ class paymentsActions extends sfActions {
         $dibs = new DibsCall();
         $dibs->setCallurl("Ticket Number:".$request->getParameter('ticket'));
         $dibs->save();
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        //print_r($_REQUEST);  	
-        // Store data in the user session
-        //$this->getUser()->setAttribute('activelanguage', $getCultue);
-        ////load the thankSuccess template
+       
 
         if ($request->getParameter('transact') != '') {
 
@@ -467,10 +463,10 @@ class paymentsActions extends sfActions {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //Section For Telinta Add Cusomter
              
-                //    Telienta::ResgiterCustomer($this->customer, $OpeningBalance);
+                    Telienta::ResgiterCustomer($this->customer, $OpeningBalance);
                       // For Telinta Add Account
                
-               //     Telienta::createAAccount($TelintaMobile,$this->customer);
+                   Telienta::createAAccount($TelintaMobile,$this->customer);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //if the customer is invited, Give the invited customer a bonus of 10dkk
                 $invite_c = new Criteria();
@@ -518,7 +514,7 @@ class paymentsActions extends sfActions {
                     $OpeningBalance = $comsion;
                     //This is for Recharge the Customer
                 
-                    //     Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
+                         Telienta::recharge($this->customers, $OpeningBalance,"Tipsa en van " . $invite->getInviteNumber());
 
                     //This is for Recharge the Account
                   
