@@ -943,7 +943,7 @@ class customerActions extends sfActions {
 
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        
+        changeLanguageCulture::languageCulture($request, $this);
         //-----------------------
 
         $this->redirectUnless($this->getUser()->isAuthenticated(), "@homepage");
@@ -972,6 +972,9 @@ class customerActions extends sfActions {
         unset($this->form['manufacturer']);
         unset($this->form['device_id']);
         unset($this->form['ticketval']);
+        unset($this->form['i_customer']);
+        unset($this->form['usage_alert_sms']);
+        unset($this->form['usage_alert_email']);
         $this->uniqueidValue = $this->customer->getUniqueId();
         //This Section For Get the Language Symbol For Set Currency -
         $getvoipInfo = new Criteria();
@@ -1000,33 +1003,9 @@ class customerActions extends sfActions {
             }
             // echo 'after';
         }
-        //disable
-        //$this->form->widgetSchema['mobile_number']->setAttribute('readonly','readonly');
+       
         $this->form->getWidget('mobile_number')->setAttribute('readonly', 'readonly');
-        //$this->form->getWidget('mobile_number')->setAttribute('disabled','disabled');
-        //	$this->form->getWidget('email')->setAttribute('readonly','readonly');
-        //$this->form->getWidget('email')->setAttribute('disabled','disabled');
-        //$this->getValidator['mobile_number'] = new sfValidatorReadOnlyField(array('field' => 'mobile_number', 'object' => $this->form->getObject()));
-        //$this->form->getWidget('manufacturer')->setLabel('Mobile brand','Mobile brand');
-        // $this->widgetSchema->setLabel('customer_manufacturer','Mobile brand');
-        //$this->form->getWidget->('customer_manufacturer', "Yes");
-        //$this->form->getWidget('password')->setOption('always_render_empty', false);
-        //$this->form->getWidget('password_confirm')->setOption('always_render_empty', false);
-        //get default pre-requisites
-//	  	$c = new Criteria();
-//	  	$c->add(DevicePeer::ID, $this->customer->getDeviceId());
-//
-//	  	$device = DevicePeer::doSelectOne($c);
-//
-//	  	$manufacturer = $device->getManufacturer();
-//
-//	  	$this->form->setDefault(
-//	  			'manufacturer', $manufacturer->getId()
-//	  	);
-//
-//                $this->form->setDefault(
-//	  			'device_id', $device->getId()
-//	  	);
+        
     }
 
     public function executeLogin(sfWebRequest $request) {
