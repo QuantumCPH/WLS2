@@ -207,7 +207,7 @@ class paymentsActions extends sfActions {
 
     public function executeShowReceipt(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-      
+        changeLanguageCulture::languageCulture($request, $this);
 
         //is authenticated
         $this->customer = CustomerPeer::retrieveByPK(
@@ -216,7 +216,29 @@ class paymentsActions extends sfActions {
 
         $this->redirectUnless($this->customer, '@customer_login');
         //check to see if transaction id is there
-
+        $lang =  'no';
+        $this->lang = $lang;
+        
+        $countrylng = new Criteria();
+        $countrylng->add(EnableCountryPeer::LANGUAGE_SYMBOL,$lang );
+        $countrylng = EnableCountryPeer::doSelectOne($countrylng);
+        if($countrylng){
+            $countryName = $countrylng->getName();
+            $languageSymbol = $countrylng->getLanguageSymbol();
+            $lngId = $countrylng->getId();
+            
+            $postalcharges = new Criteria();
+            $postalcharges->add(PostalChargesPeer::COUNTRY, $lngId);
+            $postalcharges->add(PostalChargesPeer::STATUS, 1);
+            $postalcharges = PostalChargesPeer::doSelectOne($postalcharges);
+            //var_dump($postalcharges);
+            if($postalcharges){
+                $postalcharge =  $postalcharges->getCharges();
+               $forIphoneAdaptor = $postalcharge;
+            }else{
+                $postalcharge =  '';
+            }
+        }
         $transaction_id = $request->getParameter('tid');
 
         $this->forward404Unless($transaction_id);
@@ -232,9 +254,7 @@ class paymentsActions extends sfActions {
 
         if ($customer_order) {
             $vat = $customer_order->getIsFirstOrder() ?
-                    ($customer_order->getProduct()->getPrice() * $customer_order->getQuantity() -
-                    $customer_order->getProduct()->getInitialBalance()) * .20 :
-                    0;
+                    ($customer_order->getProduct()->getRegistrationFee()+$postalcharge) * .20 : 0;
         }
         else
             die('Error retreiving');
@@ -332,7 +352,7 @@ class paymentsActions extends sfActions {
             if (CustomerProductPeer::doCount($c) != 0) {
 
                 //Customer is already registered.
-                echo 'Der Kunde ist bereits registriert.';
+                echo 'Kunden er allerede registrert';
                 //exit the script successfully
                 return sfView::NONE;
             }

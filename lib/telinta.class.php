@@ -217,7 +217,7 @@ class Telienta {
     }
 
 
-    public static function charge(Customer $customer, $amount, $description="Refill") {
+    public static function charge(Customer $customer, $amount, $description="Charge") {
         return self::makeTransaction($customer, "Manual charge", $amount, $description);
 
     }

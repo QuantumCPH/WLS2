@@ -864,8 +864,8 @@
                 <target>Passordene stemmer ikke</target>
             </trans-unit>
             <trans-unit id="212" translate="yes" reformat="yes" xml:space="default">
-                <source>Thank you for registeration your account at WLS. You will soon receive a delivery confirmation</source>
-                <target>Takk for registeration kontoen på WLS. Du vil snart motta en leveringsbekreftelse</target>
+                <source>Thank you for registeration your account at Zapna. You will soon receive a delivery confirmation</source>
+                <target>Takk for registeration kontoen på Zapna. Du vil snart motta en leveringsbekreftelse</target>
             </trans-unit>
             <trans-unit id="213" translate="yes" reformat="yes" xml:space="default">
                 <source>Print</source>
@@ -1029,6 +1029,15 @@
                 <source>Invaild mobile number or password.</source>
                 <target>Invaild mobilnummer eller passord.</target>
             </trans-unit>
+             <trans-unit id="251" translate="yes" reformat="yes" xml:space="default">
+                <source>Refund</source>
+                <target>Tilbakebetaling</target>
+            </trans-unit>
+            <trans-unit id="252" translate="yes" reformat="yes" xml:space="default">
+                <source>Print</source>
+                <target>Skrive ut</target>
+            </trans-unit>
+            
         </body>
     </file>
 </xliff>

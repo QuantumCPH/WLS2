@@ -1761,13 +1761,11 @@ public function executeSmsHistory(sfWebrequest $request){
         $transaction = TransactionPeer::doSelectOne($c);
         //echo var_dump($transaction);
         $order->setOrderStatusId(sfConfig::get('app_status_completed', 3)); //completed
-        //$order->getCustomer()->setCustomerStatusId(sfConfig::get('app_status_completed', 3)); //completed
         $transaction->setTransactionStatusId(sfConfig::get('app_status_completed', 3)); //completed
         if ($transaction->getAmount() > $order_amount) {
             //error
             $order->setOrderStatusId(sfConfig::get('app_status_error', 5)); //error in amount
             $transaction->setTransactionStatusId(sfConfig::get('app_status_error', 5)); //error in amount
-            //$order->getCustomer()->setCustomerStatusId(sfConfig::get('app_status_completed', 5)); //error in amount
         } else if ($transaction->getAmount() < $order_amount) {
             //$extra_refill_amount = $order_amount;
             $order->setExtraRefill($order_amount);
@@ -1778,8 +1776,6 @@ public function executeSmsHistory(sfWebrequest $request){
             $order->setAgentCommissionPackageId($order->getCustomer()->getAgentCompany()->getAgentCommissionPackageId());
         }
         $ticket_id = $request->getParameter('transact');
-        //set subscription id in case 'use current c.c for future auto refills' is set to 1
-        //set auto_refill amount
     
         $order->save();
         $transaction->save();
@@ -1798,8 +1794,6 @@ public function executeSmsHistory(sfWebrequest $request){
            $transaction->save();
             
         }
-
-
 
         //TODO ask if recharge to be done is same as the transaction amount
         //die;
@@ -1822,44 +1816,27 @@ public function executeSmsHistory(sfWebrequest $request){
                 $TelintaMobile = '47' . $this->customer->getMobileNumber();
             }
 
-  $unidc=$this->customer->getUniqueid();
+             $unidc=$this->customer->getUniqueid();
 
- echo $unidc;
- echo "<br/>";
+             echo $unidc;
+             echo "<br/>";
 
-
-    //echo $OpeningBalance."Balance";
-    //echo "<br/>";
-    
-            //This is for Recharge the Customer
-          //  $MinuesOpeningBalance = $OpeningBalance * 3;
-            Telienta::recharge($this->customer, $OpeningBalance);
-          
-                         
-            //This is for Recharge the Account
-            //this condition for if follow me is Active
+            Telienta::recharge($this->customer, $OpeningBalance,'Refill');
+            
             $getvoipInfo = new Criteria();
             $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $this->customer->getMobileNumber());
             $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
             if (isset($getvoipInfos)) {
                 $voipnumbers = $getvoipInfos->getNumber();
                 $voip_customer = $getvoipInfos->getCustomerId();
-                // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name='.$voipnumbers.'&amount='.$OpeningBalance.'&type=account');
             } else {
-                //  $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name='.$uniqueId.'&amount='.$OpeningBalance.'&type=account');
+                
             }
-            // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=a'.$TelintaMobile.'&amount='.$OpeningBalance.'&type=account');
-            // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=recharge&name=cb'.$TelintaMobile.'&amount='.$OpeningBalance.'&type=account');
-
             $MinuesOpeningBalance = $OpeningBalance * 3;
-            //type=<account_customer>&action=manual_charge&name=<name>&amount=<amount>
-            //This is for Recharge the Customer
-            // $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=customer&action=manual_charge&name='.$uniqueId.'&amount='.$MinuesOpeningBalance);
-
-
+            
             $subject = $this->getContext()->getI18N()->__('Payment Confirmation');
-            $sender_email = sfConfig::get('app_email_sender_email', 'support@landncall.com');
-            $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB support');
+            $sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
+            $sender_name = sfConfig::get('app_email_sender_name', 'Zapna support');
 
             $recepient_email = trim($this->customer->getEmail());
             $recepient_name = sprintf('%s %s', $this->customer->getFirstName(), $this->customer->getLastName());
@@ -1892,12 +1869,6 @@ public function executeSmsHistory(sfWebrequest $request){
 
         $order->setExeStatus(1);
         $order->save();
-//echo 'NOOO';
-// Update cloud 9
-        //c9Wrapper::equateBalance($this->customer);
-//echo 'Comeing';
-        //set vat
-
         echo 'Yes';
         return sfView::NONE;
     }
