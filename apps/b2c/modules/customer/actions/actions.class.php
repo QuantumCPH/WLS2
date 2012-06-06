@@ -361,11 +361,11 @@ class customerActions extends sfActions {
         if ($request->isMethod('post')) {
 
             if ($this->customer_balance > 40) {
-                //When the customer register to this – the account should be deducted for 30 SEK for activation + 10 SEK for monthly fee - Ahtsham Asghar
+                //When the customer register to this – the account should be deducted for 30 NOK for activation + 10 NOK for monthly fee - Ahtsham Asghar
                 $voipcharges = "-40";
 
                 $order = new CustomerOrder();
-                $order->setProductId(12);
+                $order->setProductId(5);
                 $order->setCustomerId($customerids);
                 $order->setExtraRefill($voipcharges);
                 $order->setIsFirstOrder(1);

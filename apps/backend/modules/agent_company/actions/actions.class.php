@@ -266,8 +266,13 @@ if ($order_id and $amount) {
     $aph->save();
 
     $this->getUser()->setFlash('message', 'Your Selected Agent Company is Refill Successful ' . $amount . ' NOK is approved');
+
     emailLib::sendAdminRefilEmail($this->agent, $agent_order);
-    
+
+
+   //  emailLib::sendAdminRefillEmail($this->agent, $agent_order);
+
+ 
     $this->redirect('agent_company/agentCompanyPayment');
 
    }else{
@@ -395,7 +400,11 @@ public function executeAgentCompanyPayment(sfWebrequest $request) {
     $aph->save();
 
     $this->getUser()->setFlash('message', 'Your Selected Agent Company is Charged Successfully ' . -$amount . ' NOK is approved');
+ 
     emailLib::sendAdminRefilEmail($this->agent, $agent_order);
+
+
+
     $this->redirect('agent_company/agentCompanyPayment');
 
    }else{
