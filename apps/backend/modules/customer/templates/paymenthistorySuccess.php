@@ -40,7 +40,7 @@
                             }else if($lang=="en"){
                                 echo ('eur');
                             }else{
-                                echo ('SEK');
+                                echo ('NOK');
                             } ?></td>
                 
                 </tr>
@@ -58,7 +58,7 @@
                             }else if($lang=="en"){
                                 echo ('eur');
                             }else{
-                                echo ('SEK');
+                                echo ('NOK');
                             } ?></td>
                 	
                 </tr>	

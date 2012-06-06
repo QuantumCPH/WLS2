@@ -38,7 +38,7 @@ if($pus==1){
         <th  width="20%"  align="left"><?php echo __('To Number') ?></th>
         <th  width="20%"  align="left"><?php echo __('From Number') ?></th>
         <th width="10%"   align="left"><?php echo __('Duration') ?></th>
-        <th width="20%"   align="left"><?php echo __('Cost') ?> (SEK)</th>
+        <th width="20%"   align="left"><?php echo __('Cost') ?> (NOK)</th>
         <th width="10%"   align="left"><?php echo __('Typ') ?></th>
     </tr>
         <?php
@@ -271,7 +271,7 @@ echo  date('i:s',$callval);
 }       ?></td>
                                     <td><?php echo number_format($xdr->charged_amount / 4, 2); ?></td>
                                     <td><?php echo number_format($xdr->charged_amount, 2);
-                                $amount_total+= number_format($xdr->charged_amount, 2); ?> SEK</td>
+                                $amount_total+= number_format($xdr->charged_amount, 2); ?> NOK</td>
                                    
                                     <td><?php
                                 $typecall = substr($xdr->account_id, 0, 1);
@@ -314,7 +314,7 @@ echo  date('i:s',$callval);
                         <!--
                         <td><?php echo format_number($amount_total - $amount_total * .20) ?> SEK</td>
                                         	 -->
-                        <td><?php echo number_format($amount_total, 2, ',', '') ?> SEK</td>
+                        <td><?php echo number_format($amount_total, 2, ',', '') ?> NOK</td>
                     <td>&nbsp;</td>
                 </tr>
         <?php endif;
