@@ -281,7 +281,7 @@
   
     </div>
 </div>
-
+<!--
  <div class="form-row">
   <?php echo label_for('agent_company[balance]', __($labels['agent_company{balance}']), '') ?>
   <div class="content<?php if ($sf_request->hasError('agent_company{balance}')): ?> form-error<?php endif; ?>">
@@ -294,7 +294,7 @@
   'control_name' => 'agent_company[balance]',
 )); echo $value ? $value : '&nbsp;' ?>
     </div>
-</div>
+</div>-->
  
 </fieldset>
 
