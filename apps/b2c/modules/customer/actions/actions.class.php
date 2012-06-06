@@ -244,23 +244,7 @@ class customerActions extends sfActions {
 
     public function executeDashboard(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        
-        //-----------------------
-
-
-        /*
-          $referer = $request->getReferer();
-          $referer = substr($referer, 0, stripos($referer, '?'));
-
-          if($referer == $this->getController()->genUrl('@signup_step2', true) && $request->getParameter('customer_id') != ''){
-          $this->getUser()->setAuthenticated(true);
-          $this->getUser()->setAttribute('customer_id', $request->getParameter('customer_id'), 'usersession');
-
-          } else if (!$this->getUser()->isAuthenticated()){
-          $this->redirect('@b2c_homepage');
-          }
-         */
-
+       
         $this->customer = CustomerPeer::retrieveByPK($this->getUser()->getAttribute('customer_id', '', 'usersession'));
 
         $this->redirectUnless($this->customer, "@homepage");
@@ -321,25 +305,11 @@ class customerActions extends sfActions {
             $this->customer_balance = $this->customer_balance;
     }
 
-    //This Function add Again new Feature Landncall --
+    //This Function add Again new Feature Wls2 --
     public function executeSubscribevoip(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        
+        changeLanguageCulture::languageCulture($request, $this);
         //-----------------------
-
-
-        /*
-          $referer = $request->getReferer();
-          $referer = substr($referer, 0, stripos($referer, '?'));
-
-          if($referer == $this->getController()->genUrl('@signup_step2', true) && $request->getParameter('customer_id') != ''){
-          $this->getUser()->setAuthenticated(true);
-          $this->getUser()->setAttribute('customer_id', $request->getParameter('customer_id'), 'usersession');
-
-          } else if (!$this->getUser()->isAuthenticated()){
-          $this->redirect('@b2c_homepage');
-          }
-         */
 
         $customerids = $request->getParameter('cid');
 
@@ -372,7 +342,7 @@ class customerActions extends sfActions {
             $this->customer_balance = (double) Fonet::getBalance($this->customer);
         }
 
-        //echo  $TelintaMobile = '47'.$this->customer->getMobileNumber();
+        //echo  $TelintaMobile = '46'.$this->customer->getMobileNumber();
         $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
         if ($getFirstnumberofMobile == 0) {
             $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
@@ -383,16 +353,10 @@ class customerActions extends sfActions {
         $emailId = $this->customer->getEmail();
         $uniqueId = $this->customer->getUniqueid();
         //This is for Retrieve balance From Telinta
-        $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=getbalance&name=' . $uniqueId . '&type=customer');
-        $telintaGetBalance = str_replace('success=OK&Balance=', '', $telintaGetBalance);
-        $telintaGetBalance = str_replace('-', '', $telintaGetBalance);
-        $this->customer_balance = $telintaGetBalance;
+        $this->customer_balance = Telienta::getBalance($this->customer);
 
 
-        if ($this->customer_balance != null)
-            $this->customer_balance = $this->customer_balance;
-
-            //$this->customer_balance = 100;
+        //$this->customer_balance = 100;
 
         if ($request->isMethod('post')) {
 
@@ -412,8 +376,7 @@ class customerActions extends sfActions {
                 $this->customer = $customerids;
                 $transaction = new Transaction();
                 $transaction->setAmount($voipcharges);
-                //$this->getContext()->getI18N()->__('
-                $transaction->setDescription('Transation for VoIP Purchase');
+                $transaction->setDescription($this->getContext()->getI18N()->__('Transation for VoIP Purchase'));
                 $transaction->setOrderId($order->getId());
                 $transaction->setCustomerId($customerids);
                 $transaction->setTransactionStatusId(3);
@@ -424,40 +387,33 @@ class customerActions extends sfActions {
                 $customer->add(CustomerPeer::ID, $customerids);
                 $customer = CustomerPeer::doSelectOne($customer);
                 //
-                //Fonet::registerFonet($customer);
-                //   Fonet::recharge($customer, $order->getExtraRefill());
-                //get an empty VoIP slot
-
-
                 $rs = new Criteria();
-                $rs->add(SeVoipNumberPeer::CUSTOMER_ID,$customerids);
-                $rs->addAnd(SeVoipNumberPeer::IS_ASSIGNED,3);
+                $rs->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
+                $rs->addAnd(SeVoipNumberPeer::IS_ASSIGNED, 3);
                 $voip_customer = '';
-                if(SeVoipNumberPeer::doCount($rs)>0){
+                if (SeVoipNumberPeer::doCount($rs) > 0) {
                     $voip_customer = SeVoipNumberPeer::doSelectOne($rs);
-                }else{
+                } else {
 
                     $c = new Criteria();
-                    $c->setLimit(1);
+                    //$c->setLimit(1);
                     $c->add(SeVoipNumberPeer::IS_ASSIGNED, 0);
-                    if(SeVoipNumberPeer::doCount($c)< 10){
-                     emailLib::sendErrorInTelinta("Resenumber about to Finis","Resenumbers in the landncall are lest then 10 . ");
-
+                    if (SeVoipNumberPeer::doCount($c) < 10) {
+                        emailLib::sendErrorInTelinta("Resenumber about to Finis", "Resenumbers in the Zapna Norway are lest then 10 . ");
                     }
-                    if (!$voip_customer = SeVoipNumberPeer::doSelectOne($c)){
-                        emailLib::sendErrorInTelinta("Resenumber Finished","Resenumbers in the Zapan Norway are finished. This error is faced by customer id: ".$customerids);
+                    if (!$voip_customer = SeVoipNumberPeer::doSelectOne($c)) {
+                        emailLib::sendErrorInTelinta("Resenumber Finished", "Resenumbers in the Zapna Norway are finished. This error is faced by customer id: " . $customerids);
                         return false;
                     }
                 }
-               // echo $voip_customer->getId()."Baran here<hr/>";
+                // echo $voip_customer->getId()."Baran here<hr/>";
                 $voip_customer->setUpdatedAt(date('Y-m-d H:i:s'));
                 $voip_customer->setCustomerId($customerids);
                 $voip_customer->setIsAssigned(1);
-                 $voip_customer->save();
+                $voip_customer->save();
 
-                  //  echo $voip_customer->getId()."Baran here<hr/>";
-                   // die;
-
+                //  echo $voip_customer->getId()."Baran here<hr/>";
+                // die;
                 //--------------------------Telinta------------------/
                 $getvoipInfo = new Criteria();
                 $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
@@ -489,29 +445,19 @@ class customerActions extends sfActions {
                     }
                     //------------------------------
 
+                    Telienta::createReseNumberAccount($voipnumbers, $this->customer, $TelintaMobile);
 
-                    $telintaAddAccount = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=account&action=activate&name=' . $voipnumbers . '&customer=' . $uniqueId . '&opening_balance=0&credit_limit=&product=YYYLandncall_Forwarding&outgoing_default_r_r=2034&activate_follow_me=Yes&follow_me_number=' . $TelintaMobile . '&billing_model=1&password=asdf1asd');
 
-                    $string = $telintaAddAccount;
-                    $find = 'ERROR';
-                    if (strpos($string, $find)) {
-                        $message_body = "VOIP Subscribe Error:<br /> Duplicate account Id within Environment Of This Voip Against: $voipnumbers <br / >Unique Id: $uniqueId";
-                        //Send Email to User/Agent/Support --- when Customer Refilll --- 01/15/11
-                        emailLib::sendErrorTelinta($this->customer, $message_body);
-                    } else {
-
-                    }
-
-                    //When a customer is assigned a resenummer you need to update the follow me number here is the URL
-                    // $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=update&name='.$voipnumbers.'&active=Y&follow_me_number='.$TelintaMobile.'&type=account');
                     $OpeningBalance = '40';
-                    //https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=account&action=activate&name='.$voipnumbers.'&customer='.$uniqueId.'&opening_balance=-'.$OpeningBalance.'&product=YYYLandncall_Forwarding&outgoing_default_r_r=2034&activate_follow_me=Yes&follow_me_number='.$TelintaMobile.'&billing_model=1&password=asdf1asd
+
                     //type=<account_customer>&action=manual_charge&name=<name>&amount=<amount>
                     //This is for Recharge the Customer
-                    $telintaAddAccountCB = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?type=customer&action=manual_charge&name=' . $uniqueId . '&amount=' . $OpeningBalance);
+
+                    Telienta::charge($this->customer, $OpeningBalance,"Resenumber Payment");
+
                 }
 
-
+//exit;
                 //----------------------------------------------------
                 //----------------Send Email--------------
                 //set vat
@@ -519,8 +465,8 @@ class customerActions extends sfActions {
                 $this->customer = $customer;
                 $vat = 0;
                 $subject = $this->getContext()->getI18N()->__('Transation for VoIP Purchase');
-                $sender_email = sfConfig::get('app_email_sender_email', 'support@landncall.com');
-                $sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB support');
+                $sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
+                $sender_name = sfConfig::get('app_email_sender_name', 'Zapna support');
 
                 $recepient_email = trim($this->customer->getEmail());
                 $recepient_name = sprintf('%s %s', $this->customer->getFirstName(), $this->customer->getLastName());
@@ -558,11 +504,11 @@ class customerActions extends sfActions {
                 emailLib::sendvoipemail($this->customer, $order, $transaction);
 
                 //------------------------------
-                $this->redirect($this->getTargetUrl().'customer/voippurchased');
+                //$this->redirect('http://landncall.zerocall.com/b2c.php/customer/voippurchased');
+                $this->redirect($this->getTargetUrl() .'customer/voippurchased');
             }
         }
     }
-
     public function executeVoiptermsandcondition(sfWebRequest $request) {
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
         
@@ -577,11 +523,7 @@ class customerActions extends sfActions {
     }
 
     public function executeVoippurchased(sfWebRequest $request) {
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        
-        //-----------------------
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        //-----------------------
+               
         $this->customer = CustomerPeer::retrieveByPK(
                         $this->getUser()->getAttribute('customer_id', null, 'usersession')
         );
@@ -589,10 +531,9 @@ class customerActions extends sfActions {
         $this->redirectUnless($this->getUser()->isAuthenticated(), "@homepage");
     }
 
-    public function executeUnsubscribevoip(sfWebRequest $request) {
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
+     public function executeUnsubscribevoip(sfWebRequest $request) {
+        changeLanguageCulture::languageCulture($request, $this);
         
-        //$customerids =  $request->getParameter('cid');
         $customerids = $this->getUser()->getAttribute('customer_id', '', 'usersession');
         $this->customer = CustomerPeer::retrieveByPK($this->getUser()->getAttribute('customer_id', '', 'usersession'));
 
@@ -603,53 +544,16 @@ class customerActions extends sfActions {
         if (isset($getvoipInfos)) {
             $voipnumbers = $getvoipInfos->getNumber();
             $voipnumbers = substr($voipnumbers, 2);
-            $voip_customer = $getvoipInfos->getCustomerId();
-            $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
-            if ($getFirstnumberofMobile == 0) {
-                $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '47' . $TelintaMobile;
-            } else {
-                $TelintaMobile = '47' . $this->customer->getMobileNumber();
-            }
-        }
-
-        $removecustomer = '';
-        //get an UnSurbise VoIP 
-        $c = new Criteria();
-        $c->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
-        if ($voip_customer = SeVoipNumberPeer::doSelectOne($c)) {
-            $voip_customer->setIsAssigned(3);
-            $voip_customer->save();
-            $uniqueId = $this->customer->getUniqueid();
-
-            $tc = new Criteria();
-            $tc->add(CallbackLogPeer::UNIQUEID, $uniqueId);
-            $tc->addDescendingOrderByColumn(CallbackLogPeer::CREATED);
-            $MaxUniqueRec = CallbackLogPeer::doSelectOne($tc);
-            $followMeNumber = $MaxUniqueRec->getMobileNumber();
-            //When a customer is DeActive a resenummer you need to update the follow me number here is the URL - Telinta
-            $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=update&name=' . $voipnumbers . '&active=N&follow_me_number=' . $followMeNumber . '&type=account');
-            // echo 'https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=update&name='.$voipnumbers.'&active=N&follow_me_number='.$followMeNumber.'&type=account';
-            $string = $telintaGetBalance;
-            $find = 'ERROR';
-            if (strpos($string, $find)) {
-                $message_body = "Error ON DeActive a resenummer within environment <br> VOIP Number :$voipnumbers <br / >Follow Me Number: $followMeNumber";
-                //Send Email to User/Agent/Support --- when Customer Refilll --- 01/15/11
-                emailLib::sendErrorTelinta($this->customer, $message_body);
-            } else {
-                
-            }
-            $telintaGetBalance = file_get_contents('https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=delete&name='.$voipnumbers.'&type=account');
-            // echo 'https://mybilling.telinta.com/htdocs/zapna/zapna.pl?action=update&name='.$voipnumbers.'&active=N&follow_me_number='.$followMeNumber.'&type=account';
-            $string = $telintaGetBalance;
-            $find = 'ERROR';
-            if (strpos($string, $find)) {
-                $message_body = "Error ON DeActive a resenummer within environment <br> VOIP Number :$voipnumbers <br / >Follow Me Number: $followMeNumber";
-                //Send Email to User/Agent/Support --- when Customer Refilll --- 01/15/11
-                emailLib::sendErrorTelinta($this->customer, $message_body);
-            } else {
-
-            }
+           $voip_customer = $getvoipInfos->getCustomerId();
+          
+            $getvoipInfos->setIsAssigned(3);
+            $getvoipInfos->save();
+           
+             $res = new Criteria();
+                    $res->add(TelintaAccountsPeer::ACCOUNT_TITLE, $voipnumbers);
+                    $res->addAnd(TelintaAccountsPeer::STATUS, 3);
+                    $telintaAccountres = TelintaAccountsPeer::doSelectOne($res);
+                    Telienta::terminateAccount($telintaAccountres);
         }
     }
 
@@ -696,7 +600,7 @@ class customerActions extends sfActions {
     }
 
     public function executeRefillAccept(sfWebRequest $request) {
-  $this->getUser()->setCulture($request->getParameter('lng'));
+     $this->getUser()->setCulture($request->getParameter('lng'));
 
         $this->redirect('customer/dashboard');
     }
