@@ -358,7 +358,7 @@ class customerActions extends sfActions {
         if ($country_id) {
             $langSym = $country_id->getLanguageSymbol();
         } else {
-            $langSym = 'da';
+            $langSym = 'no';
         }
         //--------------------------------------------------------
         //$lang =  $this->getUser()->getAttribute('activelanguage');
@@ -445,7 +445,7 @@ class customerActions extends sfActions {
 
                     }
                     if (!$voip_customer = SeVoipNumberPeer::doSelectOne($c)){
-                        emailLib::sendErrorInTelinta("Resenumber Finished","Resenumbers in the landncall are finished. This error is faced by customer id: ".$customerids);
+                        emailLib::sendErrorInTelinta("Resenumber Finished","Resenumbers in the Zapan Norway are finished. This error is faced by customer id: ".$customerids);
                         return false;
                     }
                 }
@@ -558,7 +558,7 @@ class customerActions extends sfActions {
                 emailLib::sendvoipemail($this->customer, $order, $transaction);
 
                 //------------------------------
-                $this->redirect('http://landncall.zerocall.com/b2c.php/customer/voippurchased');
+                $this->redirect($this->getTargetUrl().'customer/voippurchased');
             }
         }
     }

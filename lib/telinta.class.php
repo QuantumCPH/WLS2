@@ -76,11 +76,11 @@ class Telienta {
         return self::createAccount($customer, $mobileNumber, 'a', self::$a_iProduct);
     }
 
-    public static function createCBAccount($mobileNumber, Customer $customer,$iProduct=7992) {
+    public static function createCBAccount($mobileNumber, Customer $customer,$iProduct=11748) {
         return self::createAccount($customer, $mobileNumber, 'cb',  $iProduct);
     }
 
-    public static function createReseNumberAccount($VOIPNumber, Customer $customer, $currentActiveNumber, $voip_iProduct=7994) {
+    public static function createReseNumberAccount($VOIPNumber, Customer $customer, $currentActiveNumber, $voip_iProduct=11749) {
 
         if (self::createAccount($customer, $VOIPNumber, '', $voip_iProduct, 'Y')) {
             $accounts = false;
