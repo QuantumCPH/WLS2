@@ -589,8 +589,8 @@
                 <target>Auto refill beløp::</target>
             </trans-unit>
              <trans-unit id="145" translate="yes" reformat="yes" xml:space="default">
-                <source>Wls 2 recommends to activate this service so you &lt;br /&gt; do not have to manually  refill when your account&lt;br /&gt;  balance runs low. 100 or 200 Euros each  when the &lt;br /&gt; balances reaches 25 or 50 Euro. This facility is &lt;br /&gt; added to your account in minutes.</source>
-                <target>WLS to anbefaler å aktivere denne tjenesten slik at du &lt;br /&gt; trenger ikke å manuelt fylle når kontoen &lt;br /&gt;balanse kjører lav. 100 eller 200 euro hver da &lt;br /&gt; saldo når 25 eller 50 euro. Dette anlegget er &lt;br /&gt; lagt til kontoen din på minutter</target>
+                <source>Zapna recommends to activate this service so you &lt;br /&gt; do not have to manually  refill when your account&lt;br /&gt;  balance runs low. 100 or 200 NOK each  when the &lt;br /&gt; balances reaches 25 or 50 NOK. This facility is &lt;br /&gt; added to your account in minutes.</source>
+                <target>Zapna to anbefaler å aktivere denne tjenesten slik at du &lt;br /&gt; trenger ikke å manuelt fylle når kontoen &lt;br /&gt;balanse kjører lav. 100 eller 200 NOK hver da &lt;br /&gt; saldo når 25 eller 50 NOK. Dette anlegget er &lt;br /&gt; lagt til kontoen din på minutter</target>
             </trans-unit>
              <trans-unit id="146" translate="yes" reformat="yes" xml:space="default">
                 <source>Enter cell phone number</source>
