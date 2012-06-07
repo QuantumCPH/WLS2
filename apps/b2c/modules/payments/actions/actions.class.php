@@ -744,7 +744,7 @@ class paymentsActions extends sfActions {
 		$value = preg_replace('/(.*[^%^0^D])(%0A)(.*)/i','${1}%0D%0A${3}',$value);// IPN fix
 		$req .= "&$key=$value";
 	}
-	
+	print_r($_POST);
 	// assign posted variables to local variables
 	$data['item_name']		= $_POST['item_name'];
 	$data['item_number'] 		= $_POST['item_number'];
@@ -769,6 +769,8 @@ class paymentsActions extends sfActions {
 		fputs ($fp, $header . $req);
 		while (!feof($fp)) {
 			$res = fgets ($fp, 1024);
+                        var_dump($res);
+                        die;
 			if (strcmp($res, "VERIFIED") == 0) {
 			
 				// Used for debugging
