@@ -237,6 +237,7 @@ $customer_form->unsetAllExcept(array('auto_refill_amount', 'auto_refill_min_bala
                 <input type="hidden" name="lastName" value="<?php echo $order->getCustomer()->getLastName();?>"  />
                 <input type="hidden" name="payer_email" value="<?php echo $order->getCustomer()->getEmail();?>"  />
                 <input type="hidden" name="item_number" value="<?php echo $order_id;?>" />
+                <input type="hidden" name="rm" value="2" />
                 
 <!--           test credit card info
            4711100000000000

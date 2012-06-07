@@ -722,7 +722,7 @@ class paymentsActions extends sfActions {
 	}
         
 	// Append paypal return addresses
-	$querystring .= "return_url=".urlencode(stripslashes($return_url))."&";
+	$querystring .= "return=".urlencode(stripslashes($return_url))."&";
 	$querystring .= "cancel_url=".urlencode(stripslashes($cancel_url))."&";
 	$querystring .= "notify_url=".urlencode($notify_url);
 	
