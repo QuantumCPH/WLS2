@@ -699,7 +699,7 @@ class paymentsActions extends sfActions {
         $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
     
         
-        
+        $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
 
 	// Firstly Append paypal account to querystring
@@ -728,7 +728,7 @@ class paymentsActions extends sfActions {
 	
 	// Append querystring with custom field
 	//$querystring .= "&custom=".USERID;
-	die($query);
+	die($querystring);
 	// Redirect to paypal IPN
 	header('location:https://www.sandbox.paypal.com/cgi-bin/webscr'.$querystring);
 	exit();
