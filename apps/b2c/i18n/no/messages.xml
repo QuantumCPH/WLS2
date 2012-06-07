@@ -101,8 +101,8 @@
                 <target>Send SMS over hele verden til de beste prisene i markedet</target>
             </trans-unit>
             <trans-unit id="25" translate="yes" reformat="yes" xml:space="default">
-                <source>International calls from 0 cents * With WLS, you can call the whole world.</source>
-                <target>Internasjonale samtaler fra 0 cents * Med WLS, kan du ringe hele verden.</target>
+                <source>International calls from 0 cents * With Zapna, you can call the whole world.</source>
+                <target>Internasjonale samtaler fra 0 cents * Med Zapna, kan du ringe hele verden.</target>
             </trans-unit>
             
             <trans-unit id="26" translate="yes" reformat="yes" xml:space="default">
