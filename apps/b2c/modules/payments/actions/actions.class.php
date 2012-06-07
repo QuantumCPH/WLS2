@@ -694,8 +694,8 @@ class paymentsActions extends sfActions {
     public function executeTransaction(sfWebRequest $request)
     {
         $paypal_email = 'paypal@example.com';
-        $return_url = 'http://kmmalik.com/payment-successful.htm';
-        $cancel_url = 'http://kmmalik.com/payment-cancelled.htm';
+        $return_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
+        $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
         $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
     
         
@@ -713,7 +713,7 @@ class paymentsActions extends sfActions {
         $item_amount = $request->getParameter('amount');
         
 	$querystring .= "item_name=".urlencode($item_name)."&";
-	$querystring .= "amount=".urlencode($item_amount)."&";
+	//$querystring .= "amount=".urlencode($item_amount)."&";
 	
 	//loop for posted values and append to querystring
 	foreach($_POST as $key => $value){
@@ -728,7 +728,7 @@ class paymentsActions extends sfActions {
 	
 	// Append querystring with custom field
 	//$querystring .= "&custom=".USERID;
-	die($querystring);
+	//die($querystring);
 	// Redirect to paypal IPN
 	header('location:https://www.sandbox.paypal.com/cgi-bin/webscr'.$querystring);
 	exit();
@@ -738,7 +738,7 @@ class paymentsActions extends sfActions {
 	// Response from Paypal
 
 	// read the post from PayPal system and add 'cmd'
-	$req = 'cmd=_notify-validate';
+	$req = 'cmd=_notify-validate'; //_express-checkout
 	foreach ($_POST as $key => $value) {
 		$value = urlencode(stripslashes($value));
 		$value = preg_replace('/(.*[^%^0^D])(%0A)(.*)/i','${1}%0D%0A${3}',$value);// IPN fix
