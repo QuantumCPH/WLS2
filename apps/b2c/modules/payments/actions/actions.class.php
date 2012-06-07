@@ -693,10 +693,13 @@ class paymentsActions extends sfActions {
 
     public function executeTransaction(sfWebRequest $request)
     {
+        $order_id = $request->getParameter('item_number');
+        $item_amount = $request->getParameter('amount');
+        
         $paypal_email = 'paypal@example.com';
         $return_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
         $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
-        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
+        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id."&amount=".$item_amount;
     
         
         $querystring = '';
@@ -707,10 +710,10 @@ class paymentsActions extends sfActions {
 	
 	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
 	
-	$order_id = $request->getParameter('item_number');
+	
         $order = CustomerOrderPeer::retrieveByPK($order_id);
         $item_name = $order->getProduct()->getName();
-        $item_amount = $request->getParameter('amount');
+        
         
 	$querystring .= "item_name=".urlencode($item_name)."&";
 	//$querystring .= "amount=".urlencode($item_amount)."&";
