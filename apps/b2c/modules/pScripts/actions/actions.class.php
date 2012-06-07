@@ -142,8 +142,8 @@ class pScriptsActions extends sfActions
 	//set vat
 	$vat = 0;
         $subject = $this->getContext()->getI18N()->__('Payment Confirmation');
-	$sender_email = sfConfig::get('app_email_sender_email', 'support@landncall.com');
-	$sender_name = sfConfig::get('app_email_sender_name', 'LandNCall AB support');
+	$sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
+	$sender_name = sfConfig::get('app_email_sender_name', 'Zapna Aps support');
 
 	$recepient_email = trim($this->customer->getEmail());
 	$recepient_name = sprintf('%s %s', $this->customer->getFirstName(), $this->customer->getLastName());
