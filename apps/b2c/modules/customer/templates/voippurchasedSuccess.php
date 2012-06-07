@@ -13,7 +13,7 @@
 		echo __("For any questions please feel free to contact us at");
 		echo '</p>';
 	?>
-	<a href="mailto:support@landncall.com">support@landncall.com</a>.
+	<a href="mailto:support@zapna.no">support@zapna.no</a>.
 	</div>
   </div> <!-- end left-col -->
   <?php include_partial('customer/sidebar') ?>
