@@ -116,7 +116,7 @@ class paymentsActions extends sfActions {
         //$getCultue = $this->getUser()->getCulture();
         // Store data in the user session
         //$this->getUser()->setAttribute('activelanguage', $getCultue);
-
+        $this->targetUrl = $this->getTargetUrl();
         $this->form = new PaymentForm();
 
 ///////////////////////postal charges section//////////////////////////////
@@ -271,8 +271,15 @@ class paymentsActions extends sfActions {
     }
 
     public function executeConfirmpayment(sfWebRequest $request) {
+         $Parameters="testtsts".$request->getURI();
 
-           $this->getUser()->setCulture($request->getParameter('lng'));
+         $email2 = new DibsCall();
+         $email2->setCallurl($Parameters);
+
+         $email2->save();
+         return sfView::NONE;
+        die;
+        $this->getUser()->setCulture($request->getParameter('lng'));
         $urlval = $request->getParameter('transact');
         $email2 = new DibsCall();
         $email2->setCallurl($urlval);
@@ -636,5 +643,165 @@ class paymentsActions extends sfActions {
   
        return sfView::NONE;
     }
- 
+  
+  private function check_txnid($tnxid){	
+	//return true;
+	$valid_txnid = true;
+       //get result set
+        $cp = new Criteria;
+        $cp->add(PaymentsPeer::TXNID,$tnxid);
+        $payment = PaymentsPeer::doSelectOne($cp);        		
+	if($payment) {
+          $valid_txnid = false;
+	}
+     return $valid_txnid;
+  }
+    
+   private function check_price($price, $id){
+        $valid_price = false;
+     
+	$cp = new Criteria();
+        $cp->add(TransactionPeer::ORDER_ID,$id);
+        $transaction = TransactionPeer::doSelect($cp);
+        if($transaction){
+            if($transaction->getAmount()==$price){
+                $valid_price = true;
+            }else{
+                $valid_price = false;
+            }
+        }else{
+            $valid_price = false;
+        }        
+        
+	return $valid_price;
+	
+    } 
+    
+    private function updatePayments($data){	
+     
+	if(is_array($data)){
+            $payment = new Payments;
+            $payment->setItemid($data['item_number']);
+            $payment->setPaymentAmount($data['payment_amount']);
+            $payment->setPaymentStatus($data['payment_status']);
+            $payment->setTxnid($data['txn_id']);
+            $payment->save();
+        
+            return mysql_insert_id($payment->getId());
+       }
+    }
+
+    public function executeTransaction(sfWebRequest $request)
+    {
+        $paypal_email = 'paypal@example.com';
+        $return_url = 'http://kmmalik.com/payment-successful.htm';
+        $cancel_url = 'http://kmmalik.com/payment-cancelled.htm';
+        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
+    
+        
+        
+        if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
+
+	// Firstly Append paypal account to querystring
+	$querystring .= "?business=".urlencode($paypal_email)."&";	
+	
+	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
+	
+	$order_id = $request->getParameter('item_number');
+        $order = CustomerOrderPeer::retrieveByPK($order_id);
+        $item_name = $order->getProduct()->getName();
+        $item_amount = $request->getParameter('amount');
+        
+	$querystring .= "item_name=".urlencode($item_name)."&";
+	$querystring .= "amount=".urlencode($item_amount)."&";
+	
+	//loop for posted values and append to querystring
+	foreach($_POST as $key => $value){
+		$value = urlencode(stripslashes($value));
+		$querystring .= "$key=$value&";
+	}
+        
+	// Append paypal return addresses
+	$querystring .= "return_url=".urlencode(stripslashes($return_url))."&";
+	$querystring .= "cancel_url=".urlencode(stripslashes($cancel_url))."&";
+	$querystring .= "notify_url=".urlencode($notify_url);
+	
+	// Append querystring with custom field
+	//$querystring .= "&custom=".USERID;
+	
+	// Redirect to paypal IPN
+	header('location:https://www.sandbox.paypal.com/cgi-bin/webscr'.$querystring);
+	exit();
+
+        }else{
+	
+	// Response from Paypal
+
+	// read the post from PayPal system and add 'cmd'
+	$req = 'cmd=_notify-validate';
+	foreach ($_POST as $key => $value) {
+		$value = urlencode(stripslashes($value));
+		$value = preg_replace('/(.*[^%^0^D])(%0A)(.*)/i','${1}%0D%0A${3}',$value);// IPN fix
+		$req .= "&$key=$value";
+	}
+	
+	// assign posted variables to local variables
+	$data['item_name']		= $_POST['item_name'];
+	$data['item_number'] 		= $_POST['item_number'];
+	$data['payment_status'] 	= $_POST['payment_status'];
+	$data['payment_amount'] 	= $_POST['mc_gross'];
+	$data['payment_currency']	= $_POST['mc_currency'];
+	$data['txn_id']			= $_POST['txn_id'];
+	$data['receiver_email'] 	= $_POST['receiver_email'];
+	$data['payer_email'] 		= $_POST['payer_email'];
+	$data['custom'] 		= $_POST['custom'];
+		
+	// post back to PayPal system to validate
+	$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+	$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+	
+	$fp = fsockopen ('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);	
+	
+	if (!$fp) {
+		// HTTP ERROR
+	} else {
+		fputs ($fp, $header . $req);
+		while (!feof($fp)) {
+			$res = fgets ($fp, 1024);
+			if (strcmp($res, "VERIFIED") == 0) {
+			
+				// Used for debugging
+				//@mail("you@youremail.com", "PAYPAL DEBUGGING", "Verified Response<br />data = <pre>".print_r($post, true)."</pre>");
+						
+				// Validate payment (Check unique txnid & correct price)
+				$valid_txnid = $this->check_txnid($data['txn_id']);
+				$valid_price = $this->check_price($data['payment_amount'], $data['item_number']);
+				// PAYMENT VALIDATED & VERIFIED!
+				if($valid_txnid && $valid_price){				
+					$orderid = $this->updatePayments($data);		
+					if($orderid){					
+						// Payment has been made & successfully inserted into the Database								
+					}else{								
+						// Error inserting into DB
+						// E-mail admin or alert user
+					}
+				}else{					
+					// Payment made but data has been changed
+					// E-mail admin or alert user
+				}						
+			
+			}else if (strcmp ($res, "INVALID") == 0) {
+			
+				// PAYMENT INVALID & INVESTIGATE MANUALY! 
+				// E-mail admin or alert user
+				
+				// Used for debugging
+				//@mail("you@youremail.com", "PAYPAL DEBUGGING", "Invalid Response<br />data = <pre>".print_r($post, true)."</pre>");
+			}		
+		}		
+	 fclose ($fp);
+	}	
+      }
+    }   
 }
