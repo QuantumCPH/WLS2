@@ -271,7 +271,7 @@ class paymentsActions extends sfActions {
     }
 
     public function executeConfirmpayment(sfWebRequest $request) {
-         $Parameters="testtsts".$request->getURI().$request->getParameter('amount');;
+         $Parameters="testtsts".$request->getURI();
 
          $email2 = new DibsCall();
          $email2->setCallurl($Parameters);
@@ -699,7 +699,7 @@ class paymentsActions extends sfActions {
         $paypal_email = 'paypal@example.com';
         $return_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment';
         $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
-        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id."&amount=".$item_amount;
+        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
     
         
         $querystring = '';
