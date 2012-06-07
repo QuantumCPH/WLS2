@@ -888,6 +888,7 @@ class customerActions extends sfActions {
                     unset($this->form['ticketval']);
                     unset($this->form['to_date']);
                     unset($this->form['from_date']);
+                    unset($this->form['i_customer']);
                     unset($this->form['terms_conditions']);
                     unset($this->form['manufacturer']);
                     unset($this->form['product']);
