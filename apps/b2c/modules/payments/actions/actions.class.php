@@ -728,7 +728,7 @@ class paymentsActions extends sfActions {
 	
 	// Append querystring with custom field
 	//$querystring .= "&custom=".USERID;
-	
+	die($query);
 	// Redirect to paypal IPN
 	header('location:https://www.sandbox.paypal.com/cgi-bin/webscr'.$querystring);
 	exit();
