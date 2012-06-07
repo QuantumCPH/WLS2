@@ -804,8 +804,8 @@
                 <target>Vennligst klikk godta å begynne å spare penger umiddelbart med SmartSim.</target>
             </trans-unit>
               <trans-unit id="197" translate="yes" reformat="yes" xml:space="default">
-                <source>dash-nav</source>
-                <target>dash-nav</target>
+                <source>navigation</source>
+                <target>navigasjon</target>
             </trans-unit>
             <trans-unit id="198" translate="yes" reformat="yes" xml:space="default">
                 <source>Accept</source>
