@@ -1380,7 +1380,7 @@ class affiliateActions extends sfActions {
         $c->add(AgentOrderPeer::STATUS, 1);
         $agent_order = AgentOrderPeer::doSelectOne($c);
 
-        $agent_order->setAmount($amount);
+        $agent_order->setAmount($item_amount);
         $agent_order->save();
         
         $querystring = '';
