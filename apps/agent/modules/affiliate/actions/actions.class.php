@@ -291,7 +291,7 @@ class affiliateActions extends sfActions {
 
         $this->browser = new Browser();
         $this->form = new AccountRefillAgent();
-
+        $this->target = $this->getTargetUrl();
         $this->error_msg = "";
         $this->error_mobile_number = "";
         $validated = false;
@@ -956,11 +956,11 @@ class affiliateActions extends sfActions {
 
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 01/24/11 - Ahtsham
       
-
-
+        $this->target = $this->getTargetUrl();
         $ca = new Criteria();
         $ca->add(AgentCompanyPeer::ID, $agent_company_id = $this->getUser()->getAttribute('agent_company_id', '', 'agentsession'));
         $agent = AgentCompanyPeer::doSelectOne($ca);
+        $this->agent = $agent;
         $this->forward404Unless($agent);
 
 
@@ -1003,16 +1003,16 @@ class affiliateActions extends sfActions {
             $c->add(AgentOrderPeer::STATUS, 1);
             $agent_order = AgentOrderPeer::doSelectOne($c);
 
-            $agent_order->setAmount($amount / 100);
+            $agent_order->setAmount($amount);
             $agent_order->setStatus(3);
             $agent_order->save();
 
             $agent = AgentCompanyPeer::retrieveByPK($agent_order->getAgentCompanyId());
-            $agent->setBalance($agent->getBalance() + ($amount / 100));
+            $agent->setBalance($agent->getBalance() + ($amount));
             $agent->save();
             $this->agent = $agent;
 
-            $amount = $amount / 100;
+            $amount = $amount;
             $remainingbalance = $agent->getBalance();
             $aph = new AgentPaymentHistory();
             $aph->setAgentId($agent_order->getAgentCompanyId());
@@ -1359,5 +1359,46 @@ class affiliateActions extends sfActions {
                 $this->error_mobile_number = 'invalid mobile number';
                 $this->getUser()->setFlash('error', 'invalid mobile number');
             }
-        }    
+        }
+   public function executeAgentRefil(sfWebRequest $request)
+    {
+        $order_id = $request->getParameter('item_number');
+        $item_amount = $request->getParameter('amount');
+        
+        if($item_amount=="") $item_amount = $request->getParameter('extra_refill');
+        
+        $return_url = $this->getTargetUrl().'accountRefill';
+        $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
+        $notify_url = $this->getTargetUrl().'thankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
+
+     
+        $querystring = '';
+        if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
+	
+        $order = CustomerOrderPeer::retrieveByPK($order_id);
+        $item_name = "Refill";
+        
+	//loop for posted values and append to querystring
+	foreach($_POST as $key => $value){
+	   $value = urlencode(stripslashes($value));
+	   $querystring .= "$key=$value&";
+	}
+        
+        $querystring .= "item_name=".urlencode($item_name)."&";
+        $querystring .= "return=".urldecode($return_url)."&";
+        $querystring .= "cancel_return=".urldecode($cancel_url)."&";
+	$querystring .= "notify_url=".urldecode($notify_url);
+        
+        $environment = "sandbox";
+        
+        if($order_id && $item_amount){
+	   Payment::SendPayment($querystring, $environment);
+        }else{
+           echo 'error';  
+        }
+	return sfView::NONE;
+	//exit();
+
+        }
+    }
 }
