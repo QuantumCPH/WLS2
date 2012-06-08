@@ -998,7 +998,6 @@ class affiliateActions extends sfActions {
 
         $email2 = new DibsCall();
         $email2->setCallurl($Parameters);
-
         $email2->save();
         
         $order_id = $request->getParameter('orderid');
@@ -1374,7 +1373,7 @@ class affiliateActions extends sfActions {
                 
         $return_url = $this->getTargetUrl().'accountRefill';
         $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
-        $notify_url = $this->getTargetUrl().'thankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
+        $notify_url = 'http://wls2.zerocall.com/agent.php/affiliate/thankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
 
      
         $querystring = '';
