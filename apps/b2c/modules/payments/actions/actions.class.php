@@ -629,62 +629,16 @@ class paymentsActions extends sfActions {
   
        return sfView::NONE;
     }
-  
-  private function check_txnid($tnxid){	
-	//return true;
-	$valid_txnid = true;
-       //get result set
-        $cp = new Criteria;
-        $cp->add(PaymentsPeer::TXNID,$tnxid);
-        $payment = PaymentsPeer::doSelectOne($cp);        		
-	if($payment) {
-          $valid_txnid = false;
-	}
-     return $valid_txnid;
-  }
-    
-   private function check_price($price, $id){
-        $valid_price = false;
-     
-	$cp = new Criteria();
-        $cp->add(TransactionPeer::ORDER_ID,$id);
-        $transaction = TransactionPeer::doSelect($cp);
-        if($transaction){
-            if($transaction->getAmount()==$price){
-                $valid_price = true;
-            }else{
-                $valid_price = false;
-            }
-        }else{
-            $valid_price = false;
-        }        
-        
-	return $valid_price;
-	
-    } 
-    
-    private function updatePayments($data){	
-     
-	if(is_array($data)){
-            $payment = new Payments;
-            $payment->setItemid($data['item_number']);
-            $payment->setPaymentAmount($data['payment_amount']);
-            $payment->setPaymentStatus($data['payment_status']);
-            $payment->setTxnid($data['txn_id']);
-            $payment->save();
-        
-            return mysql_insert_id($payment->getId());
-       }
-    }
 
     public function executeTransaction(sfWebRequest $request)
     {
         $order_id = $request->getParameter('item_number');
         $item_amount = $request->getParameter('amount');
         
-        $return_url = 'http://wls2.zerocall.com/b2c.php/';
-        $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject/';
-        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
+        
+        $return_url = $this->getTargetUrl();
+        $cancel_url = $this->getTargetUrl().'payments/reject/orderid='.$order_id;
+        $notify_url = $this->getTargetUrl().'payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
 
      
         $querystring = '';

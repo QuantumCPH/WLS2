@@ -1747,7 +1747,8 @@ public function executeSmsHistory(sfWebrequest $request){
         $this->forward404Unless($order_id);
 
         $order = CustomerOrderPeer::retrieveByPK($order_id);
-
+        $this->forward404Unless($order);
+        
         $subscription_id = $request->getParameter("subscriptionid");
         $order_amount = ((double) $request->getParameter('amount'));
         $this->forward404Unless($order);
