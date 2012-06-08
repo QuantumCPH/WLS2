@@ -92,7 +92,7 @@ class affiliateActions extends sfActions {
         $cn->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
         $cn->addAnd(TransactionPeer::TRANSACTION_STATUS_ID, 3);
         $numberchange = TransactionPeer::doSelect($cn);
-        
+        var_dump($numberchange);
         $this->registrations = $registrations;
         $this->numberchanges = $numberchange;
         $this->refills = $refills;
