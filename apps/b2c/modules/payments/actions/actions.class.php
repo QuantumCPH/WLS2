@@ -282,6 +282,7 @@ class paymentsActions extends sfActions {
         $order_amount = "";
         $order_id = $request->getParameter('orderid'); 
         $order_amount = $request->getParameter('amount');
+        $ticket_id = "";
         $this->getUser()->setCulture($request->getParameter('lng'));
               
 
