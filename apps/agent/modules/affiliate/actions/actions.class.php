@@ -1368,8 +1368,8 @@ class affiliateActions extends sfActions {
         }
    public function executeAgentRefil(sfWebRequest $request)
     {
-      echo  $order_id = $request->getParameter('item_number');
-      echo  $item_amount = $request->getParameter('amount');
+        $order_id = $request->getParameter('item_number');
+        $item_amount = $request->getParameter('amount');
                 
         $return_url = $this->getTargetUrl().'accountRefill';
         $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
@@ -1393,7 +1393,7 @@ class affiliateActions extends sfActions {
 	$querystring .= "notify_url=".urldecode($notify_url);
         
         $environment = "sandbox";
-        echo $querystring;
+//        echo $querystring;
         if($order_id && $item_amount){
 	   Payment::SendPayment($querystring, $environment);
         }else{
