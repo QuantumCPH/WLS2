@@ -1375,6 +1375,7 @@ class affiliateActions extends sfActions {
         $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
         $notify_url = 'http://wls2.zerocall.com/b2c.php/pScripts/agentRefillThankyou?orderid='.$order_id.'&amount='.$item_amount;
 
+        $c = new Criteria;
         $c->add(AgentOrderPeer::AGENT_ORDER_ID, $order_id);
         $c->add(AgentOrderPeer::STATUS, 1);
         $agent_order = AgentOrderPeer::doSelectOne($c);
