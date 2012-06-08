@@ -993,10 +993,17 @@ class affiliateActions extends sfActions {
     }
 
     public function executeThankyou(sfWebRequest $request) {
+        
+        $Parameters=$request->getURI();
 
+        $email2 = new DibsCall();
+        $email2->setCallurl($Parameters);
+
+        $email2->save();
+        
         $order_id = $request->getParameter('orderid');
         $amount = $request->getParameter('amount');
-
+       
         if ($order_id and $amount) {
             $c = new Criteria();
             $c->add(AgentOrderPeer::AGENT_ORDER_ID, $order_id);
@@ -1374,8 +1381,7 @@ class affiliateActions extends sfActions {
      
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
-	
-        $order = CustomerOrderPeer::retrieveByPK($order_id);
+        
         $item_name = "Refill";
         
 	//loop for posted values and append to querystring
