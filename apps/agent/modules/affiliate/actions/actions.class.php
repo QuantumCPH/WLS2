@@ -39,6 +39,7 @@ class affiliateActions extends sfActions {
         $c = new Criteria();
         $agent_company_id = $this->getUser()->getAttribute('agent_company_id', '', 'agentsession');
         $c->add(AgentCompanyPeer::ID, $agent_company_id);
+        $agent = AgentCompanyPeer::doSelectOne($c);
 
         $this->forward404Unless(AgentCompanyPeer::doSelectOne($c));
 
