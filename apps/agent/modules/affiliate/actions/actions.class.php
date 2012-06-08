@@ -510,21 +510,12 @@ class affiliateActions extends sfActions {
     public function executeRegisterCustomer(sfWebRequest $request) {
 
 
-
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 03/09/11 - Ahtsham
-      
-
-        //set referrer id
-
-
         $this->getUser()->getAttribute('agent_company_id', '', 'agentsession');
         $this->browser = new Browser();
 
         $c = new Criteria();
         $c->add(AgentCompanyPeer::ID, $this->getUser()->getAttribute('agent_company_id', '', 'agentsession'));
-        $referrer_id = AgentCompanyPeer::doSelectOne($c); //->getId();
-
-
+        $referrer_id = AgentCompanyPeer::doSelectOne($c); 
 
         if ($request->isMethod('post')) {
 
@@ -800,22 +791,8 @@ class affiliateActions extends sfActions {
 
 
             $transaction->save();
-
-
-
-
-/////////////////////////end of commission setting ////////////////////////////////////////////
-            // echo 'entering if';
-            //  echo '<br/>';
+            
             if ($agent->getIsPrepaid() == true) {
-
-                // echo 'agent is prepaid';
-                //  echo '<br/>';
-                //  echo $agent->getBalance();
-                // echo '<br/>';
-                //  echo $transaction->getCommissionAmount();
-                // echo '<br/>';
-                // echo $agent->getBalance() < $transaction->getCommissionAmount();
 
                 if ($agent->getBalance() < ($transaction->getAmount() - $transaction->getCommissionAmount())) {
                     $this->redirect('affiliate/setProductDetails?product_id=' . $order->getProductId() . '&customer_id=' . $transaction->getCustomerId() . '&balance_error=1');
@@ -833,26 +810,15 @@ class affiliateActions extends sfActions {
                     $aph->setAmount($amount);
                     $aph->setRemainingBalance($remainingbalance);
                     $aph->save();
-
-
-
-
+                    
                     ////////////////////////////////////////////
                 }
             }
         }
-
-
-
-
-
-
         $order->save();
 
-
-
         if ($is_transaction_completed) {
-            //set customer's proudcts in use
+            
             $customer_product = new CustomerProduct();
 
             $customer_product->setCustomer($order->getCustomer());
@@ -884,8 +850,6 @@ class affiliateActions extends sfActions {
             $this->customer->setUniqueid(str_replace(' ', '', $uniqueid));
             $this->customer->save();
 
-
-
             $cc = new Criteria();
             $cc->add(EnableCountryPeer::ID, $this->customer->getCountryId());
             $country = EnableCountryPeer::doSelectOne($cc);
@@ -910,11 +874,10 @@ class affiliateActions extends sfActions {
 
             Telienta::ResgiterCustomer($this->customer, $order->getExtraRefill());
             Telienta::createAAccount($TelintaMobile, $this->customer);
-            //Telienta::createCBount($TelintaMobile, $this->customer->getUniqueid());
-            //generate Email
-           // $this->getUser()->setCulture('de');
+            Telienta::createCBAccount($TelintaMobile, $this->customer);
+           
             emailLib::sendCustomerRegistrationViaAgentEmail($this->customer, $order);
-         //   $this->getUser()->setCulture('en');
+          
             $this->getUser()->setFlash('message', $this->getContext()->getI18N()->__('Customer ') . $this->customer->getMobileNumber() . $this->getContext()->getI18N()->__(' is registered successfully'));
             $this->redirect('affiliate/receipts');
         }
