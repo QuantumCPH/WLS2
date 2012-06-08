@@ -280,7 +280,7 @@ class paymentsActions extends sfActions {
         
         $order_id = "";
         $order_amount = "";
-        $order_id = $request->getParameter('orderid'); 
+        $order_id = $request->getParameter('order_id'); 
         $order_amount = $request->getParameter('amount');
         $ticket_id = "";
         $this->getUser()->setCulture($request->getParameter('lng'));
@@ -711,7 +711,7 @@ class paymentsActions extends sfActions {
 		$querystring .= "$key=$value&";
 	}
         $environment = "sandbox";
-        die($querystring);
+        
 	Payment::SendPayment($querystring, $environment);
 	
 	return sfView::NONE;
