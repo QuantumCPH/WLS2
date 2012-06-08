@@ -1307,7 +1307,36 @@ class affiliateActions extends sfActions {
                                 Telienta::terminateAccount($telintaAccount);
                             }
 
-                            Telienta::createAAccount($newMobileNo, $customer);   
+                            Telienta::createAAccount($newMobileNo, $customer);  
+                            
+                            $cb = new Criteria;
+                            $cb->add(TelintaAccountsPeer::ACCOUNT_TITLE, 'cb'. $activeNumber->getMobileNumber());
+                            $cb->addAnd(TelintaAccountsPeer::STATUS, 3);
+
+                            if(TelintaAccountsPeer::doCount($cb)>0){
+                                $telintaAccountsCB = TelintaAccountsPeer::doSelectOne($cb);
+                                Telienta::terminateAccount($telintaAccountsCB);
+                            }
+                            Telienta::createCBAccount($newMobileNo, $customer);
+
+                            $getvoipInfo = new Criteria();
+                            $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);
+                            $getvoipInfo->addAnd(SeVoipNumberPeer::IS_ASSIGNED, 1);
+                            $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo);//->getId();
+                            if(isset($getvoipInfos)){
+                                $voipnumbers = $getvoipInfos->getNumber() ;
+                                $voipnumbers =  substr($voipnumbers,2);
+
+                                $tc = new Criteria();
+                                $tc->add(TelintaAccountsPeer::ACCOUNT_TITLE, $voipnumbers);
+                                $tc->add(TelintaAccountsPeer::STATUS,3);
+                                if(TelintaAccountsPeer::doCount($tc)>0){
+                                    $telintaAccountR = TelintaAccountsPeer::doSelectOne($tc);
+                                    Telienta::terminateAccount($telintaAccountR);
+                                }
+                                Telienta::createReseNumberAccount($voipnumbers, $customer, $newMobileNo);
+                            }else{
+                            }
                         }
 
                             $callbacklog = new CallbackLog();
