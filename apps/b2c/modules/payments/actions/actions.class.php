@@ -714,7 +714,7 @@ class paymentsActions extends sfActions {
 	Payment::SendPayment($querystring, $environment);
 	
 	
-	exit();
+	//exit();
 
         }
     }   
