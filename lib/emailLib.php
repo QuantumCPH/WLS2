@@ -1413,7 +1413,7 @@ public static function sendAdminRefilEmail(AgentCompany $agent,$agent_order)
         }
         //$this->renderPartial('affiliate/order_receipt', array(
         sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
-        $message_body = get_partial('affiliate/refill_order_receipt', array(
+        $message_body = get_partial('affiliate/change_number_order_receipt', array(
                 'customer'=>$customer,
                 'order'=>$order,
                 'transaction'=>$transaction,
