@@ -92,12 +92,13 @@ if($is_auto_refill_activated){  ?>  <div class="left-col">
      
     <?php include_partial('navigation', array('selected'=>'refill', 'customer_id'=>$customer->getId())) ?>
 	<div class="split-form">
-    <div style="width:500px;">
-              <div> <?php echo __('The most convenient way to fill the pot is to enable automatic refilling (below), then you do not need to worry about the pot running out. Especially important is such trip abroad where it can be difficult to fill in in any other way.');?><br /><br /></div>
-            <div>     <b style="text-decoration:underline;"><?php echo __('Automatic replenishment');?></b> </div>
+          <div style="width:500px;">
+              <div style='display:none;'> 
+                <div> <?php echo __('The most convenient way to fill the pot is to enable automatic refilling (below), then you do not need to worry about the pot running out. Especially important is such trip abroad where it can be difficult to fill in in any other way.');?><br /><br /></div>
+                <div>     <b style="text-decoration:underline;"><?php echo __('Automatic replenishment');?></b> </div>
                  <br />
-              <div>   <b><?php echo __('Automatic Replenishment is: Inactive');?></b></div>
-                
+                <div>   <b><?php echo __('Automatic Replenishment is: Inactive');?></b></div>
+              </div>  
       <div class="fl col">
       <div class="split-form">  
    <form action="https://payment.architrade.com/paymentweb/start.action" method="post" id="frmarchitrade" style="display: none;" >
