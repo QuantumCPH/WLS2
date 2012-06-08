@@ -1388,13 +1388,6 @@ public static function sendAdminRefilEmail(AgentCompany $agent,$agent_order)
     {        
         $vat = 0;
         
-        //create transaction
-//        $transaction = new Transaction();
-//        $transaction->setOrderId($order->getId());
-//        $transaction->setCustomer($customer);
-//        $transaction->setAmount($order->getExtraRefill());
-        
-
         $tc  =new Criteria();
         $tc->add(TransactionPeer::CUSTOMER_ID, $customer->getId() );
         $tc->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
