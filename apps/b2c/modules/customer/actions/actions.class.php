@@ -5,7 +5,7 @@ require_once(sfConfig::get('sf_lib_dir') . '/smsCharacterReplacement.php');
 require_once(sfConfig::get('sf_lib_dir') . '/changeLanguageCulture.php');
 require_once(sfConfig::get('sf_lib_dir') . '/parsecsv.lib.php');
 require_once(sfConfig::get('sf_lib_dir') . '/telinta.class.php');
-
+require_once(sfConfig::get('sf_lib_dir') . '/payment.class.php');
 /**
  * customer actions.
  *
@@ -558,7 +558,7 @@ class customerActions extends sfActions {
     }
 
     public function executeRefill(sfWebRequest $request) {
-       $this->target = $this->getTargetUrl();
+        $this->target = $this->getTargetUrl();
         //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
         
         //-----------------------
@@ -1734,33 +1734,28 @@ public function executeSmsHistory(sfWebrequest $request){
     }
 
     public function executeCalbackrefill(sfWebRequest $request) {
-    $this->getUser()->setCulture($request->getParameter('lng'));
-        $order_id = $request->getParameter("orderid");
-        $urlval = $order_id." refill page-qqqqqqqqq" . $request->getParameter('transact');
-
+        $this->getUser()->setCulture($request->getParameter('lng'));
+        $Parameters=$request->getURI();
+        $order_id = $request->getParameter("order_id");
+        
         $email2 = new DibsCall();
-        $email2->setCallurl($urlval);
+        $email2->setCallurl($Parameters);
 
         $email2->save();
 
 
-        //call Culture Method For Get Current Set Culture - Against Feature# 6.1 --- 02/28/11
-        
-        //-----------------------
-
-     
-
-        $this->forward404Unless($order_id || $order_amount);
+        $this->forward404Unless($order_id);
 
         $order = CustomerOrderPeer::retrieveByPK($order_id);
 
         $subscription_id = $request->getParameter("subscriptionid");
-        $order_amount = ((double) $request->getParameter('amount')) / 100;
+        $order_amount = ((double) $request->getParameter('amount'));
         $this->forward404Unless($order);
         $c = new Criteria;
         $c->add(TransactionPeer::ORDER_ID, $order_id);
         $transaction = TransactionPeer::doSelectOne($c);
-        //echo var_dump($transaction);
+        if($order_amount=="")$order_amount = $transaction->getAmount();
+        
         $order->setOrderStatusId(sfConfig::get('app_status_completed', 3)); //completed
         $transaction->setTransactionStatusId(sfConfig::get('app_status_completed', 3)); //completed
         if ($transaction->getAmount() > $order_amount) {
@@ -1944,4 +1939,48 @@ public function executeSmsHistory(sfWebrequest $request){
     
 
     }
+   public function executeRefilTransaction(sfWebRequest $request)
+    {
+        $order_id = $request->getParameter('item_number');
+        $item_amount = $request->getParameter('amount');
+        
+        if($item_amount=="") $item_amount = $request->getParameter('extra_refill');
+        
+        $return_url = $this->getTargetUrl().'refillAccept';
+        $cancel_url = $this->getTargetUrl().'customer/refillReject/';
+        $notify_url = $this->getTargetUrl().'customer/calbackrefill?order_id='.$order_id.'&amount='.$item_amount;
+
+     
+        $querystring = '';
+        if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
+
+	// Firstly Append paypal account to querystring
+		
+	
+	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
+	
+	
+        $order = CustomerOrderPeer::retrieveByPK($order_id);
+        $item_name = $order->getProduct()->getName();
+        
+        
+	$querystring .= "item_name=".urlencode($item_name)."&";
+        $querystring .= "return=".urldecode($return_url)."&";
+        $querystring .= "cancel_return=".urldecode($cancel_url)."&";
+	$querystring .= "notify_url=".urldecode($notify_url)."&";
+        
+	//loop for posted values and append to querystring
+	foreach($_POST as $key => $value){
+		$value = urlencode(stripslashes($value));
+		$querystring .= "$key=$value&";
+	}
+        $environment = "sandbox";
+        die($querystring);
+	Payment::SendPayment($querystring, $environment);
+	
+	return sfView::NONE;
+	//exit();
+
+        }
+    }   
 }
