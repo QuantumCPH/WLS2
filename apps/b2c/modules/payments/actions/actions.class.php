@@ -684,9 +684,9 @@ class paymentsActions extends sfActions {
         
         $return_url = 'http://wls2.zerocall.com/b2c.php/';
         $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
-        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
+    echo    $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
 
-        
+   die();     
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
 
@@ -702,7 +702,7 @@ class paymentsActions extends sfActions {
         
 	$querystring .= "item_name=".urlencode($item_name)."&";
         $querystring .= "return=".urldecode($return_url)."&";
-        $querystring .= "cancel_url=".urldecode($cancel_url)."&";
+        $querystring .= "cancel_return=".urldecode($cancel_url)."&";
 	$querystring .= "notify_url=".urldecode($notify_url)."&";
         
 	//loop for posted values and append to querystring
