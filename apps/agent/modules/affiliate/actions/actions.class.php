@@ -1371,9 +1371,7 @@ class affiliateActions extends sfActions {
     {
         $order_id = $request->getParameter('item_number');
         $item_amount = $request->getParameter('amount');
-        
-        if($item_amount=="") $item_amount = $request->getParameter('extra_refill');
-        
+                
         $return_url = $this->getTargetUrl().'accountRefill';
         $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
         $notify_url = $this->getTargetUrl().'thankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
@@ -1382,7 +1380,7 @@ class affiliateActions extends sfActions {
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
         
-        $item_name = "Refill";
+        $item_name = "Agent Refill";
         
 	//loop for posted values and append to querystring
 	foreach($_POST as $key => $value){
