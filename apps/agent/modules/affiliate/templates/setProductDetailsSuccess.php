@@ -1,6 +1,6 @@
 <?php use_helper('I18N') ?>
 <?php use_helper('Number') ?>
-<?php echo $target.'validateUniqueId'; ?>
+<?php echo sfConfig::get('app_main_url').'validateUniqueId'; ?>
 
 <script type="text/javascript">
 	
