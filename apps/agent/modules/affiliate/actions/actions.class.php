@@ -77,6 +77,7 @@ class affiliateActions extends sfActions {
         $ar = new Criteria();
         $ar->add(TransactionPeer::AGENT_COMPANY_ID, $agent_company_id);
         $ar->add(TransactionPeer::DESCRIPTION, 'Registration', Criteria::NOT_EQUAL);
+        $ar->addAnd(TransactionPeer::DESCRIPTION, 'Fee for change number (' . $agent->getName() . ')', Criteria::EQUAL);
         $ar->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
         $ar->addAnd(TransactionPeer::TRANSACTION_STATUS_ID, 3);
         $refills = TransactionPeer::doSelect($ar);
