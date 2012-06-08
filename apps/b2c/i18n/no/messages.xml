@@ -1037,7 +1037,10 @@
                 <source>Print</source>
                 <target>Skrive ut</target>
             </trans-unit>
-            
+            <trans-unit id="253" translate="yes" reformat="yes" xml:space="default">
+                <source>The customer is already registered</source>
+                <target>Kunden er allerede registrert</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

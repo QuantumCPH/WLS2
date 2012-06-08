@@ -271,41 +271,26 @@ class paymentsActions extends sfActions {
     }
 
     public function executeConfirmpayment(sfWebRequest $request) {
-         $Parameters="testtsts".$request->getURI();
+        $Parameters=$request->getURI();
 
-         $email2 = new DibsCall();
-         $email2->setCallurl($Parameters);
-
-         $email2->save();
-         return sfView::NONE;
-        die;
-        $this->getUser()->setCulture($request->getParameter('lng'));
-        $urlval = $request->getParameter('transact');
         $email2 = new DibsCall();
-        $email2->setCallurl($urlval);
-        $email2->save();
-        $dibs = new DibsCall();
-        $dibs->setCallurl("Ticket Number:".$request->getParameter('ticket'));
-        $dibs->save();
-       
+        $email2->setCallurl($Parameters);
 
-        if ($request->getParameter('transact') != '') {
+        $email2->save();
+        
+        $order_id = "";
+        $order_amount = "";
+        $order_id = $request->getParameter('orderid'); 
+        $order_amount = $request->getParameter('amount');
+        $this->getUser()->setCulture($request->getParameter('lng'));
+              
+
+        if ($order_id != '') {
 
             $this->logMessage(print_r($_GET, true));
 
             $is_transaction_ok = false;
             $subscription_id = '';
-            $order_id = "";
-            $order_amount = "";
-            //get the order_id from the session
-            //change the status of that order to complete,
-            //change the customer status to compete too
-            $order_id = $request->getParameter('orderid');
-            $ticket_id = $request->getParameter('ticket');
-            // echo $order_id.'<br />';
-            $subscription_id = $request->getParameter('subscriptionid');
-            $this->logMessage('sub id: ' . $subscription_id);
-            $order_amount = $request->getParameter('amount') / 100;
 
             $this->forward404Unless($order_id || $order_amount);
 
@@ -359,7 +344,7 @@ class paymentsActions extends sfActions {
             if (CustomerProductPeer::doCount($c) != 0) {
 
                 //Customer is already registered.
-                echo 'Kunden er allerede registrert';
+                echo __('The customer is already registered');
                 //exit the script successfully
                 return sfView::NONE;
             }
