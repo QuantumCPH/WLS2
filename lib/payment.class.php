@@ -27,7 +27,7 @@ class Payment {
         }else{
             $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
         }
-        die($querystring);
+      //  die($querystring);
         header("Location:".$paypalUrl.$querystring);
         exit();
     }
