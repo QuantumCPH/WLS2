@@ -699,17 +699,17 @@ class paymentsActions extends sfActions {
         $order = CustomerOrderPeer::retrieveByPK($order_id);
         $item_name = $order->getProduct()->getName();
         
-        
-	$querystring .= "item_name=".urlencode($item_name)."&";
-        $querystring .= "return=".urldecode($return_url)."&";
-        $querystring .= "cancel_return=".urldecode($cancel_url)."&";
-	$querystring .= "notify_url=".urldecode($notify_url)."&";
-        
 	//loop for posted values and append to querystring
 	foreach($_POST as $key => $value){
 		$value = urlencode(stripslashes($value));
 		$querystring .= "$key=$value&";
 	}
+        
+        $querystring .= "item_name=".urlencode($item_name)."&";
+        $querystring .= "return=".urldecode($return_url)."&";
+        $querystring .= "cancel_return=".urldecode($cancel_url)."&";
+	$querystring .= "notify_url=".urldecode($notify_url);
+        
         $environment = "sandbox";
         
 	Payment::SendPayment($querystring, $environment);
