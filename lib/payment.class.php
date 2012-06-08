@@ -20,14 +20,14 @@ class Payment {
     
     public static function SendPayment($querystring,$environment){
         
-        $querystring .= "?business=".urlencode(self::$PaypalEmail)."&";
+        $querystring = "?business=".urlencode(self::$PaypalEmail)."&".$querystring;
         
         if($environment!='live'){
             $paypalUrl = '';
         }else{
             $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
         }
-      //  die($querystring);
+        die($paypalUrl.$querystring);
         header("Location:".$paypalUrl.$querystring);
         exit();
     }
