@@ -2577,4 +2577,43 @@ if(($caltype!="IC") && ($caltype!="hc")){
             $email2->save();
  return sfView::NONE;
  }
+ 
+ public function executeAgentRefillThankyou(sfWebRequest $request) {
+        
+        $Parameters=$request->getURI();
+
+        $email2 = new DibsCall();
+        $email2->setCallurl($Parameters);
+        $email2->save();
+        
+        $order_id = $request->getParameter('orderid');
+        $amount = $request->getParameter('amount');
+       
+        if ($order_id and $amount) {
+            $c = new Criteria();
+            $c->add(AgentOrderPeer::AGENT_ORDER_ID, $order_id);
+            $c->add(AgentOrderPeer::STATUS, 1);
+            $agent_order = AgentOrderPeer::doSelectOne($c);
+
+            $agent_order->setAmount($amount);
+            $agent_order->setStatus(3);
+            $agent_order->save();
+
+            $agent = AgentCompanyPeer::retrieveByPK($agent_order->getAgentCompanyId());
+            $agent->setBalance($agent->getBalance() + ($amount));
+            $agent->save();
+            $this->agent = $agent;
+
+            $amount = $amount;
+            $remainingbalance = $agent->getBalance();
+            $aph = new AgentPaymentHistory();
+            $aph->setAgentId($agent_order->getAgentCompanyId());
+            $aph->setExpeneseType(3);
+            $aph->setAmount($amount);
+            $aph->setRemainingBalance($remainingbalance);
+            $aph->save();
+            
+            emailLib::sendAgentRefilEmail($this->agent, $agent_order);
+        }
+    }
 }

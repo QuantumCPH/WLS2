@@ -1027,7 +1027,7 @@ class affiliateActions extends sfActions {
             $aph->setRemainingBalance($remainingbalance);
             $aph->save();
 
-            $this->getUser()->setFlash('message', $this->getContext()->getI18N()->__('Your Credit Card recharge of ') . $amount . $this->getContext()->getI18N()->__(' EURO is approved'));
+            $this->getUser()->setFlash('message', $this->getContext()->getI18N()->__('Your Credit Card recharge of ') . $amount . $this->getContext()->getI18N()->__(' NOK is approved'));
             emailLib::sendAgentRefilEmail($this->agent, $agent_order);
             $this->redirect('affiliate/agentOrder');
         }
@@ -1373,7 +1373,7 @@ class affiliateActions extends sfActions {
                 
         $return_url = $this->getTargetUrl().'accountRefill';
         $cancel_url = $this->getTargetUrl().'thankyou/?accept=cancel';
-        $notify_url = 'http://wls2.zerocall.com/agent.php/affiliate/thankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
+        $notify_url = 'http://wls2.zerocall.com/b2c.php/customer/agentRefillThankyou?accept=yes&orderid='.$order_id.'&amount='.$item_amount;
 
      
         $querystring = '';
