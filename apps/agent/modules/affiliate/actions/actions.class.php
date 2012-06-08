@@ -1388,7 +1388,7 @@ class affiliateActions extends sfActions {
                     $order->save();
                     $transaction->save();
                     $this->customer = $order->getCustomer();
-                    emailLib::sendRefillEmail($this->customer, $order);
+                    emailLib::sendChangeNumberEmail($this->customer, $order);
                     $this->getUser()->setFlash('message', $this->getContext()->getI18N()->__('%1% Mobile Number is changed successfully  with %2% dkk.', array("%1%" => $customer->getMobileNumber(), "%2%" => $transaction->getAmount())));
 
                     $this->redirect('affiliate/receipts');
