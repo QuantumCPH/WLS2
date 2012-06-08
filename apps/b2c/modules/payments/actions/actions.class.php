@@ -713,7 +713,7 @@ class paymentsActions extends sfActions {
         $environment = "sandbox";
 	Payment::SendPayment($querystring, $environment);
 	
-	
+	return sfView::NONE;
 	//exit();
 
         }
