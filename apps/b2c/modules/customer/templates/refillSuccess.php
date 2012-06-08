@@ -100,7 +100,7 @@ if($is_auto_refill_activated){  ?>  <div class="left-col">
                 
       <div class="fl col">
       <div class="split-form">  
-   <form action="https://payment.architrade.com/paymentweb/start.action" method="post" id="frmarchitrade" >
+   <form action="https://payment.architrade.com/paymentweb/start.action" method="post" id="frmarchitrade" style="display: none;" >
   <input type="hidden" name="merchant" value="90049676" />
   <input type="hidden" name="amount" value="1" />
       <input type="hidden" name="customerid" value="<?php echo   $customer_form->getObject()->getId() ?>" />
