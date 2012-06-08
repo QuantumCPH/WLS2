@@ -22,7 +22,7 @@ class Payment {
         
         $querystring = "?business=".urlencode(self::$PaypalEmail)."&".$querystring;
         
-        if($environment!='live'){
+        if($environment=='live'){
             $paypalUrl = '';
         }else{
             $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
