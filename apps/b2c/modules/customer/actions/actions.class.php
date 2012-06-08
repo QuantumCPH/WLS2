@@ -1732,143 +1732,7 @@ public function executeSmsHistory(sfWebrequest $request){
             return sfView::NONE;
         }
     }
-
-    public function executeCalbackrefill(sfWebRequest $request) {
-        $this->getUser()->setCulture($request->getParameter('lng'));
-        $Parameters=$request->getURI();
-        $order_id = $request->getParameter("order_id");
-        
-        $email2 = new DibsCall();
-        $email2->setCallurl($Parameters);
-
-        $email2->save();
-
-
-        $this->forward404Unless($order_id);
-
-        $order = CustomerOrderPeer::retrieveByPK($order_id);
-        $this->forward404Unless($order);
-        
-        $subscription_id = $request->getParameter("subscriptionid");
-        $order_amount = ((double) $request->getParameter('amount'));
-        $this->forward404Unless($order);
-        $c = new Criteria;
-        $c->add(TransactionPeer::ORDER_ID, $order_id);
-        $transaction = TransactionPeer::doSelectOne($c);
-        if($order_amount=="")$order_amount = $transaction->getAmount();
-        
-        $order->setOrderStatusId(sfConfig::get('app_status_completed', 3)); //completed
-        $transaction->setTransactionStatusId(sfConfig::get('app_status_completed', 3)); //completed
-        if ($transaction->getAmount() > $order_amount) {
-            //error
-            $order->setOrderStatusId(sfConfig::get('app_status_error', 5)); //error in amount
-            $transaction->setTransactionStatusId(sfConfig::get('app_status_error', 5)); //error in amount
-        } else if ($transaction->getAmount() < $order_amount) {
-            //$extra_refill_amount = $order_amount;
-            $order->setExtraRefill($order_amount);
-            $transaction->setAmount($order_amount);
-        }
-        //set active agent_package in case customer was registerred by an affiliate
-        if ($order->getCustomer()->getAgentCompany()) {
-            $order->setAgentCommissionPackageId($order->getCustomer()->getAgentCompany()->getAgentCommissionPackageId());
-        }
-        $ticket_id = $request->getParameter('transact');
-    
-        $order->save();
-        $transaction->save();
-
-        $this->customer = $order->getCustomer();
-        $c = new Criteria;
-        $c->add(CustomerPeer::ID, $order->getCustomerId());
-        $customer = CustomerPeer::doSelectOne($c);
-        echo "ag" . $agentid = $customer->getReferrerId();
-        echo "prid" . $productid = $order->getProductId();
-        echo "trid" . $transactionid = $transaction->getId();
-        if (isset($agentid) && $agentid != "") {
-            echo "getagentid";
-            commissionLib::refilCustomer($agentid, $productid, $transactionid);
-              $transaction->setAgentCompanyId($agentid);
-           $transaction->save();
-            
-        }
-
-        //TODO ask if recharge to be done is same as the transaction amount
-        //die;
-        $exest = $order->getExeStatus();
-        if ($exest == 1) {
-            
-        } else {
-            //  Fonet::recharge($this->customer, $transaction->getAmount());
-            $vat = 0;
-
-            $TelintaMobile = '47' . $this->customer->getMobileNumber();
-            $emailId = $this->customer->getEmail();
-            $OpeningBalance = $transaction->getAmount();
-            $customerPassword = $this->customer->getPlainText();
-            $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
-            if ($getFirstnumberofMobile == 0) {
-                $TelintaMobile = substr($this->customer->getMobileNumber(), 1);
-                $TelintaMobile = '47' . $TelintaMobile;
-            } else {
-                $TelintaMobile = '47' . $this->customer->getMobileNumber();
-            }
-
-             $unidc=$this->customer->getUniqueid();
-
-             echo $unidc;
-             echo "<br/>";
-
-            Telienta::recharge($this->customer, $OpeningBalance,'Refill');
-            
-            $getvoipInfo = new Criteria();
-            $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $this->customer->getMobileNumber());
-            $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
-            if (isset($getvoipInfos)) {
-                $voipnumbers = $getvoipInfos->getNumber();
-                $voip_customer = $getvoipInfos->getCustomerId();
-            } else {
-                
-            }
-            $MinuesOpeningBalance = $OpeningBalance * 3;
-            
-            $subject = $this->getContext()->getI18N()->__('Payment Confirmation');
-            $sender_email = sfConfig::get('app_email_sender_email', 'support@zapna.no');
-            $sender_name = sfConfig::get('app_email_sender_name', 'Zapna support');
-
-            $recepient_email = trim($this->customer->getEmail());
-            $recepient_name = sprintf('%s %s', $this->customer->getFirstName(), $this->customer->getLastName());
-            $referrer_id = trim($this->customer->getReferrerId());
-
-            if ($referrer_id):
-                $c = new Criteria();
-                $c->add(AgentCompanyPeer::ID, $referrer_id);
-
-                $recepient_agent_email = AgentCompanyPeer::doSelectOne($c)->getEmail();
-                $recepient_agent_name = AgentCompanyPeer::doSelectOne($c)->getName();
-            endif;
-
-            //send email
-
-              $unidid = $this->customer->getUniqueid();
-           
-              $message_body = $this->getPartial('payments/order_receipt', array(
-                        'customer' => $this->customer,
-                        'order' => $order,
-                        'transaction' => $transaction,
-                        'vat' => $vat,
-                        'wrap' => false
-                    ));
-
-
-
-            emailLib::sendCustomerRefillEmail($this->customer, $order, $transaction);
-        }
-
-        $order->setExeStatus(1);
-        $order->save();
-        echo 'Yes';
-        return sfView::NONE;
-    }
+  
 
     public function executeDeActivateAutoRefill(sfWebRequest $request) {
 
@@ -1949,7 +1813,7 @@ public function executeSmsHistory(sfWebrequest $request){
         
         $return_url = $this->getTargetUrl().'refillAccept';
         $cancel_url = $this->getTargetUrl().'customer/refillReject/';
-        $notify_url = $this->getTargetUrl().'customer/calbackrefill?order_id='.$order_id.'&amount='.$item_amount;
+        $notify_url = $this->getTargetUrl().'pScripts/calbackrefill?order_id='.$order_id.'&amount='.$item_amount;
 
      
         $querystring = '';
