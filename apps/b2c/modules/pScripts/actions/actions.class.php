@@ -2589,13 +2589,13 @@ if(($caltype!="IC") && ($caltype!="hc")){
         $order_id = $request->getParameter('orderid');
         $amount = $request->getParameter('amount');
        
-        if ($order_id and $amount) {
+        if ($order_id) {
             $c = new Criteria();
             $c->add(AgentOrderPeer::AGENT_ORDER_ID, $order_id);
             $c->add(AgentOrderPeer::STATUS, 1);
             $agent_order = AgentOrderPeer::doSelectOne($c);
 
-            $agent_order->setAmount($amount);
+           // $agent_order->setAmount($amount);
             $agent_order->setStatus(3);
             $agent_order->save();
 
