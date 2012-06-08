@@ -1347,14 +1347,14 @@ class affiliateActions extends sfActions {
 
                          $mobile_number=substr($mobile_number,1);
                          $number = $countrycode . $mobile_number;
-                         $sms = SmsTextPeer::retrieveByPK(8);
+                         $sms = SmsTextPeer::retrieveByPK(1);
                          $sms_text = $sms->getMessageText();
                          $sms_text = str_replace(array("(oldnumber)", "(newnumber)"),array($mobile_number, $newnumber),$sms_text);
                                    
-                         ROUTED_SMS::Send($number, $sms_text,"Zapna");
+                         //ROUTED_SMS::Send($number, $sms_text,"Zapna");
                          //Send SMS ----
                          $number = $newMobileNo;
-                         ROUTED_SMS::Send($number, $sms_text,"Zapna");
+                         //ROUTED_SMS::Send($number, $sms_text,"Zapna");
                        
                     }
 //exit;
