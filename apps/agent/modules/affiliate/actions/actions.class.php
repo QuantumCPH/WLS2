@@ -1393,7 +1393,7 @@ class affiliateActions extends sfActions {
 	$querystring .= "notify_url=".urldecode($notify_url);
         
         $environment = "sandbox";
-        
+        echo $querystring;
         if($order_id && $item_amount){
 	   Payment::SendPayment($querystring, $environment);
         }else{
