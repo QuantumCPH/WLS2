@@ -3,7 +3,7 @@ require_once(sfConfig::get('sf_lib_dir') . '/changeLanguageCulture.php');
 require_once(sfConfig::get('sf_lib_dir') . '/emailLib.php');
 require_once(sfConfig::get('sf_lib_dir') . '/commissionLib.php');
 require_once(sfConfig::get('sf_lib_dir') . '/smsCharacterReplacement.php');
-
+require_once(sfConfig::get('sf_lib_dir') . '/payment.class.php');
 
 
 /**
