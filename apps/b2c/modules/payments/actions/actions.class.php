@@ -293,8 +293,8 @@ class paymentsActions extends sfActions {
             $is_transaction_ok = false;
             $subscription_id = '';
 
-            $this->forward404Unless($order_id || $order_amount);
-
+            $this->forward404Unless($order_id);
+            //$this->forward404Unless($order_id || $order_amount);
             //get order object
             $order = CustomerOrderPeer::retrieveByPK($order_id);
 
@@ -362,7 +362,7 @@ class paymentsActions extends sfActions {
             $c = new Criteria;
             $c->add(TransactionPeer::ORDER_ID, $order_id);
             $transaction = TransactionPeer::doSelectOne($c);
-
+            $order_amount = $transaction->getAmount();
             //  echo 'retrieved transaction<br />';
 
             if ($transaction->getAmount() > $order_amount || $transaction->getAmount() < $order_amount) {
