@@ -1961,7 +1961,7 @@ public function executeSmsHistory(sfWebrequest $request){
 	
 	
         $order = CustomerOrderPeer::retrieveByPK($order_id);
-        $item_name = $order->getProduct()->getName();
+        $item_name = "Refill";
         
         
 	$querystring .= "item_name=".urlencode($item_name)."&";
