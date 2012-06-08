@@ -683,7 +683,7 @@ class paymentsActions extends sfActions {
         $item_amount = $request->getParameter('amount');
         
         $return_url = 'http://wls2.zerocall.com/b2c.php/';
-        $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
+        $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject/';
         $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
 
      
