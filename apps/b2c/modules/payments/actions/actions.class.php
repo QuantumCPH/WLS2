@@ -684,9 +684,9 @@ class paymentsActions extends sfActions {
         
         $return_url = 'http://wls2.zerocall.com/b2c.php/';
         $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
-    echo    $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
+        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
 
-   die();     
+     
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
 
@@ -711,6 +711,7 @@ class paymentsActions extends sfActions {
 		$querystring .= "$key=$value&";
 	}
         $environment = "sandbox";
+        die($querystring);
 	Payment::SendPayment($querystring, $environment);
 	
 	return sfView::NONE;
