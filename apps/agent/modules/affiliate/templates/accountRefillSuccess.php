@@ -83,9 +83,9 @@
             </td>
             <td>
                 <select name="amount" id="amount">
-                    <option value="50000">500</option>
-                    <option value="100000">1000</option>
-                    <option value="150000">1500</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="1500">1500</option>
                 </select>
             </td>
         </tr>
