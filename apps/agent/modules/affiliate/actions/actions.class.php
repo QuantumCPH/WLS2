@@ -90,7 +90,7 @@ class affiliateActions extends sfActions {
         $cn->add(TransactionPeer::AGENT_COMPANY_ID, $agent_company_id);
         $cn->addAnd(TransactionPeer::DESCRIPTION, 'Fee for change number (' . $agent->getName() . ')', Criteria::EQUAL);
         $cn->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
-        //$cn->addAnd(TransactionPeer::TRANSACTION_STATUS_ID, 3);
+        $cn->addAnd(TransactionPeer::TRANSACTION_STATUS_ID, 3);
         $numberchange = TransactionPeer::doSelect($cn);
         //var_dump($numberchange);
         $this->registrations = $registrations;
