@@ -696,17 +696,16 @@ class paymentsActions extends sfActions {
         $order_id = $request->getParameter('item_number');
         $item_amount = $request->getParameter('amount');
         
-        $paypal_email = 'paypal@example.com';
         $return_url = 'http://wls2.zerocall.com/b2c.php/';
         $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
         $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
-    
+
         
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
 
 	// Firstly Append paypal account to querystring
-	$querystring .= "?business=".urlencode($paypal_email)."&";	
+		
 	
 	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
 	
@@ -716,24 +715,19 @@ class paymentsActions extends sfActions {
         
         
 	$querystring .= "item_name=".urlencode($item_name)."&";
-	//$querystring .= "amount=".urlencode($item_amount)."&";
-	
+        $querystring .= "return=".urldecode($return_url)."&";
+        $querystring .= "cancel_url=".urldecode($cancel_url)."&";
+	$querystring .= "notify_url=".urldecode($notify_url)."&";
+        
 	//loop for posted values and append to querystring
 	foreach($_POST as $key => $value){
 		$value = urlencode(stripslashes($value));
 		$querystring .= "$key=$value&";
 	}
-        
-	// Append paypal return addresses
-	$querystring .= "return=".urlencode(stripslashes($return_url))."&";
-	$querystring .= "cancel_url=".urlencode(stripslashes($cancel_url))."&";
-	$querystring .= "notify_url=".urlencode($notify_url);
+        $environment = "sandbox";
+	Payment::SendPayment($querystring, $environment);
 	
-	// Append querystring with custom field
-	//$querystring .= "&custom=".USERID;
-	//die($querystring);
-	// Redirect to paypal IPN
-	header('location:https://www.sandbox.paypal.com/cgi-bin/webscr'.$querystring);
+	
 	exit();
 
         }
