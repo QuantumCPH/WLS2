@@ -84,8 +84,16 @@ class affiliateActions extends sfActions {
 //                    $transactions[$i]=$refill;
 //                    $i=$i+1;
 //                }
-
+        
+        $cn = new Criteria();
+        $cn->add(TransactionPeer::AGENT_COMPANY_ID, $agent_company_id);
+        $cn->addAnd(TransactionPeer::DESCRIPTION, 'Avgift för förändring nummer (' . $agent->getName() . ')', Criteria::EQUAL);
+        $cn->addDescendingOrderByColumn(TransactionPeer::CREATED_AT);
+        $cn->addAnd(TransactionPeer::TRANSACTION_STATUS_ID, 3);
+        $numberchange = TransactionPeer::doSelect($cn);
+        
         $this->registrations = $registrations;
+        $this->numberchanges = $numberchange;
         $this->refills = $refills;
         $this->counter = $i - 1;
     }
@@ -1229,7 +1237,7 @@ class affiliateActions extends sfActions {
                 $transaction->setCustomerId($customer->getId());
                 $transaction->setAmount($extra_refill);
                 //get agent nam
-                $transaction->setDescription('Avgift för förändring nummer (' . $agent->getName() . ')');
+                $transaction->setDescription('Fee for change number (' . $agent->getName() . ')');
                 $transaction->setAgentCompanyId($agent->getId());
                 //assign commission to transaction;
                 
