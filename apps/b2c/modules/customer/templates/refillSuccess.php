@@ -195,7 +195,7 @@ if($is_auto_refill_activated){  ?>  <div class="left-col">
         <input type="hidden" name="firstName" value="<?php echo $order->getCustomer()->getFirstName();?>"  />
         <input type="hidden" name="lastName" value="<?php echo $order->getCustomer()->getLastName();?>"  />
         <input type="hidden" name="payer_email" value="<?php echo $order->getCustomer()->getEmail();?>"  />
-        <input type="hidden" name="item_number" value="<?php echo $randomOrderId;?>" />
+        <input type="hidden" name="item_number" value="<?php echo $order->getId();?>" />
         <input type="hidden" name="rm" value="2" />        
                     </div>
           <div style="float:left;margin-top:30px;">   
