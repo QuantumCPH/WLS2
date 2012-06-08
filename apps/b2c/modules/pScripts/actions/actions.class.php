@@ -2600,16 +2600,16 @@ if(($caltype!="IC") && ($caltype!="hc")){
             $agent_order->save();
 
             $agent = AgentCompanyPeer::retrieveByPK($agent_order->getAgentCompanyId());
-            $agent->setBalance($agent->getBalance() + ($amount));
+            $agent->setBalance($agent->getBalance() + ($agent_order->getAmount()));
             $agent->save();
             $this->agent = $agent;
 
-            $amount = $amount;
+            $amount = $agent_order->getAmount();
             $remainingbalance = $agent->getBalance();
             $aph = new AgentPaymentHistory();
             $aph->setAgentId($agent_order->getAgentCompanyId());
             $aph->setExpeneseType(3);
-            $aph->setAmount($amount);
+            $aph->setAmount($agent_order->getAmount());
             $aph->setRemainingBalance($remainingbalance);
             $aph->save();
             
