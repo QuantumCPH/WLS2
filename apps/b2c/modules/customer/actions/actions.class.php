@@ -1954,21 +1954,16 @@ public function executeSmsHistory(sfWebrequest $request){
      
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
-
-	// Firstly Append paypal account to querystring
-		
-	
-	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
-	
 	
         $order = CustomerOrderPeer::retrieveByPK($order_id);
         $item_name = "Refill";
         
 	//loop for posted values and append to querystring
 	foreach($_POST as $key => $value){
-		$value = urlencode(stripslashes($value));
-		$querystring .= "$key=$value&";
+	   $value = urlencode(stripslashes($value));
+	   $querystring .= "$key=$value&";
 	}
+        
         $querystring .= "item_name=".urlencode($item_name)."&";
         $querystring .= "return=".urldecode($return_url)."&";
         $querystring .= "cancel_return=".urldecode($cancel_url)."&";
@@ -1976,8 +1971,11 @@ public function executeSmsHistory(sfWebrequest $request){
         
         $environment = "sandbox";
         
-	Payment::SendPayment($querystring, $environment);
-	
+        if($order_id && $item_amount){
+	   Payment::SendPayment($querystring, $environment);
+        }else{
+           echo 'error';  
+        }
 	return sfView::NONE;
 	//exit();
 

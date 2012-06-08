@@ -12,12 +12,6 @@ class Payment {
 
     private static $PaypalEmail   = 'paypal@example.com';
     
-    
-//        $paypal_email = 'paypal@example.com';
-//        $return_url = 'http://wls2.zerocall.com/b2c.php/';
-//        $cancel_url = 'http://wls2.zerocall.com/b2c.php/payments/reject';
-//        $notify_url = 'http://wls2.zerocall.com/b2c.php/payments/confirmpayment?order_id='.$order_id.'&amount='.$item_amount;
-    
     public static function SendPayment($querystring,$environment){
         
         $querystring = "?business=".urlencode(self::$PaypalEmail)."&".$querystring;

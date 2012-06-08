@@ -665,9 +665,11 @@ class paymentsActions extends sfActions {
 	$querystring .= "notify_url=".urldecode($notify_url);
         
         $environment = "sandbox";
-        
-	Payment::SendPayment($querystring, $environment);
-	
+        if($order_id && $item_amount){
+	   Payment::SendPayment($querystring, $environment);
+        }else{
+           echo 'error';  
+        }
 	return sfView::NONE;
 	//exit();
 
