@@ -421,11 +421,13 @@ class customerActions extends sfActions {
                 if (isset($getvoipInfos)) {
                     $voipnumbers = $getvoipInfos->getNumber();
                     $firsttwocharcters = substr($voipnumbers, 0,2);
-                    if($firsttwocharcters==00){
+                    if($firsttwocharcters=="00"){
                        $voipnumbers = substr($voipnumbers, 2);
                     }else{
                        $voipnumbers = $voipnumbers; 
                     }
+                    echo $voipnumbers;
+                    die;
                     $voip_customer = $getvoipInfos->getCustomerId();
                     $this->customer = $customer;
                     $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
