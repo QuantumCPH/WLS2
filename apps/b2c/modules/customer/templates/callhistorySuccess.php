@@ -83,7 +83,7 @@
                         <th  width="20%"  align="left"><?php echo __('till Number') ?></th>
                         <th  width="20%"  align="left"><?php echo __('från Number') ?></th>
                         <th width="10%"   align="left"><?php echo __('Duration') ?></th>
-                        <th width="20%"   align="left"><?php echo __('Cost') ?> (SEK)</th>
+                        <th width="20%"   align="left"><?php echo __('Cost') ?> (NOK)</th>
                         <th width="10%"   align="left"><?php echo __('Typ') ?></th>
                     </tr>
                 <?php
@@ -151,7 +151,7 @@
                     $cld = 'called-date';
                     echo $calls->$cld;
                 ?></td> <td><?php echo $calls->to; ?></td><td><?php echo $calls->from; ?></td><td> <?php echo $calls->duration; ?></td><td>
-                        <?php echo CurrencyConverter::convertUsdToSek($calls->cost); ?></td>
+                        <?php echo CurrencyConverter::convertUsdToNOK($calls->cost); ?></td>
                     <td>
                         <?php echo $calls->type; ?></td></tr>
                         <?php } ?>
@@ -262,7 +262,7 @@
                                 } ?></td>
                             <td><?php echo number_format($xdr->charged_amount / 4, 2); ?></td>
                             <td><?php echo number_format($xdr->charged_amount, 2);
-                                $amount_total+= number_format($xdr->charged_amount, 2); ?> SEK</td>
+                                $amount_total+= number_format($xdr->charged_amount, 2); ?> NOK</td>
                             <td><?php
                                 $typecall = substr($xdr->account_id, 0, 1);
                                 if ($typecall == 'a') {
@@ -301,9 +301,9 @@
                                     <tr>
                                         <td colspan="4" align="right"><strong><?php echo __('Subtotal') ?></strong></td>
                                         <!--
-                                        <td><?php echo format_number($amount_total - $amount_total * .20) ?> SEK</td>
+                                        <td><?php echo format_number($amount_total - $amount_total * .20) ?> NOK</td>
                                     	 -->
-                                        <td><?php echo number_format($amount_total, 2, ',', '') ?> SEK</td>
+                                        <td><?php echo number_format($amount_total, 2, ',', '') ?> NOK</td>
                                         <td>&nbsp;</td>
                                     </tr>
 <?php
