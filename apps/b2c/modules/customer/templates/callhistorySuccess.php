@@ -169,7 +169,7 @@
 
                         <?php } else {
  ?>
-                    <h1><?php echo "Övriga händelser"; ?> </h1>
+                    <h1><?php echo __("Other events"); ?> </h1>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
                         <tr>
                             <td class="title"><?php echo __('Date &amp; time') ?></td>

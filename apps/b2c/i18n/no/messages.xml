@@ -1045,6 +1045,14 @@
                 <source>Call</source>
                 <target>Ring</target>
             </trans-unit>
+            <trans-unit id="255" translate="yes" reformat="yes" xml:space="default">
+                <source>There are currently no call records to show.</source>
+                <target>Det er foreløpig ingen anropregistreringene å vise.</target>
+            </trans-unit>
+            <trans-unit id="256" translate="yes" reformat="yes" xml:space="default">
+                <source>Other events</source>
+                <target>andre arrangementer</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
