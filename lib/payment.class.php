@@ -11,7 +11,7 @@ class Payment {
     //put your code here
 
     private static $PaypalEmail   = 'ak@zapna.com';  //'paypal@example.com';
-    private static $environment   = "live";
+    private static $environment   = "sandbox";
     
     public static function SendPayment($querystring){
         
