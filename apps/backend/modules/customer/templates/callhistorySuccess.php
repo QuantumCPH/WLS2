@@ -154,7 +154,7 @@ if($pus==1){
             
 
                 <h1><?php echo 'Other events'; ?> </h1>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="tblAlign">
                         <tr class="headings">
                             <td class="title"><?php echo __('Date &amp; time') ?></td>
                             <td class="title" width="40%"><?php echo __('Description') ?></td>
@@ -180,7 +180,7 @@ if($pus==1){
                         </table><br/><br/>
 
                            <h1><?php echo 'Payment History'; ?> </h1>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="tblAlign">
                         <tr class="headings">
                             <td class="title"><?php echo __('Date &amp; time') ?></td>
                             <td class="title" width="40%"><?php echo __('Description') ?></td>
