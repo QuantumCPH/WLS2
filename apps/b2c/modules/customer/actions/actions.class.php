@@ -420,7 +420,12 @@ class customerActions extends sfActions {
                 $getvoipInfos = SeVoipNumberPeer::doSelectOne($getvoipInfo); //->getId();
                 if (isset($getvoipInfos)) {
                     $voipnumbers = $getvoipInfos->getNumber();
-                    $voipnumbers = substr($voipnumbers, 2);
+                    $firsttwocharcters = substr($voipnumbers, 0,2);
+                    if($firsttwocharcters==00){
+                       $voipnumbers = substr($voipnumbers, 2);
+                    }else{
+                       $voipnumbers = $voipnumbers; 
+                    }
                     $voip_customer = $getvoipInfos->getCustomerId();
                     $this->customer = $customer;
                     $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
