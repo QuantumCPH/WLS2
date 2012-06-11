@@ -637,3 +637,12 @@ a.changePass{
 #forgot_password_form p.text1{
     margin-bottom: 18px !important;
 }
+.submitBtn{
+   background-image: url("../images/b.png");
+   background-repeat: repeat-x;
+   border: 0 none;
+   color: #FFFFFF;
+   height: 21px;
+   padding-bottom: 3px;
+   width: 62px;   
+}

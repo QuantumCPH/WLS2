@@ -155,7 +155,7 @@ if($pus==1){
 
                 <h1><?php echo 'Other events'; ?> </h1>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
-                        <tr>
+                        <tr class="headings">
                             <td class="title"><?php echo __('Date &amp; time') ?></td>
                             <td class="title" width="40%"><?php echo __('Description') ?></td>
                                 <td class="title"><?php echo __('Amount') ?></td>
@@ -181,7 +181,7 @@ if($pus==1){
 
                            <h1><?php echo 'Payment History'; ?> </h1>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
-                        <tr>
+                        <tr class="headings">
                             <td class="title"><?php echo __('Date &amp; time') ?></td>
                             <td class="title" width="40%"><?php echo __('Description') ?></td>
                                 <td class="title"><?php echo __('Amount') ?></td>
@@ -217,7 +217,7 @@ if($pus==1){
                     <th  width="10%"  align="left"><?php echo __('VAT') ?></th>
                     <th width="20%"   align="left"><?php echo __('Cost') ?></th>
                    
-                    <th  width="20%"   align="left">Samtalstyp</th>
+                    <th  width="20%"   align="left">Call Type</th>
                   </tr>
    <?php
                 $amount_total = 0;
