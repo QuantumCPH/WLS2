@@ -1438,10 +1438,10 @@ class affiliateActions extends sfActions {
         $querystring .= "cancel_return=".urldecode($cancel_url)."&";
 	$querystring .= "notify_url=".urldecode($notify_url);
         
-        $environment = "sandbox";
+        //$environment = "sandbox";
 //        echo $querystring;
         if($order_id && $item_amount){
-	   Payment::SendPayment($querystring, $environment);
+	   Payment::SendPayment($querystring);
         }else{
            echo 'error';  
         }

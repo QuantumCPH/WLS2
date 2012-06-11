@@ -1833,10 +1833,10 @@ public function executeSmsHistory(sfWebrequest $request){
         $querystring .= "cancel_return=".urldecode($cancel_url)."&";
 	$querystring .= "notify_url=".urldecode($notify_url);
         
-        $environment = "sandbox";
+     //   $environment = "sandbox";
         
         if($order_id && $item_amount){
-	   Payment::SendPayment($querystring, $environment);
+	   Payment::SendPayment($querystring);
         }else{
            echo 'error';  
         }

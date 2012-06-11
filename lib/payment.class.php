@@ -11,13 +11,14 @@ class Payment {
     //put your code here
 
     private static $PaypalEmail   = 'paypal@example.com';
+    private static $environment   = "sandbox";
     
-    public static function SendPayment($querystring,$environment){
+    public static function SendPayment($querystring){
         
         $querystring = "?business=".urlencode(self::$PaypalEmail)."&".$querystring;
         
-        if($environment=='live'){
-            $paypalUrl = '';
+        if(self::$environment=='live'){
+            $paypalUrl = 'https://www.paypal.com/cgi-bin/webscr';
         }else{
             $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
         }
