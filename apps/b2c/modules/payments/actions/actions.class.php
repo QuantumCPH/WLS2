@@ -644,11 +644,6 @@ class paymentsActions extends sfActions {
         $querystring = '';
         if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])){
 
-	// Firstly Append paypal account to querystring
-		
-	
-	// Append amount& currency (Â£) to quersytring so it cannot be edited in html
-	
 	
         $order = CustomerOrderPeer::retrieveByPK($order_id);
         $item_name = $order->getProduct()->getName();

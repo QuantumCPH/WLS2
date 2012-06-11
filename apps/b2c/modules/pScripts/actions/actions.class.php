@@ -2633,7 +2633,6 @@ if(($caltype!="IC") && ($caltype!="hc")){
         $order = CustomerOrderPeer::retrieveByPK($order_id);
         $this->forward404Unless($order);
         
-        $subscription_id = $request->getParameter("subscriptionid");
         $order_amount = ((double) $request->getParameter('amount'));
         $this->forward404Unless($order);
         $c = new Criteria;

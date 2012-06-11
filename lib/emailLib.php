@@ -8,11 +8,6 @@ class emailLib{
         $vat = 0;
 
         //create transaction
-   
-     
-   
-
-
         //This Section For Get The Agent Information
         $agent_company_id = $agent->getId();
         if($agent_company_id!=''){
