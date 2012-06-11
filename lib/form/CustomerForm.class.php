@@ -130,7 +130,6 @@ class CustomerForm extends BaseCustomerForm
   			new sfValidatorString(
   				array (
   					'min_length'=>6,
-                                        'type'=>'password'
   				)
   			),
   			
