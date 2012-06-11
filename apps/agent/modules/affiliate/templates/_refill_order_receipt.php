@@ -81,8 +81,8 @@ use_helper('Number');
     <td><?php echo $order->getCreatedAt('m-d-Y') ?></td>
     <td>
     <?php
-         echo __("Refill");
-
+         //echo __("Refill");
+         echo __($transaction->getDescription());
     ?>
 	</td>
     <td><?php echo $order->getQuantity() ?></td>
