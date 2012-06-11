@@ -152,7 +152,7 @@
                     ?>
 
                     <?php 
-                     if($actionName=="selectCompany"){  
+                     if($modulName=="agent_commission" && $actionName=="selectCompany"){  
                        echo link_to(__('Agent Per Product'), 'agent_commission/selectCompany', array('class'=>'subSelect'));
                      }else{
                        echo link_to(__('Agent Per Product'), 'agent_commission/selectCompany'); 
@@ -195,7 +195,7 @@
             <li>
                 <a href="#"
                 onmouseover="mopen('m7')"
-                onmouseout="mclosetime()" <?php echo $modulName=='newupdate' ||  $modulName=='agent_company' || $modulName=='faqs' || $modulName=='userguide'? 'class = "current"':''?>><?php echo __('Updates') ?></a>
+                onmouseout="mclosetime()" <?php echo $modulName=='newupdate' ||  $actionName=='newsList' || $modulName=='faqs' || $modulName=='userguide'? 'class = "current"':''?>><?php echo __('Updates') ?></a>
                 <div id="m7"
                     onmouseover="mcancelclosetime()"
                     onmouseout="mclosetime()">
