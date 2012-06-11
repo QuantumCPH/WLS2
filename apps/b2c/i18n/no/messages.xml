@@ -1053,6 +1053,26 @@
                 <source>Other events</source>
                 <target>andre arrangementer</target>
             </trans-unit>
+            <trans-unit id="257" translate="yes" reformat="yes" xml:space="default">
+                <source>Here you can join Option Package travel number. Simply press the Join button at the bottom of the page. After successful registration you will receive an email confirming the registration of additional package</source>
+                <target>Her kan du bli med utstyrspakke reiser tall. Bare trykk på Join-knappen nederst på siden. Etter vellykket registrering vil du motta en e-post som bekrefter registreringen av tilleggspakke</target>
+            </trans-unit>
+            <trans-unit id="258" translate="yes" reformat="yes" xml:space="default">
+                <source>What is Resenumber</source>
+                <target>Hva er Resenumber</target>
+            </trans-unit>
+            <trans-unit id="259" translate="yes" reformat="yes" xml:space="default">
+                <source>With Resenumber you can receive cheap calls on this number while travelling abroad.</source>
+                <target>Med Resenumber kan du motta billige samtaler på dette nummeret når du reiser utenlands.</target>
+            </trans-unit>
+            <trans-unit id="260" translate="yes" reformat="yes" xml:space="default">
+                <source>The price of the package is: 10 NOK per. Month</source>
+                <target>Prisen på pakken er: 10 NOK pr. måned</target>
+            </trans-unit>
+            <trans-unit id="261" translate="yes" reformat="yes" xml:space="default">
+                <source>The activation price is: 30 NOK</source>
+                <target>Aktiveringen Prisen er: 30 NOK</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
