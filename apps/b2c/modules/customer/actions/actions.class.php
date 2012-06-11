@@ -426,8 +426,8 @@ class customerActions extends sfActions {
                     }else{
                        $voipnumbers = $voipnumbers; 
                     }
-                    echo $voipnumbers;
-                    die;
+                   // echo $voipnumbers;
+                   // die;
                     $voip_customer = $getvoipInfos->getCustomerId();
                     $this->customer = $customer;
                     $getFirstnumberofMobile = substr($this->customer->getMobileNumber(), 0, 1);     // bcdef
