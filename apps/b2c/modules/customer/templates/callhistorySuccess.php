@@ -1,7 +1,15 @@
 <?php use_helper('I18N') ?>
 <?php use_helper('Number') ?>
 <?php include_partial('dashboard_header', array('customer' => $customer, 'section' => __('Call History'))) ?>
+<script type="text/javascript">
+    jQuery(function() {
 
+        jQuery( "#startdate" ).datepicker({ maxDate: '0m +0w', dateFormat: 'yy-mm-dd' });
+        jQuery( "#enddate" ).datepicker({ maxDate: '0m +0w', dateFormat: 'yy-mm-dd'});
+
+
+    });
+</script>
 <div class="left-col">
     <?php include_partial('navigation', array('selected' => 'callhistory', 'customer_id' => $customer->getId())) ?>
     <div class="split-form-btn" style="margin-top: 70px;">
