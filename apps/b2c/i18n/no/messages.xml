@@ -1041,6 +1041,10 @@
                 <source>The customer is already registered</source>
                 <target>Kunden er allerede registrert</target>
             </trans-unit>
+            <trans-unit id="254" translate="yes" reformat="yes" xml:space="default">
+                <source>Call</source>
+                <target>Ring</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

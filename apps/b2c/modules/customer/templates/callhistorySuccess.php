@@ -187,7 +187,7 @@
                             } ?>
                         </table><br/><br/>
 
-                                            <h1><?php echo "Betalningshistorik"; ?> </h1>
+                                            <h1><?php echo __("Payment History"); ?> </h1>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
                         <tr>
                             <td class="title"><?php echo __('Date &amp; time') ?></td>
@@ -212,7 +212,7 @@
 
                             } ?>
                         </table><br/><br/>
-                    <h1><?php echo "Samtal"; ?> </h1>
+                    <h1><?php echo __("Call"); ?> </h1>
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="callhistory">
                             <tr>
                                 <td class="title"><?php echo __('Date &amp; time') ?></td>
@@ -293,7 +293,7 @@
                             }
                         ?>
 
-<?php if (count($callRecords) == 0): ?>
+<?php if (count($tilentaCallHistryResult) == 0): ?>
                         <tr>
                             <td colspan="6"><p><?php echo __('There are currently no call records to show.') ?></p></td>
                                 </tr>
