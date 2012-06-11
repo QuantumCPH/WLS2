@@ -1289,7 +1289,14 @@ class affiliateActions extends sfActions {
 
                     $transaction->save();
                     if ($customer) {
-                        $newMobileNo=$countrycode.substr($newnumber,1);
+                        $getFirstnumberofMobile = substr($newnumber, 0, 1);
+                        if ($getFirstnumberofMobile == 0) {
+                             $newMobileNo = substr($newnumber, 1);
+                             $newMobileNo = $countrycode.$newMobileNo;
+                        } else {
+                            $newMobileNo = $countrycode.$newnumber;
+                        }
+                        
                         $customerids = $customer->getId();
                         $uniqueId=$customer->getUniqueid();
                         $customer->setMobileNumber($newnumber);
