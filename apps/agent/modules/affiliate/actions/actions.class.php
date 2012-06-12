@@ -884,7 +884,7 @@ class affiliateActions extends sfActions {
 
             Telienta::ResgiterCustomer($this->customer, $order->getExtraRefill());
             Telienta::createAAccount($TelintaMobile, $this->customer);
-            Telienta::createCBAccount($TelintaMobile, $this->customer);
+            //Telienta::createCBAccount($TelintaMobile, $this->customer);
            
             emailLib::sendCustomerRegistrationViaAgentEmail($this->customer, $order);
           
@@ -1334,7 +1334,7 @@ class affiliateActions extends sfActions {
                                 $telintaAccountsCB = TelintaAccountsPeer::doSelectOne($cb);
                                 Telienta::terminateAccount($telintaAccountsCB);
                             }
-                            Telienta::createCBAccount($newMobileNo, $customer);
+                            //Telienta::createCBAccount($newMobileNo, $customer);
 
                             $getvoipInfo = new Criteria();
                             $getvoipInfo->add(SeVoipNumberPeer::CUSTOMER_ID, $customerids);

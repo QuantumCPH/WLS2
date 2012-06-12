@@ -480,7 +480,7 @@ class paymentsActions extends sfActions {
                       // For Telinta Add Account
                
                    Telienta::createAAccount($TelintaMobile,$this->customer);
-                   Telienta::createCBAccount($TelintaMobile, $this->customer);
+                  // Telienta::createCBAccount($TelintaMobile, $this->customer);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //if the customer is invited, Give the invited customer a bonus of 10dkk
                 $invite_c = new Criteria();
